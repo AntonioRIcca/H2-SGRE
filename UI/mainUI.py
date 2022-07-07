@@ -34,7 +34,7 @@ class Ui(QtWidgets.QMainWindow):
         try:
             self.ui.__getattribute__(led).setPixmap(QtGui.QPixmap("UI/_resources/" + leds[status]))
         except:
-            print('Status led non riconosciuto')
+            print(led + ': Status led non riconosciuto')
 
     def valve_stop_img(self):
         for element in ['V104', 'V303']:

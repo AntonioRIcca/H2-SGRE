@@ -2059,7 +2059,7 @@
     <property name="title">
      <string>FC-301 - Fuel Cell</string>
     </property>
-    <widget class="QLabel" name="FC301B_P_LBL_2">
+    <widget class="QLabel" name="FC301_P_LBL">
      <property name="geometry">
       <rect>
        <x>150</x>
@@ -2589,7 +2589,7 @@
       <string>Split power</string>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="FC301B_P_DSB_2">
+    <widget class="QDoubleSpinBox" name="FC301_Pset_DSB">
      <property name="geometry">
       <rect>
        <x>210</x>
@@ -2621,7 +2621,7 @@
       <double>12.345000000000001</double>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="FC301B_H2_DSB_2">
+    <widget class="QDoubleSpinBox" name="FC301_H2_DSB">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -2662,7 +2662,7 @@
       <double>12.350000000000000</double>
      </property>
     </widget>
-    <widget class="QCheckBox" name="FC301B_atcivation_CkB">
+    <widget class="QCheckBox" name="FC301B_activation_CkB">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -2682,7 +2682,7 @@
       <string>FC-301B</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="FC301A_atcivation_CkB">
+    <widget class="QCheckBox" name="FC301A_activation_CkB">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -2702,7 +2702,7 @@
       <string>FC-301A</string>
      </property>
     </widget>
-    <widget class="QLabel" name="FC301B_H2_LBL_2">
+    <widget class="QLabel" name="FC301_H2_LBL">
      <property name="geometry">
       <rect>
        <x>150</x>
@@ -2725,7 +2725,7 @@
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="FC301B_P_DSB_3">
+    <widget class="QDoubleSpinBox" name="FC301_Pread_DSB">
      <property name="geometry">
       <rect>
        <x>210</x>
@@ -2741,8 +2741,14 @@
        <bold>true</bold>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(225, 225, 225);</string>
+     </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
      </property>
      <property name="buttonSymbols">
       <enum>QAbstractSpinBox::NoButtons</enum>
@@ -2777,7 +2783,7 @@
     <property name="title">
      <string>EL-101</string>
     </property>
-    <widget class="QDoubleSpinBox" name="EL101_Pset_DSB_2">
+    <widget class="QDoubleSpinBox" name="EL101_Pset_DSB">
      <property name="geometry">
       <rect>
        <x>70</x>
@@ -3012,7 +3018,7 @@
       <enum>QAbstractSpinBox::NoButtons</enum>
      </property>
      <property name="suffix">
-      <string> kW</string>
+      <string> barg</string>
      </property>
      <property name="decimals">
       <number>3</number>
@@ -3197,7 +3203,7 @@
       <enum>QAbstractSpinBox::NoButtons</enum>
      </property>
      <property name="suffix">
-      <string> kW</string>
+      <string> m3</string>
      </property>
      <property name="decimals">
       <number>3</number>
