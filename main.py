@@ -22,6 +22,8 @@ class Main:
         # self.main.ui.FC301_Pset_DSB.valueChanged.connect(self.set_params)
         for elem in ['FC301A', 'FC301B', 'FC301', 'EL101']:
             self.main.ui.__getattribute__(elem + '_Pset_DSB').valueChanged.connect(self.set_params)
+        for elem in ['FC301_split', 'FC301A_activation', 'FC301B_activation']:
+            self.main.ui.__getattribute__(elem + '_CkB').clicked.connect(self.FC301_activation)
 
         timer = QtCore.QTimer()
         timer.timeout.connect(self.refresh)
@@ -50,7 +52,7 @@ class Main:
 
     def FC301_switch(self):
         v.par['FC301']['start'] = self.main.ui.FC301_start_PB.isChecked()
-        self.set_params()
+        # self.set_params()
         # self.refresh()
 
         # if self.main.ui.FC301_start_PB.isChecked():
@@ -60,6 +62,21 @@ class Main:
         #     self.main.led_light('FC301A_statusLed_LBL', 'on')
         # else:
         #     self.main.ui.EL101_start_PB.setText('START')
+
+    def FC301_activation(self):
+        for elem in ['FC301A', 'FC301B']:
+            v.par[elem]['activated'] = self.main.ui.__getattribute__(elem + '_activation_CkB').isChecked()
+            self.main.ui.__getattribute__(elem + '_GB').setEnabled(v.par[elem]['activated'])
+        # v.par['FC301A']['activated'] = self.main.ui.FC301A_activation_CkB.isChecked()
+        # v.par['FC301B']['activated'] = self.main.ui.FC301B_activation_CkB.isChecked()
+
+        self.main.ui.FC301_start_PB.setEnabled(v.par['FC301A']['activated'] or v.par['FC301B']['activated'])
+        self.main.ui.FC301_split_CkB.setEnabled(v.par['FC301A']['activated'] and v.par['FC301B']['activated'])
+
+        if not (v.par['FC301A']['activated'] and v.par['FC301B']['activated']):
+            self.main.ui.FC301_split_CkB.setChecked(False)
+
+        self.set_params()
 
     def refresh(self):
         for elem in ['FC301A', 'FC301B', 'EL101']:
@@ -88,8 +105,8 @@ class Main:
         else:
             v.par['FC301A']['Pset'] = self.main.ui.FC301A_Pset_DSB.value()
             v.par['FC301B']['Pset'] = self.main.ui.FC301B_Pset_DSB.value()
-            self.main.ui.FC301_Pset_DSB.setValue(v.par['FC301A']['Pset'] + v.par['FC301B']['Pset'])
-
+            self.main.ui.FC301_Pset_DSB.setValue(v.par['FC301A']['Pset'] * int(v.par['FC301A']['activated']) +
+                                                 v.par['FC301B']['Pset'] * int(v.par['FC301B']['activated']))
 
 
 Main()
