@@ -3,43 +3,27 @@ from PyQt5 import QtWidgets, QtCore
 
 from UI.mainUI import Ui
 from _shared import variables as v
-from threading import Thread
 import time
+import multiprocessing
 
 class Main:
     def __init__(self):
-        self.sel_util = False
         # self.main = Ui()
-        self.app = QtWidgets.QApplication(sys.argv)
-        # self.app_util = QtWidgets.QApplication([])
-
-
-        # f1 = Thread(target=test2)
-        # f2 = Thread(target=test)
-
-        # f1 = Thread(target=self.open_util())
-        f2 = Thread(target=self.open_interface())
-
-        # f1.start()
-        f2.start()
-
-        # self.open_util()
-        # self.open_interface()
-
-
-        pass
+        self.open_interface()
 
     def open_util(self):
         from UI._util.util import Util
 
-        # self.app_util = QtWidgets.QApplication([])
+        self.app_util = QtWidgets.QApplication([])
+        # QtCore.QTimer.singleShot(0, )
+
         self.util = Util()
         self.util.show()
-        # self.app_util.exec()
+        self.app_util.exec_()
         # self.app_util.quit()
-        self.sel_util = True
 
     def open_interface(self):
+        self.app = QtWidgets.QApplication([])
         self.main = Ui()
 
         self.FC301_activation()
@@ -77,14 +61,10 @@ class Main:
         #     print('Stop EL101')
         # for line in ['EL101_out', 'S201', 'S202', 'S203', 'S204', 'S205', 'mainline1']:
         #     self.main.ui.__getattribute__(line + '_LN').setVisible(self.main.ui.EL101_start_PB.isChecked())
+        mProcess = multiprocessing.Process(target=self.open_util())
+        mProcess.start()
+        mProcess.join()
 
-        if self.main.ui.EL101_start_PB.isChecked():
-            f1 = Thread(target=self.open_util())
-            f1.start()
-            f1.join()
-        else:
-            # self.app_util.quit()
-            self.util.close()
 
     def FC301_switch(self):
         v.par['FC301']['start'] = self.main.ui.FC301_start_PB.isChecked()
@@ -115,8 +95,6 @@ class Main:
         self.set_params()
 
     def refresh(self):
-        if self.sel_util:
-            self.util.data()
         for elem in ['FC301A', 'FC301B', 'EL101']:
             for param in ['Pset', 'Pread', 'H2']:
                 self.main.ui.__getattribute__(elem + '_' + param + '_DSB').setValue(v.par[elem][param])
@@ -159,24 +137,5 @@ class Main:
         for elem in ['mainline1', 'S201', 'S202', 'S203', 'S204', 'S205']:
             self.main.ui.__getattribute__(elem + '_LN').setVisible(el or fc)
 
-
-def test():
-    i = 0
-    # i += 1
-    # print(i)
-
-    while True:
-        i += 1
-        print(i)
-
-        # time.sleep(2)
-
-
-def test2():
-    while True:
-        print('Test2')
-    # print('Test2')
-    #     time.sleep(0.7)
-#
 
 Main()

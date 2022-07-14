@@ -3083,7 +3083,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="EL101_GB_2">
+   <widget class="QGroupBox" name="S20X_GB">
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -3102,7 +3102,7 @@
     <property name="title">
      <string>Storage</string>
     </property>
-    <widget class="QLabel" name="Storage_cap_LBL">
+    <widget class="QLabel" name="S20X_cap_LBL">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -3125,7 +3125,7 @@
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="EL101_status_LBL_2">
+    <widget class="QLabel" name="S20X_status_LBL">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -3148,7 +3148,7 @@
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QTextEdit" name="EL101_log_TE_2">
+    <widget class="QTextEdit" name="S20X_log_TE">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -3174,7 +3174,7 @@
       <pixmap>_resources/Led-OFF_20x20.png</pixmap>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="Storage_cap_DSB">
+    <widget class="QDoubleSpinBox" name="S20X_cap_DSB">
      <property name="geometry">
       <rect>
        <x>70</x>
@@ -3431,7 +3431,7 @@
    <zorder>TI304_WGT_11</zorder>
    <zorder>groupBox</zorder>
    <zorder>EL101_GB</zorder>
-   <zorder>EL101_GB_2</zorder>
+   <zorder>S20X_GB</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
