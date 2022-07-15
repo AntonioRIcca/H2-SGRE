@@ -55,7 +55,7 @@ class Main:
 
         timer = QtCore.QTimer()
         timer.timeout.connect(self.refresh)
-        timer.start(500)
+        timer.start(1000)
 
         self.main.show()
         self.app.exec()
@@ -115,6 +115,11 @@ class Main:
         self.set_params()
 
     def refresh(self):
+        for elem in ['FC301A', 'FC301B']:
+            v.par[elem]['H2'] = v.par['FC301']['H2'] * int(v.par[elem]['activated']) * v.par[elem]['Pread'] / \
+                                    max((v.par['FC301A']['Pread'] + v.par['FC301B']['Pread']), 0.000001)
+
+
         if self.sel_util:
             self.util.data()
         for elem in ['FC301A', 'FC301B', 'EL101']:
@@ -124,6 +129,7 @@ class Main:
                 self.main.ui.__getattribute__(elem + '_log_TE').setText(v.par[elem]['log'])
         self.main.ui.EL101_pressure_DSB.setValue(v.par['EL101']['pressure'])
         self.main.ui.FC301_Pread_DSB.setValue(v.par['FC301A']['Pread'] + v.par['FC301B']['Pread'])
+        self.main.ui.FC301_H2_DSB.setValue(v.par['FC301']['H2'])
 
         self.visual_flux()
 

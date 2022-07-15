@@ -12,7 +12,8 @@ par['EL101'] = {
 
 par['FC301'] = {
     'start': False,
-    'split': False
+    'split': False,
+    'H2': 0
 }
 
 par['FC301A'] = {
@@ -33,4 +34,47 @@ par['FC301B'] = {
     'status': 'on'
 }
 
+par['S201'] = {
+    'pressure': 12.5,
+    'Tflux': 36,
+    'Tvessel': 36
+}
 
+par['S202'] = {
+    'pressure': 12.5,
+    'Tflux': 36,
+    'Tvessel': 36
+}
+
+par['S203'] = {
+    'pressure': 12.5,
+    'Tflux': 36,
+    'Tvessel': 36
+}
+
+par['S204'] = {
+    'pressure': 12.5,
+    'Tflux': 36,
+    'Tvessel': 36
+}
+
+par['S205'] = {
+    'pressure': 12.5,
+    'Tflux': 36,
+    'Tvessel': 36
+}
+
+par['TI306'] = {
+    'T': 36
+}
+
+par['PI307'] = {
+    'pressure': 12.5
+}
+
+par['EV'] = {
+    '104': True,
+    '303': True,
+    '103': False,
+    '302': False
+}
