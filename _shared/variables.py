@@ -7,7 +7,13 @@ par['EL101'] = {
     'start': False,
     'log': '',
     'status': 'on',
-    'pressure': 0
+    'pressure': 0,
+    'mb': {
+        'commands': 0,
+        'MS': [0, 0, 0, 0, 0, 0, 0, 0],
+        'LS': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        'OutPressSet': 0
+    }
 }
 
 par['FC301'] = {

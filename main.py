@@ -1,18 +1,24 @@
 import sys
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
 
 from UI.mainUI import Ui
 from _shared import variables as v
 from threading import Thread
 import time
 
+# --  Rescaling della schermata ---------------
+import ctypes
+ctypes.windll.shcore.SetProcessDpiAwareness(1)
+# ---------------------------------------------
+
+
 class Main:
     def __init__(self):
         self.sel_util = False
+        self.fake_on = False
         # self.main = Ui()
         self.app = QtWidgets.QApplication(sys.argv)
         # self.app_util = QtWidgets.QApplication([])
-
 
         # f1 = Thread(target=test2)
         # f2 = Thread(target=test)
@@ -25,7 +31,6 @@ class Main:
 
         # self.open_util()
         # self.open_interface()
-
 
         pass
 
@@ -46,6 +51,7 @@ class Main:
 
         self.main.ui.EL101_start_PB.clicked.connect(self.EL101_switch)
         self.main.ui.FC301_start_PB.clicked.connect(self.FC301_switch)
+        self.main.ui.fake_BTN.clicked.connect(self.fake)
 
         # self.main.ui.FC301_Pset_DSB.valueChanged.connect(self.set_params)
         for elem in ['FC301A', 'FC301B', 'FC301', 'EL101']:
@@ -78,12 +84,14 @@ class Main:
         # for line in ['EL101_out', 'S201', 'S202', 'S203', 'S204', 'S205', 'mainline1']:
         #     self.main.ui.__getattribute__(line + '_LN').setVisible(self.main.ui.EL101_start_PB.isChecked())
 
-        if self.main.ui.EL101_start_PB.isChecked():
+    def fake(self):
+        if not self.fake_on:
             f1 = Thread(target=self.open_util())
             f1.start()
             f1.join()
+            self.fake_on = True
         else:
-            # self.app_util.quit()
+            self.fake_on = False
             self.util.close()
 
     def FC301_switch(self):
@@ -114,11 +122,21 @@ class Main:
 
         self.set_params()
 
+    def valve_switch(self):
+        if v.par['FC301']['start']:
+            self.main.ui.EV303_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowSX_20x20.png"))
+        else:
+            self.main.ui.EV303_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopHoriz_20x20.png"))
+
+        if v.par['EL101']['start']:
+            self.main.ui.EV104_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowDX_20x20.png"))
+        else:
+            self.main.ui.EV104_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopHoriz_20x20.png"))
+
     def refresh(self):
         for elem in ['FC301A', 'FC301B']:
             v.par[elem]['H2'] = v.par['FC301']['H2'] * int(v.par[elem]['activated']) * v.par[elem]['Pread'] / \
                                     max((v.par['FC301A']['Pread'] + v.par['FC301B']['Pread']), 0.000001)
-
 
         if self.sel_util:
             self.util.data()
@@ -131,6 +149,7 @@ class Main:
         self.main.ui.FC301_Pread_DSB.setValue(v.par['FC301A']['Pread'] + v.par['FC301B']['Pread'])
         self.main.ui.FC301_H2_DSB.setValue(v.par['FC301']['H2'])
 
+        self.valve_switch()
         self.visual_flux()
 
         # self.set_params()
@@ -184,5 +203,6 @@ def test2():
     # print('Test2')
     #     time.sleep(0.7)
 #
+
 
 Main()

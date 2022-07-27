@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1920</width>
-    <height>1030</height>
+    <width>1916</width>
+    <height>1021</height>
    </rect>
   </property>
   <property name="font">
@@ -16,7 +16,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>H2 SGRE</string>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
@@ -278,7 +278,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="V303_WGT" native="true">
+   <widget class="QWidget" name="EV303_WGT" native="true">
     <property name="geometry">
      <rect>
       <x>744</x>
@@ -293,12 +293,12 @@
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 230, 255);</string>
     </property>
-    <widget class="QLabel" name="V303_img_LBL">
+    <widget class="QLabel" name="EV303_img_LBL">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>15</x>
        <y>20</y>
-       <width>50</width>
+       <width>20</width>
        <height>20</height>
       </rect>
      </property>
@@ -309,10 +309,10 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>_resources/arrowSX_50x20.png</pixmap>
+      <pixmap>_resources/arrowSX_20x20.png</pixmap>
      </property>
     </widget>
-    <widget class="QLabel" name="V303_LBL">
+    <widget class="QLabel" name="EV303_LBL">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -335,7 +335,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="V302_WGT" native="true">
+   <widget class="QWidget" name="EV302_WGT" native="true">
     <property name="geometry">
      <rect>
       <x>908</x>
@@ -350,12 +350,12 @@
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 230, 255);</string>
     </property>
-    <widget class="QLabel" name="V302_img_LBL">
+    <widget class="QLabel" name="EV302_img_LBL">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>15</x>
        <y>20</y>
-       <width>50</width>
+       <width>20</width>
        <height>20</height>
       </rect>
      </property>
@@ -366,10 +366,10 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>_resources/StopHoriz_50x20.png</pixmap>
+      <pixmap>_resources/StopVert_20x20.png</pixmap>
      </property>
     </widget>
-    <widget class="QLabel" name="V302_LBL">
+    <widget class="QLabel" name="EV302_LBL">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -392,7 +392,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="V103_WGT" native="true">
+   <widget class="QWidget" name="EV103_WGT" native="true">
     <property name="geometry">
      <rect>
       <x>908</x>
@@ -407,12 +407,12 @@
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 230, 255);</string>
     </property>
-    <widget class="QLabel" name="V103_img_LBL">
+    <widget class="QLabel" name="EV103_img_LBL">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>15</x>
        <y>20</y>
-       <width>50</width>
+       <width>20</width>
        <height>20</height>
       </rect>
      </property>
@@ -423,10 +423,10 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>_resources/StopHoriz_50x20.png</pixmap>
+      <pixmap>_resources/StopVert_20x20.png</pixmap>
      </property>
     </widget>
-    <widget class="QLabel" name="V103_LBL">
+    <widget class="QLabel" name="EV103_LBL">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -449,7 +449,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="V104_WGT" native="true">
+   <widget class="QWidget" name="EV104_WGT" native="true">
     <property name="geometry">
      <rect>
       <x>789</x>
@@ -464,12 +464,12 @@
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 230, 255);</string>
     </property>
-    <widget class="QLabel" name="V104_img_LBL">
+    <widget class="QLabel" name="EV104_img_LBL">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>15</x>
        <y>20</y>
-       <width>50</width>
+       <width>20</width>
        <height>20</height>
       </rect>
      </property>
@@ -480,10 +480,10 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>_resources/arrowDX_50x20.png</pixmap>
+      <pixmap>_resources/arrowDX_20x20.png</pixmap>
      </property>
     </widget>
-    <widget class="QLabel" name="V104_LBL">
+    <widget class="QLabel" name="EV104_LBL">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -3086,10 +3086,10 @@
    <widget class="QGroupBox" name="S20X_GB">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>790</y>
+      <x>510</x>
+      <y>800</y>
       <width>380</width>
-      <height>191</height>
+      <height>181</height>
      </rect>
     </property>
     <property name="font">
@@ -3154,7 +3154,7 @@
        <x>20</x>
        <y>80</y>
        <width>251</width>
-       <height>101</height>
+       <height>91</height>
       </rect>
      </property>
     </widget>
@@ -3392,6 +3392,30 @@
      </property>
     </widget>
    </widget>
+   <widget class="QPushButton" name="fake_BTN">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>950</y>
+      <width>341</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(170, 95, 58)</string>
+    </property>
+    <property name="text">
+     <string>Fake</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
    <zorder>EL101_out_LN</zorder>
    <zorder>mainline2_LN</zorder>
    <zorder>S203_LN</zorder>
@@ -3409,10 +3433,10 @@
    <zorder>FT308_WGT</zorder>
    <zorder>TI306_WGT</zorder>
    <zorder>PI305_WGT</zorder>
-   <zorder>V303_WGT</zorder>
-   <zorder>V302_WGT</zorder>
-   <zorder>V103_WGT</zorder>
-   <zorder>V104_WGT</zorder>
+   <zorder>EV303_WGT</zorder>
+   <zorder>EV302_WGT</zorder>
+   <zorder>EV103_WGT</zorder>
+   <zorder>EV104_WGT</zorder>
    <zorder>FT102_WGT</zorder>
    <zorder>PI226WGT</zorder>
    <zorder>TI221_WGT</zorder>
@@ -3432,14 +3456,15 @@
    <zorder>groupBox</zorder>
    <zorder>EL101_GB</zorder>
    <zorder>S20X_GB</zorder>
+   <zorder>fake_BTN</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1920</width>
-     <height>21</height>
+     <width>1916</width>
+     <height>22</height>
     </rect>
    </property>
   </widget>

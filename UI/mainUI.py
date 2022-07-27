@@ -22,6 +22,10 @@ class Ui(QtWidgets.QMainWindow):
             self.ui.__getattribute__(element + '_LN').setVisible(False)
         self.valve_stop_img()
 
+        self.ui.fake_BTN.setStyleSheet("QPushButton {background-color : rgb(151,186,123);}"
+                                       "QPushButton::checked {background-color : rgb(170,95,58);}"
+                                       )
+
     def led_light(self, led, status):
         leds = {
             'off': 'Led-OFF_20x20.png',
@@ -37,7 +41,7 @@ class Ui(QtWidgets.QMainWindow):
             print(led + ': Status led non riconosciuto')
 
     def valve_stop_img(self):
-        for element in ['V104', 'V303']:
-            self.ui.__getattribute__(element + '_img_LBL').setPixmap(QtGui.QPixmap("UI/_resources/StopHoriz_50x20"))
-        self.ui.V103_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowSu_20x50.png"))
-        self.ui.V302_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowGiu_20x50.png"))
+        for element in ['EV104', 'EV303']:
+            self.ui.__getattribute__(element + '_img_LBL').setPixmap(QtGui.QPixmap("UI/_resources/StopHoriz_20x20"))
+        self.ui.EV103_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowUp_20x20.png"))
+        self.ui.EV302_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowDown_20x20.png"))
