@@ -149,6 +149,12 @@ class Main:
         self.main.ui.FC301_Pread_DSB.setValue(v.par['FC301A']['Pread'] + v.par['FC301B']['Pread'])
         self.main.ui.FC301_H2_DSB.setValue(v.par['FC301']['H2'])
 
+        for i in range(1, 6):
+            self.main.ui.__getattribute__('PI' + str(i+225) + '_DSB').setValue(v.par['S20' + str(i)]['pressure'])
+            self.main.ui.__getattribute__('TI' + str(i+220) + '_DSB').setValue(v.par['S20' + str(i)]['Tflux'])
+            self.main.ui.__getattribute__('TT' + str(i+215) + '_DSB').setValue(v.par['S20' + str(i)]['Tvessel'])
+
+
         self.valve_switch()
         self.visual_flux()
 
@@ -203,6 +209,11 @@ def test2():
     # print('Test2')
     #     time.sleep(0.7)
 #
+
+
+# def search_MB(index):
+    # print(list(v.par['EL101']['mb']['rw'].keys()))
+
 
 
 Main()

@@ -677,7 +677,7 @@
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 170, 0);</string>
     </property>
-    <widget class="QLabel" name="TI211_LBL">
+    <widget class="QLabel" name="TI221_LBL">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -699,7 +699,7 @@
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="TI211_DSB">
+    <widget class="QDoubleSpinBox" name="TI221_DSB">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -740,7 +740,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="TI304_WGT_3" native="true">
+   <widget class="QWidget" name="TT216_WGT" native="true">
     <property name="geometry">
      <rect>
       <x>910</x>
@@ -755,7 +755,7 @@
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 170, 0);</string>
     </property>
-    <widget class="QLabel" name="TI304_LBL_3">
+    <widget class="QLabel" name="TT216_LBL">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -771,13 +771,13 @@
       </font>
      </property>
      <property name="text">
-      <string>TI-216</string>
+      <string>TT-216</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="TI304_DSB_3">
+    <widget class="QDoubleSpinBox" name="TT216_DSB">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -1208,7 +1208,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="TI304_WGT_5" native="true">
+   <widget class="QWidget" name="TT217_WGT" native="true">
     <property name="geometry">
      <rect>
       <x>1110</x>
@@ -1223,7 +1223,7 @@
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 170, 0);</string>
     </property>
-    <widget class="QLabel" name="TI304_LBL_5">
+    <widget class="QLabel" name="TT217_LBL">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -1239,13 +1239,13 @@
       </font>
      </property>
      <property name="text">
-      <string>TI-217</string>
+      <string>TT-217</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="TI304_DSB_5">
+    <widget class="QDoubleSpinBox" name="TT217_DSB">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -1364,7 +1364,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="TI304_WGT_7" native="true">
+   <widget class="QWidget" name="TT218_WGT" native="true">
     <property name="geometry">
      <rect>
       <x>1310</x>
@@ -1379,7 +1379,7 @@
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 170, 0);</string>
     </property>
-    <widget class="QLabel" name="TI304_LBL_7">
+    <widget class="QLabel" name="TT218_LBL">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -1395,13 +1395,13 @@
       </font>
      </property>
      <property name="text">
-      <string>TI-218</string>
+      <string>TT-218</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="TI304_DSB_7">
+    <widget class="QDoubleSpinBox" name="TT218_DSB">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -1520,7 +1520,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="TI304_WGT_9" native="true">
+   <widget class="QWidget" name="TT219_WGT" native="true">
     <property name="geometry">
      <rect>
       <x>1510</x>
@@ -1535,7 +1535,7 @@
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 170, 0);</string>
     </property>
-    <widget class="QLabel" name="TI304_LBL_9">
+    <widget class="QLabel" name="TT219_LBL">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -1551,13 +1551,13 @@
       </font>
      </property>
      <property name="text">
-      <string>TI-219</string>
+      <string>TT-219</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="TI304_DSB_9">
+    <widget class="QDoubleSpinBox" name="TT219_DSB">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -1676,7 +1676,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="TI304_WGT_11" native="true">
+   <widget class="QWidget" name="TT220_WGT" native="true">
     <property name="geometry">
      <rect>
       <x>1710</x>
@@ -1691,7 +1691,7 @@
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 170, 0);</string>
     </property>
-    <widget class="QLabel" name="TI304_LBL_11">
+    <widget class="QLabel" name="TT220_LBL">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -1707,13 +1707,13 @@
       </font>
      </property>
      <property name="text">
-      <string>TI-220</string>
+      <string>TT-220</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="TI304_DSB_11">
+    <widget class="QDoubleSpinBox" name="TT220_DSB">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -3440,19 +3440,19 @@
    <zorder>FT102_WGT</zorder>
    <zorder>PI226WGT</zorder>
    <zorder>TI221_WGT</zorder>
-   <zorder>TI304_WGT_3</zorder>
+   <zorder>TT216_WGT</zorder>
    <zorder>PI227_WGT</zorder>
    <zorder>PI228_WGT</zorder>
    <zorder>PI229_WGT</zorder>
    <zorder>PI230_WGT</zorder>
    <zorder>TI222_WGT</zorder>
-   <zorder>TI304_WGT_5</zorder>
+   <zorder>TT217_WGT</zorder>
    <zorder>TI223_WGT</zorder>
-   <zorder>TI304_WGT_7</zorder>
+   <zorder>TT218_WGT</zorder>
    <zorder>TI224_WGT</zorder>
-   <zorder>TI304_WGT_9</zorder>
+   <zorder>TT219_WGT</zorder>
    <zorder>TI225_WGT</zorder>
-   <zorder>TI304_WGT_11</zorder>
+   <zorder>TT220_WGT</zorder>
    <zorder>groupBox</zorder>
    <zorder>EL101_GB</zorder>
    <zorder>S20X_GB</zorder>
@@ -3464,7 +3464,7 @@
      <x>0</x>
      <y>0</y>
      <width>1916</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
