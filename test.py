@@ -1,141 +1,39 @@
-import sys
-from PyQt5 import QtWidgets, QtCore
-
-from UI.mainUI import Ui
-from _shared import variables as v
+from pymodbus.client.sync import ModbusSerialClient
+from pymodbus.payload import BinaryPayloadDecoder
+from pymodbus.constants import Endian
 import time
-import multiprocessing
 
-class Main:
-    def __init__(self):
-        # self.main = Ui()
-        self.open_interface()
-
-    def open_util(self):
-        from UI._util.util import Util
-
-        self.app_util = QtWidgets.QApplication([])
-        # QtCore.QTimer.singleShot(0, )
-
-        self.util = Util()
-        self.util.show()
-        self.app_util.exec_()
-        # self.app_util.quit()
-
-    def open_interface(self):
-        self.app = QtWidgets.QApplication([])
-        self.main = Ui()
-
-        self.FC301_activation()
-
-        self.main.ui.EL101_start_PB.clicked.connect(self.EL101_switch)
-        self.main.ui.FC301_start_PB.clicked.connect(self.FC301_switch)
-
-        # self.main.ui.FC301_Pset_DSB.valueChanged.connect(self.set_params)
-        for elem in ['FC301A', 'FC301B', 'FC301', 'EL101']:
-            self.main.ui.__getattribute__(elem + '_Pset_DSB').valueChanged.connect(self.set_params)
-        for elem in ['FC301_split', 'FC301A_activation', 'FC301B_activation']:
-            self.main.ui.__getattribute__(elem + '_CkB').clicked.connect(self.FC301_activation)
-
-        timer = QtCore.QTimer()
-        timer.timeout.connect(self.refresh)
-        timer.start(500)
-
-        self.main.show()
-        self.app.exec()
-        # self.app.quit()
-
-    def EL101_switch(self):
-        v.par['EL101']['start'] = self.main.ui.EL101_start_PB.isChecked()
-        # self.set_params()
-        # self.refresh()
-        # v.par['EL101']['status'] = 'on'     # Todo: Da spostare
-
-        # if self.main.ui.EL101_start_PB.isChecked():
-        #     self.main.ui.EL101_start_PB.setText('STOP')
-        #     self.main.led_light('EL101_statusLed_LBL', 'on')
-        #     print('Start EL101')
-        # else:
-        #     self.main.ui.EL101_start_PB.setText('START')
-        #     self.main.led_light('EL101_statusLed_LBL', 'off')
-        #     print('Stop EL101')
-        # for line in ['EL101_out', 'S201', 'S202', 'S203', 'S204', 'S205', 'mainline1']:
-        #     self.main.ui.__getattribute__(line + '_LN').setVisible(self.main.ui.EL101_start_PB.isChecked())
-        mProcess = multiprocessing.Process(target=self.open_util())
-        mProcess.start()
-        mProcess.join()
+# Connection to device
 
 
-    def FC301_switch(self):
-        v.par['FC301']['start'] = self.main.ui.FC301_start_PB.isChecked()
-        # self.set_params()
-        # self.refresh()
-
-        # if self.main.ui.FC301_start_PB.isChecked():
-        #     self.main.ui.EL101_start_PB.setText('STOP')
-        #     self.main.u3i.FC301A_GB.setEnabled(self.main.ui.FC301A_activation_CkB.isChecked())
-        #     self.main.ui.FC301B_GB.setEnabled(self.main.ui.FC301B_activation_CkB.isChecked())
-        #     self.main.led_light('FC301A_statusLed_LBL', 'on')
-        # else:
-        #     self.main.ui.EL101_start_PB.setText('START')
-
-    def FC301_activation(self):
-        for elem in ['FC301A', 'FC301B']:
-            v.par[elem]['activated'] = self.main.ui.__getattribute__(elem + '_activation_CkB').isChecked()
-            self.main.ui.__getattribute__(elem + '_GB').setEnabled(v.par[elem]['activated'])
-        # v.par['FC301A']['activated'] = self.main.ui.FC301A_activation_CkB.isChecked()
-        # v.par['FC301B']['activated'] = self.main.ui.FC301B_activation_CkB.isChecked()
-
-        self.main.ui.FC301_start_PB.setEnabled(v.par['FC301A']['activated'] or v.par['FC301B']['activated'])
-        self.main.ui.FC301_split_CkB.setEnabled(v.par['FC301A']['activated'] and v.par['FC301B']['activated'])
-
-        if not (v.par['FC301A']['activated'] and v.par['FC301B']['activated']):
-            self.main.ui.FC301_split_CkB.setChecked(False)
-
-        self.set_params()
-
-    def refresh(self):
-        for elem in ['FC301A', 'FC301B', 'EL101']:
-            for param in ['Pset', 'Pread', 'H2']:
-                self.main.ui.__getattribute__(elem + '_' + param + '_DSB').setValue(v.par[elem][param])
-                self.main.led_light(elem + '_statusLed_LBL', v.par[elem]['status'])
-                self.main.ui.__getattribute__(elem + '_log_TE').setText(v.par[elem]['log'])
-        self.main.ui.EL101_pressure_DSB.setValue(v.par['EL101']['pressure'])
-        self.main.ui.FC301_Pread_DSB.setValue(v.par['FC301A']['Pread'] + v.par['FC301B']['Pread'])
-
-        self.visual_flux()
-
-        # self.set_params()
-        print('refresh')
-
-    def set_params(self):
-        print('set params')
-        for elem in ['FC301A', 'FC301B', 'EL101']:
-            v.par[elem]['Pset'] = self.main.ui.__getattribute__(elem + '_Pset_DSB').value()
-        v.par['FC301A']['activated'] = self.main.ui.FC301A_activation_CkB.isChecked()
-        v.par['FC301B']['activated'] = self.main.ui.FC301B_activation_CkB.isChecked()
-        v.par['FC301']['split'] = self.main.ui.FC301_split_CkB.isChecked()
-        if self.main.ui.FC301_split_CkB.isChecked():
-            for elem in ['FC301A', 'FC301B']:
-                v.par[elem]['Pset'] = self.main.ui.FC301_Pset_DSB.value() / 2
-                self.main.ui.__getattribute__(elem + '_Pset_DSB').setValue(v.par[elem]['Pset'])
-            # v.par['FC301A']['Pset'] = self.main.ui.FC301_Pset_DSB.value() / 2
-            # v.par['FC301B']['Pset'] = self.main.ui.FC301_Pset_DSB.value() / 2
-        else:
-            v.par['FC301A']['Pset'] = self.main.ui.FC301A_Pset_DSB.value()
-            v.par['FC301B']['Pset'] = self.main.ui.FC301B_Pset_DSB.value()
-            self.main.ui.FC301_Pset_DSB.setValue(v.par['FC301A']['Pset'] * int(v.par['FC301A']['activated']) +
-                                                 v.par['FC301B']['Pset'] * int(v.par['FC301B']['activated']))
-
-    def visual_flux(self):
-        el = v.par['EL101']['start'] and v.par['EL101']['H2'] > 0 and v.par['EL101']['status'] == 'on'
-        fc = v.par['FC301']['start'] and (v.par['FC301A']['H2'] + v.par['FC301B']['H2'] > 0) and \
-              (v.par['FC301A']['status'] == 'on' or v.par['FC301B']['status'] == 'on')
-        self.main.ui.EL101_out_LN.setVisible(el)
-        for elem in ['FC301_in', 'mainline3', 'mainline2']:
-            self.main.ui.__getattribute__(elem + '_LN').setVisible(fc)
-        for elem in ['mainline1', 'S201', 'S202', 'S203', 'S204', 'S205']:
-            self.main.ui.__getattribute__(elem + '_LN').setVisible(el or fc)
+client = ModbusSerialClient(
+    port="COM3",
+    startbit=1,
+    databits=8,
+    parity="N",
+    stopbits=2,
+    errorcheck="crc",
+    baudrate=38400,
+    method="RTU",
+    timeout=3,
+    # unit=11
+)
 
 
-Main()
+if client.connect(): # Connection to slave device
+    while True:
+        print("Connection Successful")
+        # register = client.read_coils(15, 2)
+        register = client.read_holding_registers(address=14, count=8, unit=11)
+        results = register.registers
+        print(results)
+        decoder = BinaryPayloadDecoder.fromRegisters(results, Endian.Big, wordorder=Endian.Little)
+        print(decoder.decode_16bit_int())
+        # print(register[0])
+        # register.registers[0]
+
+        time.sleep(1)
+
+    # client.close()
+else:
+    print("Failed to connect to Modbus device")
