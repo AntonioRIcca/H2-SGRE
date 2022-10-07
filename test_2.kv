@@ -1,0 +1,78 @@
+MDNavigationLayout:
+
+    ScreenManager:
+
+        Screen:
+
+            BoxLayout:
+                orientation: 'vertical'
+
+                MDTopAppBar:
+                    title: 'Wikipedia Reader'
+                    elevation: 10
+                    left_action_items: [['menu', lambda x: nav_drawer.set_state('toggle')]]
+
+                GridLayout:
+                    rows: 4
+
+                    MDTextField:
+                        id: mdtext
+                        hint_text: 'Cosa stai cercando?'
+                        mode: 'rectangle'
+
+                    MDRaisedButton:
+
+                        text: 'AVVIA RICERCA'
+                        size_hint_x: 1
+                        size_hint_y: 0.1
+                        on_press: app.normal_search_button()
+
+                    ScrollView:
+                        MDLabel:
+                            id: mdlab
+                            text: 'Benvenuti su Wikipedia Reader'
+                            size_hint_y: None
+                            height: self.texture_size[1]
+                            text_size: self.width, None
+
+                    MDRaisedButton:
+                        id: mdbu
+                        text: 'Cerca articolo casuale'
+                        size_hint_x: 1
+                        size_hint_y: 0.1
+                        on_press: app.random_search_button()
+
+
+
+    MDNavigationDrawer:
+        id: nav_drawer
+
+        BoxLayout:
+            orientation: 'vertical'
+            padding: '8dp'
+            spacing: '8dp'
+
+            AnchorLayout:
+                anchor_x: 'left'
+                size_hint_y: None
+                height: avatar.height
+
+                Image:
+                    id: avatar
+                    size_hint: None, None
+                    size: '56dp', '56dp'
+                    source: 'data/logo/kivy-icon-256.png'
+
+            MDLabel:
+                text: 'WikiReader App 0.1'
+                font_style: 'Button'
+                size_hint_y: None
+                height: self.texture_size[1]
+
+            MDLabel:
+                text: 'kividevelopment@gmail.com'
+                font_style: 'Caption'
+                size_hint_y: None
+                height: self.texture_size[1]
+
+            ScrollView:
