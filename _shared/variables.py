@@ -292,3 +292,14 @@ par['EV'] = {
     '103': False,
     '302': False
 }
+
+sel_util = False
+
+
+sim = dict()
+sim['EL101'] = {
+    'status': 'off',
+    'power': 100,
+    'pressure': 100,
+    'flux': 100
+}

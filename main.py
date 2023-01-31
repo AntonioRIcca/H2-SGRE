@@ -14,7 +14,8 @@ ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
 class Main:
     def __init__(self):
-        self.sel_util = False
+        a = v.par
+        # self.sel_util = False
         self.fake_on = False
         # self.main = Ui()
         self.app = QtWidgets.QApplication(sys.argv)
@@ -42,7 +43,17 @@ class Main:
         self.util.show()
         # self.app_util.exec()
         # self.app_util.quit()
-        self.sel_util = True
+        v.sel_util = True
+
+    def open_sim(self):
+        from UI._simulation.sim import Sim
+
+        # self.app_util = QtWidgets.QApplication([])
+        self.sim = Sim()
+        self.sim.show()
+        # self.app_util.exec()
+        # self.app_util.quit()
+        v.sel_util = True
 
     def open_interface(self):
         self.main = Ui()
@@ -69,6 +80,7 @@ class Main:
 
     def EL101_switch(self):
         v.par['EL101']['start'] = self.main.ui.EL101_start_PB.isChecked()
+        self.valve_switch()
         # self.set_params()
         # self.refresh()
         # v.par['EL101']['status'] = 'on'     # Todo: Da spostare
@@ -86,16 +98,17 @@ class Main:
 
     def fake(self):
         if not self.fake_on:
-            f1 = Thread(target=self.open_util())
+            f1 = Thread(target=self.open_sim())
             f1.start()
             f1.join()
             self.fake_on = True
         else:
             self.fake_on = False
-            self.util.close()
+            self.sim.close()
 
     def FC301_switch(self):
         v.par['FC301']['start'] = self.main.ui.FC301_start_PB.isChecked()
+        self.valve_switch()
         # self.set_params()
         # self.refresh()
 
@@ -115,36 +128,73 @@ class Main:
         # v.par['FC301B']['activated'] = self.main.ui.FC301B_activation_CkB.isChecked()
 
         self.main.ui.FC301_start_PB.setEnabled(v.par['FC301A']['activated'] or v.par['FC301B']['activated'])
+        if self.main.ui.FC301_start_PB.isChecked():
+            self.main.ui.FC301_start_PB.setChecked(v.par['FC301A']['activated'] or v.par['FC301B']['activated'])
+            v.par['FC301']['start'] = self.main.ui.FC301_start_PB.isChecked()
         self.main.ui.FC301_split_CkB.setEnabled(v.par['FC301A']['activated'] and v.par['FC301B']['activated'])
 
         if not (v.par['FC301A']['activated'] and v.par['FC301B']['activated']):
             self.main.ui.FC301_split_CkB.setChecked(False)
 
+        self.valve_switch()
         self.set_params()
 
     def valve_switch(self):
-        if v.par['FC301']['start']:
-            self.main.ui.EV303_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowSX_20x20.png"))
-        else:
-            self.main.ui.EV303_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopHoriz_20x20.png"))
+        v.par['EV']['104'] = v.par['EL101']['start']
+        v.par['EV']['303'] = v.par['FC301']['start']
 
-        if v.par['EL101']['start']:
+
+        # if v.par['FC301']['start']:
+        #     self.main.ui.EV303_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowSX_20x20.png"))
+        # else:
+        #     self.main.ui.EV303_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopHoriz_20x20.png"))
+        #
+        # if v.par['EL101']['start']:
+        #     self.main.ui.EV104_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowDX_20x20.png"))
+        # else:
+        #     self.main.ui.EV104_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopHoriz_20x20.png"))
+
+    def valve_draw(self):
+        if v.par['EV']['104']:
             self.main.ui.EV104_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowDX_20x20.png"))
         else:
             self.main.ui.EV104_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopHoriz_20x20.png"))
 
+        if v.par['EV']['303']:
+            self.main.ui.EV303_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowSX_20x20.png"))
+        else:
+            self.main.ui.EV303_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopHoriz_20x20.png"))
+
+        if v.par['EV']['103']:
+            self.main.ui.EV103_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowUp_20x20.png"))
+        else:
+            self.main.ui.EV103_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopVert_20x20.png"))
+
+        if v.par['EV']['302']:
+            self.main.ui.EV302_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowDown_20x20.png"))
+        else:
+            self.main.ui.EV302_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopVert_20x20.png"))
+
     def refresh(self):
+        if v.sel_util:
+            self.sim.data()
+
+        self.simulation()
+
         for elem in ['FC301A', 'FC301B']:
             v.par[elem]['H2'] = v.par['FC301']['H2'] * int(v.par[elem]['activated']) * v.par[elem]['Pread'] / \
                                     max((v.par['FC301A']['Pread'] + v.par['FC301B']['Pread']), 0.000001)
 
-        if self.sel_util:
-            self.util.data()
         for elem in ['FC301A', 'FC301B', 'EL101']:
             for param in ['Pset', 'Pread', 'H2']:
                 self.main.ui.__getattribute__(elem + '_' + param + '_DSB').setValue(v.par[elem][param])
                 self.main.led_light(elem + '_statusLed_LBL', v.par[elem]['status'])
                 self.main.ui.__getattribute__(elem + '_log_TE').setText(v.par[elem]['log'])
+        self.main.ui.FT102_DSB.setValue(v.par['EL101']['H2'])
+        self.main.ui.FT308_DSB.setValue(v.par['FC301A']['H2'] + v.par['FC301B']['H2'])
+        self.main.ui.PI307_DSB.setValue(v.par['PI307']['pressure'])
+        self.main.ui.TI306_DSB.setValue(v.par['TI306']['T'])
+
         self.main.ui.EL101_pressure_DSB.setValue(v.par['EL101']['pressure'])
         self.main.ui.FC301_Pread_DSB.setValue(v.par['FC301A']['Pread'] + v.par['FC301B']['Pread'])
         self.main.ui.FC301_H2_DSB.setValue(v.par['FC301']['H2'])
@@ -155,8 +205,12 @@ class Main:
             self.main.ui.__getattribute__('TT' + str(i+215) + '_DSB').setValue(v.par['S20' + str(i)]['Tvessel'])
 
 
-        self.valve_switch()
+
+
+        self.valve_draw()
         self.visual_flux()
+
+        self.main.ui.fake_BTN.setChecked(v.sel_util)
 
         # self.set_params()
         print('refresh')
@@ -189,6 +243,10 @@ class Main:
             self.main.ui.__getattribute__(elem + '_LN').setVisible(fc)
         for elem in ['mainline1', 'S201', 'S202', 'S203', 'S204', 'S205']:
             self.main.ui.__getattribute__(elem + '_LN').setVisible(el or fc)
+
+    def simulation(self):
+        v.par['EL101']['Pread'] = self.main.ui.EL101_Pset_DSB.value() * (v.sim['EL101']['power'] / 100)
+        # v.par['EL101']['pressure'] = self.main.ui.EL101_Pset_DSB.value() * (v.sim['EL101']['pressure'] / 100)
 
 
 def test():

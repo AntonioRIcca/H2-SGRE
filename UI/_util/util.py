@@ -34,6 +34,11 @@ class Util(QtWidgets.QMainWindow):
         for valve in ['104', '103', '302', '303']:
             v.par['EV'][valve] = self.ui.__getattribute__('EV' + valve + '_CkB').isChecked()
 
+        p = v.par['FC301A']['Pread'] + v.par['FC301B']['Pread']
+        if p != 0:
+            for elem in ['FC301A', 'FC301B']:
+                v.par[elem]['H2'] = v.par['FC301']['H2'] * v.par[elem]['Pread'] / p
+
     def set_data(self):
         for elem in ['EL101', 'FC301A', 'FC301B']:
             self.ui.__getattribute__(elem + '_P_DSB').setValue(v.par[elem]['Pread'])
@@ -48,3 +53,7 @@ class Util(QtWidgets.QMainWindow):
                 self.ui.__getattribute__('S20' + str(i) + '_' + param + '_DSB').setValue(v.par['S20' + str(i)][param])
         for valve in ['104', '103', '302', '303']:
             self.ui.__getattribute__('EV' + valve + '_CkB').setChecked(v.par['EV'][valve])
+
+    def closeEvent(self, event):
+        print('Chiuso')
+        v.sel_util = False
