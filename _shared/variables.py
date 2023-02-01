@@ -303,3 +303,33 @@ sim['EL101'] = {
     'pressure': 100,
     'flux': 100
 }
+
+sim['S201'] = {
+    'pressure': 12.5,
+    'Tflux': 36,
+    'Tvessel': 36
+}
+
+sim['S202'] = {
+    'pressure': 12.5,
+    'Tflux': 36,
+    'Tvessel': 36
+}
+
+sim['S203'] = {
+    'pressure': 12.5,
+    'Tflux': 36,
+    'Tvessel': 36
+}
+
+sim['S204'] = {
+    'pressure': 12.5,
+    'Tflux': 36,
+    'Tvessel': 36
+}
+
+sim['S205'] = {
+    'pressure': 12.5,
+    'Tflux': 36,
+    'Tvessel': 36
+}

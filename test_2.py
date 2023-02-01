@@ -2,9 +2,13 @@ import certifi
 from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.network.urlrequest import UrlRequest
+from kivymd.uix.dialog import MDDialog
 
 
 class WikiReaderApp(MDApp):
+    info_dialog = None
+    contact_dialog = None
+
     def build(self):
         self.title = 'Wikipedia Reader'
         self.theme_cls.primary_palette = 'Teal'
@@ -51,6 +55,26 @@ class WikiReaderApp(MDApp):
         self.root.ids['mdlab'].text = f'{page_title}\n\n{content}'
 
         pass
+
+    def show_app_info_dialog(self):
+        app_info = 'Wikipedia reader\n\nMade with <3'
+        if not self.info_dialog:
+            self.info_dialog = MDDialog(
+                title='Informazioni APP',
+                text=app_info,
+                auto_dismiss=True
+            )
+        self.info_dialog.open()
+
+    def show_contact_info_dialog(self):
+        app_info = 'Contatti:\n\nme@myself.com'
+        if not self.contact_dialog:
+            self.contact_dialog = MDDialog(
+                title='I nostri contatti',
+                text=app_info,
+                auto_dismiss=True
+            )
+        self.contact_dialog.open()
 
 
 WikiReaderApp().run()

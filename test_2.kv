@@ -76,3 +76,19 @@ MDNavigationLayout:
                 height: self.texture_size[1]
 
             ScrollView:
+
+                MDList:
+                    OneLineAvatarListItem:
+                        text: 'Info App'
+                        on_press: app.show_app_info_dialog()
+
+                        IconLeftWidget:
+                            icon: 'information-outline'
+
+                    OneLineAvatarListItem:
+                        text: 'Contattaci'
+                        on_press: app.show_contact_info_dialog()
+
+                        IconLeftWidget:
+                            icon: 'card-account-mail-outline'
+

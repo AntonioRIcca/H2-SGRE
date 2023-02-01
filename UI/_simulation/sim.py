@@ -41,6 +41,11 @@ class Sim(QtWidgets.QMainWindow):
         v.sim['EL101']['power'] = self.ui.EL101_P_DSB.value()
         v.sim['EL101']['pressure'] = self.ui.EL101_pressure_DSB.value()
         v.sim['EL101']['flux'] = self.ui.EL101_H2_DSB.value()
+
+        for i in ['S201', 'S202', 'S203', 'S204', 'S205']:
+            for t in ['pressure', 'Tflux', 'Tvessel']:
+                # v.sim[i] = self.ui.S201_Tflux_DSB
+                v.sim[i][t] = self.ui.__getattribute__(i + '_' + t + '_DSB').value()
         pass
 
     def set_data(self):
@@ -63,6 +68,10 @@ class Sim(QtWidgets.QMainWindow):
         self.ui.EL101_P_DSB.setValue(v.sim['EL101']['power'])
         self.ui.EL101_pressure_DSB.setValue(v.sim['EL101']['pressure'])
         self.ui.EL101_H2_DSB.setValue(v.sim['EL101']['flux'])
+
+        for i in ['S201', 'S202', 'S203', 'S204', 'S205']:
+            for t in ['pressure', 'Tflux', 'Tvessel']:
+                self.ui.__getattribute__(i + '_' + t + '_DSB').setValue(v.sim[i][t])
 
     def closeEvent(self, event):
         print('Chiuso')

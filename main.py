@@ -1,3 +1,4 @@
+import copy
 import sys
 from PyQt5 import QtWidgets, QtCore, QtGui
 
@@ -188,8 +189,9 @@ class Main:
         for elem in ['FC301A', 'FC301B', 'EL101']:
             for param in ['Pset', 'Pread', 'H2']:
                 self.main.ui.__getattribute__(elem + '_' + param + '_DSB').setValue(v.par[elem][param])
-                self.main.led_light(elem + '_statusLed_LBL', v.par[elem]['status'])
-                self.main.ui.__getattribute__(elem + '_log_TE').setText(v.par[elem]['log'])
+            self.main.led_light(elem + '_statusLed_LBL', v.par[elem]['status'])
+            self.main.ui.__getattribute__(elem + '_log_TE').setText(v.par[elem]['log'])
+
         self.main.ui.FT102_DSB.setValue(v.par['EL101']['H2'])
         self.main.ui.FT308_DSB.setValue(v.par['FC301A']['H2'] + v.par['FC301B']['H2'])
         self.main.ui.PI307_DSB.setValue(v.par['PI307']['pressure'])
@@ -203,9 +205,6 @@ class Main:
             self.main.ui.__getattribute__('PI' + str(i+225) + '_DSB').setValue(v.par['S20' + str(i)]['pressure'])
             self.main.ui.__getattribute__('TI' + str(i+220) + '_DSB').setValue(v.par['S20' + str(i)]['Tflux'])
             self.main.ui.__getattribute__('TT' + str(i+215) + '_DSB').setValue(v.par['S20' + str(i)]['Tvessel'])
-
-
-
 
         self.valve_draw()
         self.visual_flux()
@@ -246,7 +245,14 @@ class Main:
 
     def simulation(self):
         v.par['EL101']['Pread'] = self.main.ui.EL101_Pset_DSB.value() * (v.sim['EL101']['power'] / 100)
+        v.par['EL101']['H2'] = v.par['EL101']['Pread'] * 3.3 / 1.2 * 0.06 * v.sim['EL101']['flux'] / 100
         # v.par['EL101']['pressure'] = self.main.ui.EL101_Pset_DSB.value() * (v.sim['EL101']['pressure'] / 100)
+        a = []
+        for i in ['S201', 'S202', 'S203', 'S204', 'S205']:
+            # a.append(self.main.ui.PI226_DSB.value())
+            a.append(v.sim[i]['pressure'])
+            v.par[i] = copy.deepcopy(v.sim[i])
+        v.par['EL101']['pressure'] = max(a) * v.sim['EL101']['pressure'] / 100
 
 
 def test():
