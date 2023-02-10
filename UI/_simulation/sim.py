@@ -17,11 +17,11 @@ class Sim(QtWidgets.QMainWindow):
 
     def data(self):
         # for elem in ['EL101', 'FC301A', 'FC301B']:
-        #     try:
-        #         y = int(v.par[elem]['activated'])
-        #     except:
-        #         y = 1
-        #     v.par[elem]['Pread'] = self.ui.__getattribute__(elem + '_P_DSB').value() * y
+        #     # try:
+        #     #     y = int(v.par[elem]['activated'])
+        #     # except:
+        #     #     y = 1
+        #     # v.par[elem]['Pread'] = self.ui.__getattribute__(elem + '_P_DSB').value() * y
         #     v.par[elem]['status'] = self.ui.__getattribute__(elem + '_status_CB').currentText()
         # v.par['EL101']['pressure'] = self.ui.EL101_pressure_DSB.value()
         # v.par['EL101']['H2'] = self.ui.EL101_H2_DSB.value()
@@ -49,9 +49,9 @@ class Sim(QtWidgets.QMainWindow):
         pass
 
     def set_data(self):
-        # for elem in ['EL101', 'FC301A', 'FC301B']:
-        #     self.ui.__getattribute__(elem + '_P_DSB').setValue(v.par[elem]['Pread'])
-        #     self.ui.__getattribute__(elem + '_status_CB').setCurrentText(v.par[elem]['status'])
+        for elem in ['EL101', 'FC301A', 'FC301B']:
+            # self.ui.__getattribute__(elem + '_P_DSB').setValue(v.par[elem]['Pread'])
+            self.ui.__getattribute__(elem + '_status_CB').setCurrentText(v.par[elem]['status'])
         # self.ui.EL101_pressure_DSB.setValue(v.par['EL101']['pressure'])
         # self.ui.EL101_H2_DSB.setValue(v.par['EL101']['H2'])
         # self.ui.TI306_T_DSB.setValue(v.par['TI306']['T'])

@@ -18,6 +18,13 @@ class Main:
         a = v.par
         # self.sel_util = False
         self.fake_on = False
+        self.settings_on = False
+
+        self.t = 0
+        self.t_last = 0
+        self.dt = 0
+        self.start_t = time.perf_counter()
+
         # self.main = Ui()
         self.app = QtWidgets.QApplication(sys.argv)
         # self.app_util = QtWidgets.QApplication([])
@@ -56,6 +63,16 @@ class Main:
         # self.app_util.quit()
         v.sel_util = True
 
+    def open_settings(self):
+        from UI.settings.settings import Settings
+
+        # self.app_util = QtWidgets.QApplication([])
+        self.set = Settings()
+        self.set.show()
+        # self.app_util.exec()
+        # self.app_util.quit()
+        # v.sel_settings = True
+
     def open_interface(self):
         self.main = Ui()
 
@@ -64,6 +81,7 @@ class Main:
         self.main.ui.EL101_start_PB.clicked.connect(self.EL101_switch)
         self.main.ui.FC301_start_PB.clicked.connect(self.FC301_switch)
         self.main.ui.fake_BTN.clicked.connect(self.fake)
+        self.main.ui.settings_BTN.clicked.connect(self.settings)
 
         # self.main.ui.FC301_Pset_DSB.valueChanged.connect(self.set_params)
         for elem in ['FC301A', 'FC301B', 'FC301', 'EL101']:
@@ -106,6 +124,19 @@ class Main:
         else:
             self.fake_on = False
             self.sim.close()
+
+    def settings(self):
+        # if not self.settings_on:
+        if not v.sel_settings:
+            f2 = Thread(target=self.open_settings())
+            f2.start()
+            f2.join()
+            # self.settings_on = True
+            v.sel_settings = True
+        else:
+            v.sel_settings = False
+            # self.settings_on = False
+            self.set.close()
 
     def FC301_switch(self):
         v.par['FC301']['start'] = self.main.ui.FC301_start_PB.isChecked()
@@ -210,9 +241,15 @@ class Main:
         self.visual_flux()
 
         self.main.ui.fake_BTN.setChecked(v.sel_util)
+        self.main.ui.settings_BTN.setChecked(v.sel_settings)
+        self.t = time.perf_counter() - self.start_t
+        self.dt = time.perf_counter() - self.t_last
+        self.t_last = time.perf_counter()
+
+        self.alarm_check()
 
         # self.set_params()
-        print('refresh')
+        print('refresh \t %.3f\t%.3f' % (self.t, self.dt))
 
     def set_params(self):
         print('set params')
@@ -253,6 +290,53 @@ class Main:
             a.append(v.sim[i]['pressure'])
             v.par[i] = copy.deepcopy(v.sim[i])
         v.par['EL101']['pressure'] = max(a) * v.sim['EL101']['pressure'] / 100
+
+    def alarm_check(self):
+        if v.par['EL101']['start'] and v.par['EL101']['Pset'] != 0:
+            if v.alarm['EL101']['power']['on'] and \
+                    (v.par['EL101']['Pread'] / v.par['EL101']['Pset'] > 1 + v.alarm['EL101']['power']['tr+'] / 100 or
+                     v.par['EL101']['Pread'] / v.par['EL101']['Pset'] < 1 - v.alarm['EL101']['power']['tr-'] / 100):
+                v.alarm['EL101']['power']['time'] += self.dt
+                print('warning EL101 power')
+            else:
+                v.alarm['EL101']['power']['time'] = 0
+
+            for p in ['pressure', 'H2']:
+                if v.alarm['EL101'][p]['on'] and \
+                        (v.par['EL101'][p] > v.alarm['EL101'][p]['tr+'] or
+                         v.par['EL101'][p] < v.alarm['EL101'][p]['tr-']):
+                    v.alarm['EL101'][p]['time'] += self.dt
+                    print('warning EL101 ' + p)
+                else:
+                    v.alarm['EL101'][p]['time'] = 0
+        else:
+            for p in ['power', 'pressure', 'H2']:
+                v.alarm['EL101'][p]['time'] = 0
+
+        self.main.ui.EL101_log_TE.clear()
+        for p in ['power', 'pressure', 'H2']:
+            if v.alarm['EL101'][p]['time'] > 5:
+                self.main.ui.EL101_log_TE.setText(self.main.ui.EL101_log_TE.toPlainText() + 'ERRORE EL101 ' + p + '\n')
+            # else:
+            #     self.main.ui.EL101_log_TE.clear()
+
+        if v.par['EL101']['start']:
+            if v.par['EL101']['Pset'] > 0:
+                v.par['EL101']['status'] = 'on'
+            else:
+                v.par['EL101']['status'] = 'standby'
+
+            for p in ['power', 'pressure', 'H2']:
+                if v.alarm['EL101'][p]['time'] > 0:
+                    v.par['EL101']['status'] = 'alert'
+                    break
+            for p in ['power', 'pressure', 'H2']:
+                if v.alarm['EL101'][p]['time'] > 5:
+                    v.par['EL101']['status'] = 'warning'
+                    break
+        else:
+            v.par['EL101']['status'] = 'off'
+
 
 
 def test():

@@ -25,6 +25,9 @@ class Ui(QtWidgets.QMainWindow):
         self.ui.fake_BTN.setStyleSheet("QPushButton {background-color : rgb(151,186,123);}"
                                        "QPushButton::checked {background-color : rgb(170,95,58);}"
                                        )
+        self.ui.settings_BTN.setStyleSheet("QPushButton {background-color : rgb(151,186,123);}"
+                                           "QPushButton::checked {background-color : rgb(170,95,58);}"
+                                           )
 
     def led_light(self, led, status):
         leds = {

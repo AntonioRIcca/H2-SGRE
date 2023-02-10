@@ -2934,6 +2934,13 @@
        <height>41</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
     </widget>
     <widget class="QLabel" name="EL101_statusLed_LBL">
      <property name="geometry">
@@ -3416,6 +3423,30 @@
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QPushButton" name="settings_BTN">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>910</y>
+      <width>341</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(170, 95, 58)</string>
+    </property>
+    <property name="text">
+     <string>Settngs</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
    <zorder>EL101_out_LN</zorder>
    <zorder>mainline2_LN</zorder>
    <zorder>S203_LN</zorder>
@@ -3457,6 +3488,7 @@
    <zorder>EL101_GB</zorder>
    <zorder>S20X_GB</zorder>
    <zorder>fake_BTN</zorder>
+   <zorder>settings_BTN</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

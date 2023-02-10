@@ -1,3 +1,7 @@
+sel_util = False
+sel_settings = False
+
+
 par = dict()
 
 par['EL101'] = {
@@ -293,8 +297,6 @@ par['EV'] = {
     '302': False
 }
 
-sel_util = False
-
 
 sim = dict()
 sim['EL101'] = {
@@ -333,3 +335,69 @@ sim['S205'] = {
     'Tflux': 36,
     'Tvessel': 36
 }
+
+
+alarm = dict()
+alarm['EL101'] = {
+    'power': {
+        'tr+': 10,
+        'tr-': 10,
+        'time': 0,
+        'on': False
+    },
+    'pressure': {
+        'tr+': 20,
+        'tr-': 0,
+        'time': 0,
+        'on': True
+    },
+    'H2': {
+        'tr+': 100,
+        'tr-': 0,
+        'time': 0,
+        'on': False
+    }
+}
+
+alarm['FC301A'] = {
+    'power': {
+        'tr+': 10,
+        'tr-': 10,
+        'time': 0,
+        'on': False
+    },
+    'pressure': {
+        'tr+': 20,
+        'tr-': - 100,
+        'time': 0,
+        'on': False
+    },
+    'H2': {
+        'tr+': 100,
+        'tr-': - 100,
+        'time': 0,
+        'on': False
+    }
+}
+
+alarm['FC301B'] = {
+    'power': {
+        'tr+': 10,
+        'tr-': 10,
+        'time': 0,
+        'on': False
+    },
+    'pressure': {
+        'tr+': 20,
+        'tr-': - 100,
+        'time': 0,
+        'on': False
+    },
+    'H2': {
+        'tr+': 100,
+        'tr-': - 100,
+        'time': 0,
+        'on': False
+    }
+}
+
