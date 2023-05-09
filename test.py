@@ -20,15 +20,19 @@ client = ModbusSerialClient(
 )
 
 
-if client.connect(): # Connection to slave device
+if client.connect():    # Connection to slave device
     while True:
         print("Connection Successful")
         # register = client.read_coils(15, 2)
-        register = client.read_holding_registers(address=14, count=8, unit=11)
-        results = register.registers
-        print(results)
-        decoder = BinaryPayloadDecoder.fromRegisters(results, Endian.Big, wordorder=Endian.Little)
-        print(decoder.decode_16bit_int())
+        for i in [21, 22, 31]:
+            register = client.read_holding_registers(address=14, count=8, unit=i)
+            results = register.registers
+            print(results)
+        # register = client.read_holding_registers(address=14, count=8, unit=21)
+        # results = register.registers
+        # print(results)
+        # decoder = BinaryPayloadDecoder.fromRegisters(results, Endian.Big, wordorder=Endian.Little)
+        # print(decoder.decode_16bit_int())
         # print(register[0])
         # register.registers[0]
 
