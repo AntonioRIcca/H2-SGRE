@@ -7,29 +7,18 @@ from _shared import variables as v
 from threading import Thread
 import time
 
-from DAT.modbus import Modbus
-
 # --  Rescaling della schermata ---------------
 import ctypes
-
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
-
-
 # ---------------------------------------------
 
 
 class Main:
     def __init__(self):
-        # a = v.par
+        a = v.par
         # self.sel_util = False
         self.fake_on = False
         self.settings_on = False
-        self.util = None
-        self.sim = None
-        self.set = None
-        self.main = None
-
-        self.mb = Modbus()
 
         self.disp = ['TI221', 'TI222', 'TI223', 'TI224', 'TI225', 'TI306',
                      'PI226', 'PI227', 'PI228', 'PI229', 'PI230', 'PI307',
@@ -190,6 +179,7 @@ class Main:
         v.par['EV']['104'] = v.par['EL101']['start']
         v.par['EV']['303'] = v.par['FC301']['start']
 
+
         # if v.par['FC301']['start']:
         #     self.main.ui.EV303_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowSX_20x20.png"))
         # else:
@@ -222,8 +212,6 @@ class Main:
             self.main.ui.EV302_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopVert_20x20.png"))
 
     def refresh(self):
-        self.mb_to_par()
-
         if v.sel_util:
             self.sim.data()
 
@@ -231,7 +219,7 @@ class Main:
 
         for elem in ['FC301A', 'FC301B']:
             v.par[elem]['H2'] = v.par['FC301']['H2'] * int(v.par[elem]['activated']) * v.par[elem]['Pread'] / \
-                                max((v.par['FC301A']['Pread'] + v.par['FC301B']['Pread']), 0.000001)
+                                    max((v.par['FC301A']['Pread'] + v.par['FC301B']['Pread']), 0.000001)
 
         for elem in ['FC301A', 'FC301B', 'EL101']:
             for param in ['Pset', 'Pread', 'H2']:
@@ -248,6 +236,10 @@ class Main:
         self.main.ui.FC301_Pread_DSB.setValue(v.par['FC301A']['Pread'] + v.par['FC301B']['Pread'])
         self.main.ui.FC301_H2_DSB.setValue(v.par['FC301']['H2'])
 
+        # for i in range(1, 6):
+        #     self.main.ui.__getattribute__('PI' + str(i+225) + '_DSB').setValue(v.par['S20' + str(i)]['pressure'])
+        #     self.main.ui.__getattribute__('TI' + str(i+220) + '_DSB').setValue(v.par['S20' + str(i)]['Tflux'])
+        #     self.main.ui.__getattribute__('TT' + str(i+215) + '_DSB').setValue(v.par['S20' + str(i)]['Tvessel'])
         for d in self.disp:
             self.main.ui.__getattribute__(d + '_DSB').setValue(v.par[d]['val'])
 
@@ -286,8 +278,8 @@ class Main:
 
     def visual_flux(self):
         el = v.par['EL101']['start'] and v.par['EL101']['H2'] > 0 and v.par['EL101']['status'] == 'on'
-        fc = v.par['FC301']['start'] and v.par['FC301A']['H2'] + v.par['FC301B']['H2'] > 0 and \
-             v.par['FC301A']['status'] == 'on' or v.par['FC301B']['status'] == 'on'
+        fc = v.par['FC301']['start'] and (v.par['FC301A']['H2'] + v.par['FC301B']['H2'] > 0) and \
+              (v.par['FC301A']['status'] == 'on' or v.par['FC301B']['status'] == 'on')
         self.main.ui.EL101_out_LN.setVisible(el)
         for elem in ['FC301_in', 'mainline3', 'mainline2']:
             self.main.ui.__getattribute__(elem + '_LN').setVisible(fc)
@@ -351,18 +343,6 @@ class Main:
         else:
             v.par['EL101']['status'] = 'off'
 
-    def mb_to_par(self):
-        for ch in [21, 22, 31]:
-            regs = self.mb.read(ch=ch)
-            for i in range(0, 8):
-                v.dat[ch]['reg'][i + 14] = regs[i]
-
-        for d in self.disp:
-            ch = v.par[d]['mb']['ch']
-            reg = v.par[d]['mb']['reg']
-            m = v.par[d]['mb']['scale']
-            q = v.par[d]['mb']['offset']
-            v.par[d]['val'] = v.dat[ch]['reg'][reg] * m - q
 
 
 def test():
@@ -382,13 +362,12 @@ def test2():
         print('Test2')
     # print('Test2')
     #     time.sleep(0.7)
-
-
 #
 
 
 # def search_MB(index):
-# print(list(v.par['EL101']['mb']['rw'].keys()))
+    # print(list(v.par['EL101']['mb']['rw'].keys()))
+
 
 
 Main()

@@ -7,7 +7,7 @@ import time
 
 class Modbus:
     def __init__(self):
-        self.results = []
+        self.results = [0, 0, 0, 0, 0, 0, 0, 0]
         self.client = ModbusSerialClient(
             port="COM3",
             startbit=1,
