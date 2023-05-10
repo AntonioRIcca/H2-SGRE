@@ -1,9 +1,10 @@
 from pymodbus.client.sync import ModbusSerialClient
-from pymodbus.payload import BinaryPayloadDecoder
-from pymodbus.constants import Endian
-import time
+# from pymodbus.payload import BinaryPayloadDecoder
+# from pymodbus.constants import Endian
+# import time
 
 # Connection to device
+
 
 class Modbus:
     def __init__(self):
@@ -22,7 +23,7 @@ class Modbus:
         )
 
     def read(self, reg=14, ch=21, count=8):
-        if self.client.connect(): # Connection to slave device
+        if self.client.connect():   # Connection to slave device
             # print("Connection Successful")
             # register = client.read_coils(15, 2)
             register = self.client.read_holding_registers(address=reg, count=count, unit=ch)
