@@ -287,7 +287,7 @@ par['TT216'] = {
     'mb': {
         'ch': 31,
         'reg': 14,
-        'scale': 1,
+        'scale': 0.1,
         'offset': 0
     }
 }
@@ -297,7 +297,7 @@ par['TT217'] = {
     'mb': {
         'ch': 31,
         'reg': 15,
-        'scale': 1,
+        'scale': 0.1,
         'offset': 0
     }
 }
@@ -307,7 +307,7 @@ par['TT218'] = {
     'mb': {
         'ch': 31,
         'reg': 16,
-        'scale': 1,
+        'scale': 0.1,
         'offset': 0
     }
 }
@@ -317,7 +317,7 @@ par['TT219'] = {
     'mb': {
         'ch': 31,
         'reg': 17,
-        'scale': 1,
+        'scale': 0.1,
         'offset': 0
     }
 }
@@ -327,7 +327,7 @@ par['TT220'] = {
     'mb': {
         'ch': 31,
         'reg': 18,
-        'scale': 1,
+        'scale': 0.1,
         'offset': 0
     }
 }
@@ -337,7 +337,7 @@ par['TT310'] = {
     'mb': {
         'ch': 31,
         'reg': 17,
-        'scale': 1,
+        'scale': 0.1,
         'offset': 0
     }
 }
@@ -347,7 +347,7 @@ par['TI221'] = {
     'mb': {
         'ch': 21,
         'reg': 14,
-        'scale': 1,
+        'scale': 0.001,
         'offset': 0
     }
 }
@@ -357,7 +357,7 @@ par['TI222'] = {
     'mb': {
         'ch': 21,
         'reg': 15,
-        'scale': 1,
+        'scale': 0.001,
         'offset': 0
     }
 }
@@ -367,7 +367,7 @@ par['TI223'] = {
     'mb': {
         'ch': 21,
         'reg': 16,
-        'scale': 1,
+        'scale': 0.001,
         'offset': 0
     }
 }
@@ -377,7 +377,7 @@ par['TI224'] = {
     'mb': {
         'ch': 21,
         'reg': 17,
-        'scale': 1,
+        'scale': 0.001,
         'offset': 0
     }
 }
@@ -387,7 +387,7 @@ par['TI225'] = {
     'mb': {
         'ch': 21,
         'reg': 18,
-        'scale': 1,
+        'scale': 0.001,
         'offset': 0
     }
 }
@@ -397,7 +397,7 @@ par['TI306'] = {
     'mb': {
         'ch': 21,
         'reg': 19,
-        'scale': 1,
+        'scale': 0.001,
         'offset': 0
     }
 }
@@ -407,7 +407,7 @@ par['PI226'] = {
     'mb': {
         'ch': 22,
         'reg': 14,
-        'scale': 1,
+        'scale': 0.001,
         'offset': 0
     }
 }
@@ -417,7 +417,7 @@ par['PI227'] = {
     'mb': {
         'ch': 22,
         'reg': 15,
-        'scale': 1,
+        'scale': 0.001,
         'offset': 0
     }
 }
@@ -427,7 +427,7 @@ par['PI228'] = {
     'mb': {
         'ch': 22,
         'reg': 16,
-        'scale': 1,
+        'scale': 0.001,
         'offset': 0
     }
 }
@@ -437,7 +437,7 @@ par['PI229'] = {
     'mb': {
         'ch': 22,
         'reg': 17,
-        'scale': 1,
+        'scale': 0.001,
         'offset': 0
     }
 }
@@ -447,7 +447,7 @@ par['PI230'] = {
     'mb': {
         'ch': 22,
         'reg': 18,
-        'scale': 1,
+        'scale': 0.001,
         'offset': 0
     }
 }
@@ -457,7 +457,7 @@ par['PI307'] = {
     'mb': {
         'ch': 22,
         'reg': 19,
-        'scale': 1,
+        'scale': 0.001,
         'offset': 0
     }
 }

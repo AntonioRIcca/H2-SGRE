@@ -21,13 +21,13 @@ class Modbus:
             # unit=11
         )
 
-    def read(self):
+    def read(self, reg=14, ch=21, count=8):
         if self.client.connect(): # Connection to slave device
-            print("Connection Successful")
+            # print("Connection Successful")
             # register = client.read_coils(15, 2)
-            register = self.client.read_holding_registers(address=14, count=8, unit=11)
+            register = self.client.read_holding_registers(address=reg, count=count, unit=ch)
             self.results = register.registers
-            print(self.results)
+            # print(self.results)
             # decoder = BinaryPayloadDecoder.fromRegisters(results, Endian.Big, wordorder=Endian.Little)
             # print(decoder.decode_16bit_int())
             # # print(register[0])
