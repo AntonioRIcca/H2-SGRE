@@ -20,6 +20,10 @@ class Main:
         self.fake_on = False
         self.settings_on = False
 
+        self.disp = ['TI221', 'TI222', 'TI223', 'TI224', 'TI225', 'TI306',
+                     'PI226', 'PI227', 'PI228', 'PI229', 'PI230', 'PI307',
+                     'TT216', 'TT217', 'TT218', 'TT219', 'TT220']
+
         self.t = 0
         self.t_last = 0
         self.dt = 0
@@ -225,17 +229,19 @@ class Main:
 
         self.main.ui.FT102_DSB.setValue(v.par['EL101']['H2'])
         self.main.ui.FT308_DSB.setValue(v.par['FC301A']['H2'] + v.par['FC301B']['H2'])
-        self.main.ui.PI307_DSB.setValue(v.par['PI307']['pressure'])
-        self.main.ui.TI306_DSB.setValue(v.par['TI306']['T'])
+        # self.main.ui.PI307_DSB.setValue(v.par['PI307']['pressure'])
+        # self.main.ui.TI306_DSB.setValue(v.par['TI306']['T'])
 
         self.main.ui.EL101_pressure_DSB.setValue(v.par['EL101']['pressure'])
         self.main.ui.FC301_Pread_DSB.setValue(v.par['FC301A']['Pread'] + v.par['FC301B']['Pread'])
         self.main.ui.FC301_H2_DSB.setValue(v.par['FC301']['H2'])
 
-        for i in range(1, 6):
-            self.main.ui.__getattribute__('PI' + str(i+225) + '_DSB').setValue(v.par['S20' + str(i)]['pressure'])
-            self.main.ui.__getattribute__('TI' + str(i+220) + '_DSB').setValue(v.par['S20' + str(i)]['Tflux'])
-            self.main.ui.__getattribute__('TT' + str(i+215) + '_DSB').setValue(v.par['S20' + str(i)]['Tvessel'])
+        # for i in range(1, 6):
+        #     self.main.ui.__getattribute__('PI' + str(i+225) + '_DSB').setValue(v.par['S20' + str(i)]['pressure'])
+        #     self.main.ui.__getattribute__('TI' + str(i+220) + '_DSB').setValue(v.par['S20' + str(i)]['Tflux'])
+        #     self.main.ui.__getattribute__('TT' + str(i+215) + '_DSB').setValue(v.par['S20' + str(i)]['Tvessel'])
+        for d in self.disp:
+            self.main.ui.__getattribute__(d + '_DSB').setValue(v.par[d]['val'])
 
         self.valve_draw()
         self.visual_flux()

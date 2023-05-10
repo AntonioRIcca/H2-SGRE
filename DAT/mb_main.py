@@ -42,7 +42,6 @@ class ModbusMain:
         self.app.exec()
         print(3)
 
-
     def refresh(self):
         # self.v +=1
         # self.main.ui.i3017_21_0_DSB.setValue(self.v)

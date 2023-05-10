@@ -282,12 +282,184 @@ par['S205'] = {
     'Tvessel': 36
 }
 
+par['TT216'] = {
+    'val': 16,
+    'mb': {
+        'ch': 31,
+        'reg': 14,
+        'scale': 1,
+        'offset': 0
+    }
+}
+
+par['TT217'] = {
+    'val': 17,
+    'mb': {
+        'ch': 31,
+        'reg': 15,
+        'scale': 1,
+        'offset': 0
+    }
+}
+
+par['TT218'] = {
+    'val': 18,
+    'mb': {
+        'ch': 31,
+        'reg': 16,
+        'scale': 1,
+        'offset': 0
+    }
+}
+
+par['TT219'] = {
+    'val': 19,
+    'mb': {
+        'ch': 31,
+        'reg': 17,
+        'scale': 1,
+        'offset': 0
+    }
+}
+
+par['TT220'] = {
+    'val': 20,
+    'mb': {
+        'ch': 31,
+        'reg': 18,
+        'scale': 1,
+        'offset': 0
+    }
+}
+
+par['TT310'] = {
+    'val': 31,
+    'mb': {
+        'ch': 31,
+        'reg': 17,
+        'scale': 1,
+        'offset': 0
+    }
+}
+
+par['TI221'] = {
+    'val': 21,
+    'mb': {
+        'ch': 21,
+        'reg': 14,
+        'scale': 1,
+        'offset': 0
+    }
+}
+
+par['TI222'] = {
+    'val': 22,
+    'mb': {
+        'ch': 21,
+        'reg': 15,
+        'scale': 1,
+        'offset': 0
+    }
+}
+
+par['TI223'] = {
+    'val': 23,
+    'mb': {
+        'ch': 21,
+        'reg': 16,
+        'scale': 1,
+        'offset': 0
+    }
+}
+
+par['TI224'] = {
+    'val': 24,
+    'mb': {
+        'ch': 21,
+        'reg': 17,
+        'scale': 1,
+        'offset': 0
+    }
+}
+
+par['TI225'] = {
+    'val': 25,
+    'mb': {
+        'ch': 21,
+        'reg': 18,
+        'scale': 1,
+        'offset': 0
+    }
+}
+
 par['TI306'] = {
-    'T': 36
+    'val': 36,
+    'mb': {
+        'ch': 21,
+        'reg': 19,
+        'scale': 1,
+        'offset': 0
+    }
+}
+
+par['PI226'] = {
+    'val': 12.6,
+    'mb': {
+        'ch': 22,
+        'reg': 14,
+        'scale': 1,
+        'offset': 0
+    }
+}
+
+par['PI227'] = {
+    'val': 12.7,
+    'mb': {
+        'ch': 22,
+        'reg': 15,
+        'scale': 1,
+        'offset': 0
+    }
+}
+
+par['PI228'] = {
+    'val': 12.8,
+    'mb': {
+        'ch': 22,
+        'reg': 16,
+        'scale': 1,
+        'offset': 0
+    }
+}
+
+par['PI229'] = {
+    'val': 12.9,
+    'mb': {
+        'ch': 22,
+        'reg': 17,
+        'scale': 1,
+        'offset': 0
+    }
+}
+
+par['PI230'] = {
+    'val': 13.0,
+    'mb': {
+        'ch': 22,
+        'reg': 18,
+        'scale': 1,
+        'offset': 0
+    }
 }
 
 par['PI307'] = {
-    'pressure': 12.5
+    'val': 10.7,
+    'mb': {
+        'ch': 22,
+        'reg': 19,
+        'scale': 1,
+        'offset': 0
+    }
 }
 
 par['EV'] = {
