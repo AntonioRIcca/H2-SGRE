@@ -11,9 +11,9 @@ class Util(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.set_data()
 
-        # cycle = QtCore.QTimer()
-        # cycle.timeout.connect(self.data)
-        # cycle.start(500)
+        cycle = QtCore.QTimer()
+        cycle.timeout.connect(self.data)
+        cycle.start(500)
 
     def data(self):
         for elem in ['EL101', 'FC301A', 'FC301B']:

@@ -38,7 +38,8 @@ class Modbus:
 
             # client.close()
         else:
-            print("Failed to connect to Modbus device")
+            # print("Failed to connect to Modbus device")
+            pass
         return self.results
 
     def write_coil(self, address, value, unit):

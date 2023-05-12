@@ -5,6 +5,7 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 from UI.mainUI import Ui
 from _shared import variables as v
 from threading import Thread
+from functools import partial
 import time
 
 from DAT.modbus import Modbus
@@ -98,6 +99,10 @@ class Main:
         self.main.ui.fake_BTN.clicked.connect(self.fake)
         self.main.ui.settings_BTN.clicked.connect(self.settings)
 
+        for valve in ['EV103', 'EV104', 'EV302', 'EV303']:
+            # self.main.ui.EV103_img_LBL.mousePressEvent = partial(self.test, msg=valve)
+            self.main.ui.__getattribute__(valve + '_img_LBL').mousePressEvent = partial(self.test, msg=valve)
+
         # self.main.ui.FC301_Pset_DSB.valueChanged.connect(self.set_params)
         for elem in ['FC301A', 'FC301B', 'FC301', 'EL101']:
             self.main.ui.__getattribute__(elem + '_Pset_DSB').valueChanged.connect(self.set_params)
@@ -111,6 +116,11 @@ class Main:
         self.main.show()
         self.app.exec()
         # self.app.quit()
+
+    def test(self, event, msg):
+        print(msg)
+
+        print('cliccato')
 
     def EL101_switch(self):
         v.par['EL101']['start'] = self.main.ui.EL101_start_PB.isChecked()
@@ -285,9 +295,10 @@ class Main:
                                                  v.par['FC301B']['Pset'] * int(v.par['FC301B']['activated']))
 
     def visual_flux(self):
-        el = v.par['EL101']['start'] and v.par['EL101']['H2'] > 0 and v.par['EL101']['status'] == 'on'
+        el = v.par['EL101']['start'] and v.par['EL101']['H2'] > 0 and v.par['EL101']['status'] == 'on' \
+             and v.par['EV']['104']
         fc = v.par['FC301']['start'] and v.par['FC301A']['H2'] + v.par['FC301B']['H2'] > 0 and \
-             v.par['FC301A']['status'] == 'on' or v.par['FC301B']['status'] == 'on'
+             (v.par['FC301A']['status'] == 'on' or v.par['FC301B']['status'] == 'on') and v.par['EV']['303']
         self.main.ui.EL101_out_LN.setVisible(el)
         for elem in ['FC301_in', 'mainline3', 'mainline2']:
             self.main.ui.__getattribute__(elem + '_LN').setVisible(fc)
