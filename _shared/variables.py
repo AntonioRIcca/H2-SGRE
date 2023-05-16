@@ -1,5 +1,6 @@
 sel_util = False
 sel_settings = False
+mb_conn = False
 
 
 par = dict()

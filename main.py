@@ -363,6 +363,7 @@ class Main:
             v.par['EL101']['status'] = 'off'
 
     def mb_to_par(self):
+        v.mb_conn = True    # se una lettura dal registro fallisce, diventa False
         for ch in [21, 22, 31]:
             regs = self.mb.read(ch=ch)
             for i in range(0, 8):
@@ -374,6 +375,14 @@ class Main:
             m = v.par[d]['mb']['scale']
             q = v.par[d]['mb']['offset']
             v.par[d]['val'] = v.dat[ch]['reg'][reg] * m - q
+
+        if v.mb_conn:
+            # self.main.ui.led_light('mb_statusLed_LBL', 'on')
+            self.main.led_light('mb_statusLed_LBL', 'on')
+
+        else:
+            # self.main.ui.led_light('mb_statusLed_LBL', 'warning')
+            self.main.led_light('mb_statusLed_LBL', 'warning')
 
 
 def test():

@@ -3447,6 +3447,61 @@
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QGroupBox" name="monitor_GB">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>720</y>
+      <width>111</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="title">
+     <string>Modbus</string>
+    </property>
+    <widget class="QLabel" name="mb_statusLed_LBL">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>0</y>
+       <width>20</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>_resources/Led-OFF_20x20.png</pixmap>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="mb_set_BTN">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>91</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Setting</string>
+     </property>
+    </widget>
+   </widget>
    <zorder>EL101_out_LN</zorder>
    <zorder>mainline2_LN</zorder>
    <zorder>S203_LN</zorder>
@@ -3489,6 +3544,7 @@
    <zorder>S20X_GB</zorder>
    <zorder>fake_BTN</zorder>
    <zorder>settings_BTN</zorder>
+   <zorder>monitor_GB</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

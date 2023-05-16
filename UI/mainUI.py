@@ -14,7 +14,7 @@ class Ui(QtWidgets.QMainWindow):
 
         self.ui.pID_LBL.setPixmap(QtGui.QPixmap("UI/_resources/P&ID_1500x900.png"))
 
-        for element in ['FC301A', 'FC301B', 'EL101', 'S201', 'S202', 'S203', 'S204', 'S205']:
+        for element in ['FC301A', 'FC301B', 'EL101', 'S201', 'S202', 'S203', 'S204', 'S205', 'mb']:
             self.led_light(element + '_statusLed_LBL', 'off')
 
         for element in ['EL101_out', 'EV103', 'EV302', 'FC301_in', 'S201', 'S202', 'S203', 'S204', 'S205',

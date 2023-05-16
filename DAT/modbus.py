@@ -1,4 +1,5 @@
 from pymodbus.client.sync import ModbusSerialClient
+from _shared import variables as v
 # from pymodbus.payload import BinaryPayloadDecoder
 # from pymodbus.constants import Endian
 # import time
@@ -38,6 +39,7 @@ class Modbus:
 
             # client.close()
         else:
+            v.mb_conn = False
             # print("Failed to connect to Modbus device")
             pass
         return self.results
