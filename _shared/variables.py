@@ -1,5 +1,6 @@
 sel_util = False
 sel_settings = False
+sel_mb = False
 mb_conn = False
 
 
@@ -337,7 +338,7 @@ par['TT310'] = {
     'val': 31,
     'mb': {
         'ch': 31,
-        'reg': 17,
+        'reg': 19,
         'scale': 0.1,
         'offset': 0
     }

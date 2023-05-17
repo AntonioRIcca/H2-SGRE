@@ -28,6 +28,7 @@ class Main:
         self.util = None
         self.sim = None
         self.set = None
+        self.mb_set = None
         self.main = None
 
         self.mb = Modbus()
@@ -89,6 +90,11 @@ class Main:
         # self.app_util.quit()
         # v.sel_settings = True
 
+    def open_mb_set(self):
+        from UI.settings.mb_set import MbSetting
+        self.mb_set = MbSetting()
+        self.mb_set.show()
+
     def open_interface(self):
         self.main = Ui()
 
@@ -98,10 +104,13 @@ class Main:
         self.main.ui.FC301_start_PB.clicked.connect(self.FC301_switch)
         self.main.ui.fake_BTN.clicked.connect(self.fake)
         self.main.ui.settings_BTN.clicked.connect(self.settings)
+        self.main.ui.mb_set_BTN.clicked.connect(self.mb_config)
 
-        for valve in ['EV103', 'EV104', 'EV302', 'EV303']:
+        for valve in ['103', '104', '302', '303']:
             # self.main.ui.EV103_img_LBL.mousePressEvent = partial(self.test, msg=valve)
-            self.main.ui.__getattribute__(valve + '_img_LBL').mousePressEvent = partial(self.test, msg=valve)
+            self.main.ui.__getattribute__('EV' + valve + '_img_LBL').mouseDoubleClickEvent = \
+                partial(self.valve_clicked, valve=valve)
+        # self.main.ui.EV103_img_LBL.mouseDoubleClickEvent()
 
         # self.main.ui.FC301_Pset_DSB.valueChanged.connect(self.set_params)
         for elem in ['FC301A', 'FC301B', 'FC301', 'EL101']:
@@ -163,6 +172,16 @@ class Main:
             # self.settings_on = False
             self.set.close()
 
+    def mb_config(self):
+        if not v.sel_mb:
+            f_mbs = Thread(target=self.open_mb_set())
+            f_mbs.start()
+            f_mbs.join()
+            v.sel_mb = True
+        else:
+            v.sel_mb = False
+            self.mb_set.close()
+
     def FC301_switch(self):
         v.par['FC301']['start'] = self.main.ui.FC301_start_PB.isChecked()
         self.valve_switch()
@@ -195,6 +214,9 @@ class Main:
 
         self.valve_switch()
         self.set_params()
+
+    def valve_clicked(self, e, valve):
+        v.par['EV'][valve] = not v.par['EV'][valve]
 
     def valve_switch(self):
         v.par['EV']['104'] = v.par['EL101']['start']
@@ -364,8 +386,10 @@ class Main:
 
     def mb_to_par(self):
         v.mb_conn = True    # se una lettura dal registro fallisce, diventa False
+
+        # Lettura dei segnali analogici
         for ch in [21, 22, 31]:
-            regs = self.mb.read(ch=ch)
+            regs = self.mb.read_analog(ch=ch)
             for i in range(0, 8):
                 v.dat[ch]['reg'][i + 14] = regs[i]
 
@@ -376,12 +400,18 @@ class Main:
             q = v.par[d]['mb']['offset']
             v.par[d]['val'] = v.dat[ch]['reg'][reg] * m - q
 
-        if v.mb_conn:
-            # self.main.ui.led_light('mb_statusLed_LBL', 'on')
-            self.main.led_light('mb_statusLed_LBL', 'on')
+        # TODO: da testare
+        # Lettura dei segnali digitali
+        for ch in [11, 12, 13, 14]:
+            k = v.dat[ch]['reg'].keys()
+            regs = self.mb.read_analog(ch=ch, reg=0, count=4) + self.mb.read_analog(ch=ch, reg=16, count=4)
+            for i in range(0, 8):
+                v.dat[ch]['reg'][k[i]] = regs[i]
 
+        # ModBus Led setting
+        if v.mb_conn:
+            self.main.led_light('mb_statusLed_LBL', 'on')
         else:
-            # self.main.ui.led_light('mb_statusLed_LBL', 'warning')
             self.main.led_light('mb_statusLed_LBL', 'warning')
 
 

@@ -23,7 +23,7 @@ class Modbus:
             # unit=11
         )
 
-    def read(self, reg=14, ch=21, count=8):
+    def read_analog(self, reg=14, ch=21, count=8):
         if self.client.connect():   # Connection to slave device
             # print("Connection Successful")
             # register = client.read_coils(15, 2)

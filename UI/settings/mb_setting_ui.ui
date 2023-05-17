@@ -1,0 +1,1800 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>mb_setting</class>
+ <widget class="QMainWindow" name="mb_setting">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1405</width>
+    <height>1073</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QDoubleSpinBox" name="TT216_scale_DSB">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>80</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="TT216_LBL">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>80</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>TT-216</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TT216_ch_CB">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>80</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TT216_reg_CB">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>80</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TT216_offset_DSB">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>80</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="channel">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>50</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <italic>true</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>channel</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="reg">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>50</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <italic>true</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>register</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="scale">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>50</y>
+      <width>101</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <italic>true</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>scale</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="offset">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>50</y>
+      <width>101</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <italic>true</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>offset</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="TT217_LBL">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>110</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>TT-217</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TT217_offset_DSB">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>110</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TT217_reg_CB">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>110</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TT217_scale_DSB">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>110</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TT217_ch_CB">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>110</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TT219_ch_CB">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>170</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TT218_reg_CB">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>140</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TT218_offset_DSB">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>140</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TT218_scale_DSB">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>140</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TT219_reg_CB">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>170</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="TT219_LBL">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>170</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>TT-219</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TT219_scale_DSB">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>170</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TT218_ch_CB">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>140</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TT219_offset_DSB">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>170</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="TT218_LBL">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>140</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>TT-218</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TT220_offset_DSB">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>200</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TT220_scale_DSB">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>200</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TT310_reg_CB">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>230</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TT310_offset_DSB">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>230</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TT310_ch_CB">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>230</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="TT220_LBL">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>200</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>TT-220</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TT220_reg_CB">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>200</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="TT310_LBL">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>230</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>TT-310</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TT310_scale_DSB">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>230</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TT220_ch_CB">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>200</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TI221_offset_DSB">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>290</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TI221_reg_CB">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>290</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TI221_scale_DSB">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>290</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TI221_ch_CB">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>290</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="TI221_LBL">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>290</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>TI-221</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="TI306_LBL">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>440</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>TI-306</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TI306_offset_DSB">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>440</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TI306_reg_CB">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>440</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TI306_ch_CB">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>440</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TI306_scale_DSB">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>440</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="TI225_LBL">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>410</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>TI-225</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TI225_offset_DSB">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>410</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TI225_reg_CB">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>410</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TI225_ch_CB">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>410</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TI225_scale_DSB">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>410</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="TI224_LBL">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>380</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>TI-224</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TI224_offset_DSB">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>380</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TI224_reg_CB">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>380</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TI224_ch_CB">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>380</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TI224_scale_DSB">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>380</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="TI223_LBL">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>350</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>TI-223</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TI223_offset_DSB">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>350</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TI223_reg_CB">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>350</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TI223_ch_CB">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>350</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TI223_scale_DSB">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>350</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="TI222_LBL">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>320</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>TI-222</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TI222_offset_DSB">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>320</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TI222_reg_CB">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>320</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="TI222_ch_CB">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>320</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="TI222_scale_DSB">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>320</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="PI226_LBL">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>500</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>PI-226</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="PI226_offset_DSB">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>500</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="PI226_reg_CB">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>500</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="PI226_ch_CB">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>500</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="PI226_scale_DSB">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>500</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="PI307_reg_CB">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>650</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="PI307_scale_DSB">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>650</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="PI307_LBL">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>650</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>PI-307</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="PI307_offset_DSB">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>650</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="PI307_ch_CB">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>650</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="PI230_scale_DSB">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>620</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="PI230_LBL">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>620</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>PI-230</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="PI230_offset_DSB">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>620</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="PI230_ch_CB">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>620</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="PI230_reg_CB">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>620</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="PI229_scale_DSB">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>590</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="PI229_LBL">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>590</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>PI-229</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="PI229_offset_DSB">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>590</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="PI229_ch_CB">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>590</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="PI229_reg_CB">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>590</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="PI228_scale_DSB">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>560</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="PI228_LBL">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>560</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>PI-228</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="PI228_offset_DSB">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>560</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="PI228_ch_CB">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>560</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="PI228_reg_CB">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>560</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="PI227_scale_DSB">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>530</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="PI227_LBL">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>530</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>PI-226</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="PI227_offset_DSB">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>530</y>
+      <width>100</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="decimals">
+     <number>10</number>
+    </property>
+    <property name="singleStep">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="PI227_ch_CB">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>530</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="PI227_reg_CB">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>530</y>
+      <width>50</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1405</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <tabstops>
+  <tabstop>TT216_ch_CB</tabstop>
+  <tabstop>TT216_reg_CB</tabstop>
+  <tabstop>TT216_scale_DSB</tabstop>
+  <tabstop>TT216_offset_DSB</tabstop>
+  <tabstop>TT217_ch_CB</tabstop>
+  <tabstop>TT217_reg_CB</tabstop>
+  <tabstop>TT217_scale_DSB</tabstop>
+  <tabstop>TT217_offset_DSB</tabstop>
+  <tabstop>TT219_ch_CB</tabstop>
+  <tabstop>TT218_reg_CB</tabstop>
+  <tabstop>TT218_offset_DSB</tabstop>
+  <tabstop>TT218_scale_DSB</tabstop>
+  <tabstop>TT219_reg_CB</tabstop>
+  <tabstop>TT219_scale_DSB</tabstop>
+  <tabstop>TT218_ch_CB</tabstop>
+  <tabstop>TT219_offset_DSB</tabstop>
+  <tabstop>TT220_offset_DSB</tabstop>
+  <tabstop>TT220_scale_DSB</tabstop>
+  <tabstop>TT310_reg_CB</tabstop>
+  <tabstop>TT310_offset_DSB</tabstop>
+  <tabstop>TT310_ch_CB</tabstop>
+  <tabstop>TT220_reg_CB</tabstop>
+  <tabstop>TT310_scale_DSB</tabstop>
+  <tabstop>TT220_ch_CB</tabstop>
+  <tabstop>TI221_offset_DSB</tabstop>
+  <tabstop>TI221_reg_CB</tabstop>
+  <tabstop>TI221_scale_DSB</tabstop>
+  <tabstop>TI221_ch_CB</tabstop>
+  <tabstop>TI306_offset_DSB</tabstop>
+  <tabstop>TI306_reg_CB</tabstop>
+  <tabstop>TI306_ch_CB</tabstop>
+  <tabstop>TI306_scale_DSB</tabstop>
+  <tabstop>TI225_offset_DSB</tabstop>
+  <tabstop>TI225_reg_CB</tabstop>
+  <tabstop>TI225_ch_CB</tabstop>
+  <tabstop>TI225_scale_DSB</tabstop>
+  <tabstop>TI224_offset_DSB</tabstop>
+  <tabstop>TI224_reg_CB</tabstop>
+  <tabstop>TI224_ch_CB</tabstop>
+  <tabstop>TI224_scale_DSB</tabstop>
+  <tabstop>TI223_offset_DSB</tabstop>
+  <tabstop>TI223_reg_CB</tabstop>
+  <tabstop>TI223_ch_CB</tabstop>
+  <tabstop>TI223_scale_DSB</tabstop>
+  <tabstop>TI222_offset_DSB</tabstop>
+  <tabstop>TI222_reg_CB</tabstop>
+  <tabstop>TI222_ch_CB</tabstop>
+  <tabstop>TI222_scale_DSB</tabstop>
+  <tabstop>PI226_offset_DSB</tabstop>
+  <tabstop>PI226_reg_CB</tabstop>
+  <tabstop>PI226_ch_CB</tabstop>
+  <tabstop>PI226_scale_DSB</tabstop>
+  <tabstop>PI307_reg_CB</tabstop>
+  <tabstop>PI307_scale_DSB</tabstop>
+  <tabstop>PI307_offset_DSB</tabstop>
+  <tabstop>PI307_ch_CB</tabstop>
+  <tabstop>PI230_scale_DSB</tabstop>
+  <tabstop>PI230_offset_DSB</tabstop>
+  <tabstop>PI230_ch_CB</tabstop>
+  <tabstop>PI230_reg_CB</tabstop>
+  <tabstop>PI229_scale_DSB</tabstop>
+  <tabstop>PI229_offset_DSB</tabstop>
+  <tabstop>PI229_ch_CB</tabstop>
+  <tabstop>PI229_reg_CB</tabstop>
+  <tabstop>PI228_scale_DSB</tabstop>
+  <tabstop>PI228_offset_DSB</tabstop>
+  <tabstop>PI228_ch_CB</tabstop>
+  <tabstop>PI228_reg_CB</tabstop>
+  <tabstop>PI227_scale_DSB</tabstop>
+  <tabstop>PI227_offset_DSB</tabstop>
+  <tabstop>PI227_ch_CB</tabstop>
+  <tabstop>PI227_reg_CB</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
