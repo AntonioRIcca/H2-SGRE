@@ -216,12 +216,12 @@ class Main:
         self.set_params()
 
     def valve_clicked(self, e, valve):
-        v.par['EV'][valve] = not v.par['EV'][valve]
+        v.par['EV'][valve]['val'] = not v.par['EV'][valve]['val']
         self.single_par_to_mb(item=valve)
 
     def valve_switch(self):
-        v.par['EV']['104'] = v.par['EL101']['start']
-        v.par['EV']['303'] = v.par['FC301']['start']
+        v.par['EV']['104']['val'] = v.par['EL101']['start']
+        v.par['EV']['303']['val'] = v.par['FC301']['start']
 
         # if v.par['FC301']['start']:
         #     self.main.ui.EV303_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowSX_20x20.png"))
@@ -234,22 +234,22 @@ class Main:
         #     self.main.ui.EV104_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopHoriz_20x20.png"))
 
     def valve_draw(self):
-        if v.par['EV']['104']:
+        if v.par['EV']['104']['val']:
             self.main.ui.EV104_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowDX_20x20.png"))
         else:
             self.main.ui.EV104_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopHoriz_20x20.png"))
 
-        if v.par['EV']['303']:
+        if v.par['EV']['303']['val']:
             self.main.ui.EV303_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowSX_20x20.png"))
         else:
             self.main.ui.EV303_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopHoriz_20x20.png"))
 
-        if v.par['EV']['103']:
+        if v.par['EV']['103']['val']:
             self.main.ui.EV103_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowUp_20x20.png"))
         else:
             self.main.ui.EV103_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopVert_20x20.png"))
 
-        if v.par['EV']['302']:
+        if v.par['EV']['302']['val']:
             self.main.ui.EV302_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowDown_20x20.png"))
         else:
             self.main.ui.EV302_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopVert_20x20.png"))
@@ -319,9 +319,9 @@ class Main:
 
     def visual_flux(self):
         el = v.par['EL101']['start'] and v.par['EL101']['H2'] > 0 and v.par['EL101']['status'] == 'on' \
-             and v.par['EV']['104']
+             and v.par['EV']['104']['val']
         fc = v.par['FC301']['start'] and v.par['FC301A']['H2'] + v.par['FC301B']['H2'] > 0 and \
-             (v.par['FC301A']['status'] == 'on' or v.par['FC301B']['status'] == 'on') and v.par['EV']['303']
+             (v.par['FC301A']['status'] == 'on' or v.par['FC301B']['status'] == 'on') and v.par['EV']['303']['val']
         self.main.ui.EL101_out_LN.setVisible(el)
         for elem in ['FC301_in', 'mainline3', 'mainline2']:
             self.main.ui.__getattribute__(elem + '_LN').setVisible(fc)
@@ -423,9 +423,10 @@ class Main:
 
     # TODO: Da testare
     def single_par_to_mb(self, item):
+        print(v.par['EV'])
         ch = v.par['EV'][item]['mb']['ch']
         reg = v.par['EV'][item]['mb']['reg']
-        print('prova scrittura registro ' + str(reg) + 'della unità ' + str(ch))
+        print('prova scrittura registro ' + str(reg) + ' della unità ' + str(ch))
         self.mb.write_coil(address=reg, value=bool(v.dat[ch]['reg'][reg]), unit=ch)
 
 
