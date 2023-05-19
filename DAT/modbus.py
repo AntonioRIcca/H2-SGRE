@@ -44,6 +44,23 @@ class Modbus:
             pass
         return self.results
 
+    def read_coils(self, ch=11, reg=16, count=4):
+        self.results = []
+        # register = self.client.read_coils(address=reg, count=count, unit=ch)
+        # # register = self.client.read_input_registers(address=reg, count=count, unit=ch)
+        # self.results = register.bits
+
+        if self.client.connect():
+            try:
+                register = self.client.read_coils(address=reg, count=count, unit=ch)
+                self.results = register.bits
+            except:
+                print('error reading coils')
+
+        else:
+            print('connessione non riuscita')
+        return self.results
+
     def write_coil(self, address, value, unit):
         if self.client.connect():
             try:

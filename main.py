@@ -217,6 +217,9 @@ class Main:
 
     def valve_clicked(self, e, valve):
         v.par['EV'][valve]['val'] = not v.par['EV'][valve]['val']
+        ch = v.par['EV'][valve]['mb']['ch']
+        reg = v.par['EV'][valve]['mb']['reg']
+        v.dat[ch]['reg'][reg] = v.par['EV'][valve]['val']
         self.single_par_to_mb(item=valve)
 
     def valve_switch(self):
@@ -405,7 +408,11 @@ class Main:
         # Lettura dei segnali digitali
         for ch in [11, 12, 13, 14]:
             k = list(v.dat[ch]['reg'].keys())
-            regs = self.mb.read(ch=ch, reg=0, count=4) + self.mb.read(ch=ch, reg=16, count=4)
+            # print(ch)
+            # print(self.mb.read(ch=ch, reg=0, count=4))
+            # print(self.mb.read_coils(ch=ch, reg=16, count=4))
+            # print()
+            regs = self.mb.read(ch=ch, reg=0, count=4) + self.mb.read_coils(ch=ch, reg=16, count=4)
             for i in range(0, 8):
                 v.dat[ch]['reg'][k[i]] = regs[i]
 
