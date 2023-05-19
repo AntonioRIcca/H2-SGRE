@@ -37,6 +37,8 @@ class Main:
                      'PI226', 'PI227', 'PI228', 'PI229', 'PI230', 'PI307',
                      'TT216', 'TT217', 'TT218', 'TT219', 'TT220']
 
+        self.valves = ['EV103', 'EV104', 'EV302', 'EV303']
+
         self.t = 0
         self.t_last = 0
         self.dt = 0
@@ -106,9 +108,9 @@ class Main:
         self.main.ui.settings_BTN.clicked.connect(self.settings)
         self.main.ui.mb_set_BTN.clicked.connect(self.mb_config)
 
-        for valve in ['103', '104', '302', '303']:
+        for valve in ['EV103', 'EV104', 'EV302', 'EV303']:
             # self.main.ui.EV103_img_LBL.mousePressEvent = partial(self.test, msg=valve)
-            self.main.ui.__getattribute__('EV' + valve + '_img_LBL').mouseDoubleClickEvent = \
+            self.main.ui.__getattribute__(valve + '_img_LBL').mouseDoubleClickEvent = \
                 partial(self.valve_clicked, valve=valve)
         # self.main.ui.EV103_img_LBL.mouseDoubleClickEvent()
 
@@ -126,10 +128,10 @@ class Main:
         self.app.exec()
         # self.app.quit()
 
-    def test(self, event, msg):
-        print(msg)
-
-        print('cliccato')
+    # def test(self, event, msg):
+    #     print(msg)
+    #
+    #     print('cliccato')
 
     def EL101_switch(self):
         v.par['EL101']['start'] = self.main.ui.EL101_start_PB.isChecked()
@@ -216,15 +218,17 @@ class Main:
         self.set_params()
 
     def valve_clicked(self, e, valve):
-        v.par['EV'][valve]['val'] = not v.par['EV'][valve]['val']
-        ch = v.par['EV'][valve]['mb']['ch']
-        reg = v.par['EV'][valve]['mb']['reg']
-        v.dat[ch]['reg'][reg] = v.par['EV'][valve]['val']
-        self.single_par_to_mb(item=valve)
+        v.par[valve]['val'] = not v.par[valve]['val']
+        ch = v.par[valve]['mb']['ch']
+        reg = v.par[valve]['mb']['reg']
+        v.dat[ch]['reg'][reg] = v.par[valve]['val']
+        self.valve_par_to_mb(item=valve)
 
     def valve_switch(self):
-        v.par['EV']['104']['val'] = v.par['EL101']['start']
-        v.par['EV']['303']['val'] = v.par['FC301']['start']
+        v.par['EV104']['val'] = v.par['EL101']['start']
+        self.valve_par_to_mb('EV104')
+        v.par['EV303']['val'] = v.par['FC301']['start']
+        self.valve_par_to_mb('EV303')
 
         # if v.par['FC301']['start']:
         #     self.main.ui.EV303_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowSX_20x20.png"))
@@ -237,22 +241,22 @@ class Main:
         #     self.main.ui.EV104_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopHoriz_20x20.png"))
 
     def valve_draw(self):
-        if v.par['EV']['104']['val']:
+        if v.par['EV104']['val']:
             self.main.ui.EV104_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowDX_20x20.png"))
         else:
             self.main.ui.EV104_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopHoriz_20x20.png"))
 
-        if v.par['EV']['303']['val']:
+        if v.par['EV303']['val']:
             self.main.ui.EV303_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowSX_20x20.png"))
         else:
             self.main.ui.EV303_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopHoriz_20x20.png"))
 
-        if v.par['EV']['103']['val']:
+        if v.par['EV103']['val']:
             self.main.ui.EV103_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowUp_20x20.png"))
         else:
             self.main.ui.EV103_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopVert_20x20.png"))
 
-        if v.par['EV']['302']['val']:
+        if v.par['EV302']['val']:
             self.main.ui.EV302_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowDown_20x20.png"))
         else:
             self.main.ui.EV302_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopVert_20x20.png"))
@@ -289,17 +293,17 @@ class Main:
 
         self.valve_draw()
         self.visual_flux()
+        self.alarm_check()
 
         self.main.ui.fake_BTN.setChecked(v.sel_util)
         self.main.ui.settings_BTN.setChecked(v.sel_settings)
-        self.t = time.perf_counter() - self.start_t
-        self.dt = time.perf_counter() - self.t_last
-        self.t_last = time.perf_counter()
 
-        self.alarm_check()
-
-        # self.set_params()
-        print('refresh \t %.3f\t%.3f' % (self.t, self.dt))
+        # self.t = time.perf_counter() - self.start_t
+        # self.dt = time.perf_counter() - self.t_last
+        # self.t_last = time.perf_counter()
+        #
+        # # self.set_params()
+        # print('refresh \t %.3f\t%.3f' % (self.t, self.dt))
 
     def set_params(self):
         print('set params')
@@ -322,9 +326,9 @@ class Main:
 
     def visual_flux(self):
         el = v.par['EL101']['start'] and v.par['EL101']['H2'] > 0 and v.par['EL101']['status'] == 'on' \
-             and v.par['EV']['104']['val']
+             and v.par['EV104']['val']
         fc = v.par['FC301']['start'] and v.par['FC301A']['H2'] + v.par['FC301B']['H2'] > 0 and \
-             (v.par['FC301A']['status'] == 'on' or v.par['FC301B']['status'] == 'on') and v.par['EV']['303']['val']
+             (v.par['FC301A']['status'] == 'on' or v.par['FC301B']['status'] == 'on') and v.par['EV303']['val']
         self.main.ui.EL101_out_LN.setVisible(el)
         for elem in ['FC301_in', 'mainline3', 'mainline2']:
             self.main.ui.__getattribute__(elem + '_LN').setVisible(fc)
@@ -393,7 +397,7 @@ class Main:
 
         # Lettura dei segnali analogici
         for ch in [21, 22, 31]:
-            regs = self.mb.read(ch=ch)
+            regs = self.mb.read_holding(ch=ch)
             for i in range(0, 8):
                 v.dat[ch]['reg'][i + 14] = regs[i]
 
@@ -408,11 +412,7 @@ class Main:
         # Lettura dei segnali digitali
         for ch in [11, 12, 13, 14]:
             k = list(v.dat[ch]['reg'].keys())
-            # print(ch)
-            # print(self.mb.read(ch=ch, reg=0, count=4))
-            # print(self.mb.read_coils(ch=ch, reg=16, count=4))
-            # print()
-            regs = self.mb.read(ch=ch, reg=0, count=4) + self.mb.read_coils(ch=ch, reg=16, count=4)
+            regs = self.mb.read_holding(ch=ch, reg=0, count=4) + list(self.mb.read_coils(ch=ch, reg=16, count=4))[:4]
             for i in range(0, 8):
                 v.dat[ch]['reg'][k[i]] = regs[i]
 
@@ -428,13 +428,14 @@ class Main:
                 self.mb.write_coil(address=reg, value=bool(v.dat[ch]['reg'][reg]), unit=ch)
         pass
 
-    # TODO: Da testare
-    def single_par_to_mb(self, item):
-        print(v.par['EV'])
-        ch = v.par['EV'][item]['mb']['ch']
-        reg = v.par['EV'][item]['mb']['reg']
+    def valve_par_to_mb(self, item):
+        ch = v.par[item]['mb']['ch']
+        reg = v.par[item]['mb']['reg']
         print('prova scrittura registro ' + str(reg) + ' della unità ' + str(ch))
         self.mb.write_coil(address=reg, value=bool(v.dat[ch]['reg'][reg]), unit=ch)
+
+    def par_to_dat(self, elem):
+        pass
 
 
 def test():

@@ -464,35 +464,36 @@ par['PI307'] = {
     }
 }
 
-par['EV'] = {
-    '103': {
-        'val': True,
-        'mb': {
-            'ch': 12,
-            'reg': 18,
-        }
-    },
-    '104': {
-        'val': True,
-        'mb': {
-            'ch': 12,
-            'reg': 19,
-        }
-    },
-    '302': {
-        'val': False,
-        'mb': {
-            'ch': 14,
-            'reg': 18,
-        }
-    },
-    '303': {
-        'val': False,
-        'mb': {
-            'ch': 14,
-            'reg': 19,
-        }
-    },
+par['EV103'] = {
+    'val': True,
+    'mb': {
+        'ch': 12,
+        'reg': 18,
+    }
+}
+
+par['EV104'] = {
+    'val': True,
+    'mb': {
+        'ch': 12,
+        'reg': 19,
+    }
+}
+
+par['EV302'] = {
+    'val': False,
+    'mb': {
+        'ch': 14,
+        'reg': 18,
+    }
+}
+
+par['EV303'] = {
+    'val': False,
+    'mb': {
+        'ch': 14,
+        'reg': 19,
+    }
 }
 
 

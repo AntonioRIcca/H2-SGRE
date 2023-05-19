@@ -23,29 +23,18 @@ class Modbus:
             # unit=11
         )
 
-    def read(self, reg=14, ch=21, count=8):
+    def read_holding(self, reg=14, ch=21, count=8):
+        self.results = [0, 0, 0, 0, 0, 0, 0, 0]
         if self.client.connect():   # Connection to slave device
-            # print("Connection Successful")
-            # register = client.read_coils(15, 2)
             register = self.client.read_holding_registers(address=reg, count=count, unit=ch)
             self.results = register.registers
-            # print(self.results)
-            # decoder = BinaryPayloadDecoder.fromRegisters(results, Endian.Big, wordorder=Endian.Little)
-            # print(decoder.decode_16bit_int())
-            # # print(register[0])
-            # # register.registers[0]
-
-            # time.sleep(1)
-
-            # client.close()
         else:
             v.mb_conn = False
-            # print("Failed to connect to Modbus device")
             pass
         return self.results
 
     def read_coils(self, ch=11, reg=16, count=4):
-        self.results = []
+        self.results = [False, False, False, False, False]
         # register = self.client.read_coils(address=reg, count=count, unit=ch)
         # # register = self.client.read_input_registers(address=reg, count=count, unit=ch)
         # self.results = register.bits
