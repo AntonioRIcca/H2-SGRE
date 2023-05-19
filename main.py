@@ -217,6 +217,7 @@ class Main:
 
     def valve_clicked(self, e, valve):
         v.par['EV'][valve] = not v.par['EV'][valve]
+        self.single_par_to_mb(item=valve)
 
     def valve_switch(self):
         v.par['EV']['104'] = v.par['EL101']['start']
@@ -389,7 +390,7 @@ class Main:
 
         # Lettura dei segnali analogici
         for ch in [21, 22, 31]:
-            regs = self.mb.read_analog(ch=ch)
+            regs = self.mb.read(ch=ch)
             for i in range(0, 8):
                 v.dat[ch]['reg'][i + 14] = regs[i]
 
@@ -403,8 +404,8 @@ class Main:
         # TODO: da testare
         # Lettura dei segnali digitali
         for ch in [11, 12, 13, 14]:
-            k = v.dat[ch]['reg'].keys()
-            regs = self.mb.read_analog(ch=ch, reg=0, count=4) + self.mb.read_analog(ch=ch, reg=16, count=4)
+            k = list(v.dat[ch]['reg'].keys())
+            regs = self.mb.read(ch=ch, reg=0, count=4) + self.mb.read(ch=ch, reg=16, count=4)
             for i in range(0, 8):
                 v.dat[ch]['reg'][k[i]] = regs[i]
 
@@ -413,6 +414,19 @@ class Main:
             self.main.led_light('mb_statusLed_LBL', 'on')
         else:
             self.main.led_light('mb_statusLed_LBL', 'warning')
+
+    def par_to_mb(self):
+        for ch in [11, 12, 13, 14]:
+            for reg in [16, 17, 18, 19]:
+                self.mb.write_coil(address=reg, value=bool(v.dat[ch]['reg'][reg]), unit=ch)
+        pass
+
+    # TODO: Da testare
+    def single_par_to_mb(self, item):
+        ch = v.par['EV'][item]['mb']['ch']
+        reg = v.par['EV'][item]['mb']['reg']
+        print('prova scrittura registro ' + str(reg) + 'della unità ' + str(ch))
+        self.mb.write_coil(address=reg, value=bool(v.dat[ch]['reg'][reg]), unit=ch)
 
 
 def test():
