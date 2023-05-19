@@ -226,9 +226,12 @@ class Main:
 
     def valve_switch(self):
         v.par['EV104']['val'] = v.par['EL101']['start']
+        self.par_to_dat('EV104')
         self.valve_par_to_mb('EV104')
         v.par['EV303']['val'] = v.par['FC301']['start']
+        self.par_to_dat('EV303')
         self.valve_par_to_mb('EV303')
+
 
         # if v.par['FC301']['start']:
         #     self.main.ui.EV303_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowSX_20x20.png"))
@@ -434,7 +437,10 @@ class Main:
         print('prova scrittura registro ' + str(reg) + ' della unità ' + str(ch))
         self.mb.write_coil(address=reg, value=bool(v.dat[ch]['reg'][reg]), unit=ch)
 
-    def par_to_dat(self, elem):
+    def par_to_dat(self, item):
+        ch = v.par[item]['mb']['ch']
+        reg = v.par[item]['mb']['reg']
+        v.dat[ch]['reg'][reg] = v.par[item]['val']
         pass
 
 
