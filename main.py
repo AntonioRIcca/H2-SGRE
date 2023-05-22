@@ -124,6 +124,8 @@ class Main:
         timer.timeout.connect(self.refresh)
         timer.start(1000)
 
+        self.main.ui.EL101_log_TE.setText('CIAO')
+
         self.main.show()
         self.app.exec()
         # self.app.quit()
@@ -185,7 +187,8 @@ class Main:
             self.mb_set.close()
 
     def FC301_switch(self):
-        v.par['FC301']['start'] = self.main.ui.FC301_start_PB.isChecked()
+        for disp in ['FC301', 'FC301A', 'FC301B']:
+            v.par[disp]['start'] = self.main.ui.FC301_start_PB.isChecked()
         self.valve_switch()
         # self.set_params()
         # self.refresh()
@@ -296,14 +299,15 @@ class Main:
 
         self.valve_draw()
         self.visual_flux()
-        self.alarm_check()
+        # self.alarm_check()    # TODO: Bisogna definire la logica degli allarmi
+        self.led_set()
 
         self.main.ui.fake_BTN.setChecked(v.sel_util)
         self.main.ui.settings_BTN.setChecked(v.sel_settings)
 
-        # self.t = time.perf_counter() - self.start_t
-        # self.dt = time.perf_counter() - self.t_last
-        # self.t_last = time.perf_counter()
+        self.t = time.perf_counter() - self.start_t
+        self.dt = time.perf_counter() - self.t_last
+        self.t_last = time.perf_counter()
         #
         # # self.set_params()
         # print('refresh \t %.3f\t%.3f' % (self.t, self.dt))
@@ -350,50 +354,114 @@ class Main:
         v.par['EL101']['pressure'] = max(a) * v.sim['EL101']['pressure'] / 100
 
     def alarm_check(self):
-        if v.par['EL101']['start'] and v.par['EL101']['Pset'] != 0:
-            if v.alarm['EL101']['power']['on'] and \
-                    (v.par['EL101']['Pread'] / v.par['EL101']['Pset'] > 1 + v.alarm['EL101']['power']['tr+'] / 100 or
-                     v.par['EL101']['Pread'] / v.par['EL101']['Pset'] < 1 - v.alarm['EL101']['power']['tr-'] / 100):
-                v.alarm['EL101']['power']['time'] += self.dt
-                print('warning EL101 power')
-            else:
-                v.alarm['EL101']['power']['time'] = 0
+        # print('Delay = ' + str(v.alarm['EL101']['power']['delay']))
+        # print('Time = ' + str(v.alarm['EL101']['power']['time']))
 
-            for p in ['pressure', 'H2']:
-                if v.alarm['EL101'][p]['on'] and \
-                        (v.par['EL101'][p] > v.alarm['EL101'][p]['tr+'] or
-                         v.par['EL101'][p] < v.alarm['EL101'][p]['tr-']):
-                    v.alarm['EL101'][p]['time'] += self.dt
-                    print('warning EL101 ' + p)
+        status = 0
+        states = ['off', 'alert', 'warning']
+
+        # La verifica dell'allarme è viene eseguita se il dispositivo è attivato e se viene richiesta una potenza
+        # superiore a 0
+        for disp in ['EL101', 'FC301A', 'FC301B']:
+            log = ''
+            print(disp)
+
+            if v.par[disp]['start'] and v.par[disp]['Pset'] != 0:
+                for p in ['power', 'pressure', 'H2']:
+
+                    if p == 'power':
+                        print('Pset : ' + str(v.par[disp]['Pread']) + '\tPread : ' + str(v.par[disp]['Pset']))
+                        val = v.par[disp]['Pread'] / v.par[disp]['Pset']
+                        a = [1 - v.alarm[disp][p]['tr-'] / 100, 1 + v.alarm[disp][p]['tr+'] / 100]
+                    else:
+                        print(p + ': ' + str(v.par[disp][p]))
+                        val = v.par[disp][p]
+                        a = [v.alarm[disp][p]['tr-'], v.alarm[disp][p]['tr+']]
+
+                    # il dispositivo è in allarme se l'allarme è attivo, e se la pressione è al di fuori dei range di
+                    # ammissibilità
+                    if v.alarm[disp][p]['on'] and (val > a[1] or val < a[0]):
+
+                        # se il dispositivo è in allarme, viene conteggiato il tempo di allarme, e il dispositivo si considera
+                        # in ALERT
+                        status = 1
+                        v.alarm[disp][p]['time'] += self.dt
+                        # print('warning EL101 power')
+
+                        # se il tempo di alert supera il tempo di soglia, lo stato diventa WARNING
+                        if v.alarm[disp][p]['time'] >= v.alarm[disp][p]['delay']:
+                            status = 2
+                            # print('ALARM EL101 power')
+                            pass
+
+                    else:   # se l'allarme per la grandezza indicata non è attivo, lo status di allarme è OFF
+                        status = 0
+                        v.alarm[disp][p]['time'] = 0
+
+                    if status > 0:
+                        if log != '':
+                            log = log + '\n'
+                        log = log + states[status] + ' ' + p + ' for device ' + disp
+
+                    v.alarm[disp][p]['status'] = states[status]
+
+                    # for p in ['pressure', 'H2']:
+                    #     if v.alarm['EL101'][p]['on'] and \
+                    #             (v.par['EL101'][p] > v.alarm['EL101'][p]['tr+'] or
+                    #              v.par['EL101'][p] < v.alarm['EL101'][p]['tr-']):
+                    #         v.alarm['EL101'][p]['time'] += self.dt
+                    #         print('warning EL101 ' + p)
+                    #     else:
+                    #         v.alarm['EL101'][p]['time'] = 0
+            else:
+                for p in ['power', 'pressure', 'H2']:
+                    v.alarm[disp][p]['time'] = 0
+
+
+            # self.main.ui.EL101_log_TE.setText(log)
+            self.main.ui.__getattribute__(disp + '_log_TE').setText(log)
+            # print('log: ' + log)
+
+            print()
+
+            # self.main.ui.EL101_log_TE.clear()
+            # for p in ['power', 'pressure', 'H2']:
+            #     if v.alarm['EL101'][p]['time'] > 5:
+            #         self.main.ui.EL101_log_TE.setText(self.main.ui.EL101_log_TE.toPlainText() + 'ERRORE EL101 ' + p + '\n')
+            #     # else:
+            #     #     self.main.ui.EL101_log_TE.clear()
+
+    def led_set(self):
+        for disp in ['EL101', 'FC301A', 'FC301B']:
+
+            states = ['off', 'alert', 'warning']
+            if v.par[disp]['start']:
+                if v.par[disp]['Pset'] > 0:
+                    v.par[disp]['status'] = 'on'
                 else:
-                    v.alarm['EL101'][p]['time'] = 0
-        else:
-            for p in ['power', 'pressure', 'H2']:
-                v.alarm['EL101'][p]['time'] = 0
+                    v.par[disp]['status'] = 'standby'
 
-        self.main.ui.EL101_log_TE.clear()
-        for p in ['power', 'pressure', 'H2']:
-            if v.alarm['EL101'][p]['time'] > 5:
-                self.main.ui.EL101_log_TE.setText(self.main.ui.EL101_log_TE.toPlainText() + 'ERRORE EL101 ' + p + '\n')
-            # else:
-            #     self.main.ui.EL101_log_TE.clear()
+                i = 0
+                for p in ['power', 'pressure', 'H2']:
+                    i = max(i, states.index(v.alarm[disp][p]['status']))
+                    # print(disp, p, i)
 
-        if v.par['EL101']['start']:
-            if v.par['EL101']['Pset'] > 0:
-                v.par['EL101']['status'] = 'on'
+                if i > 0:
+                    v.par[disp]['status'] = states[i]
+
+                #     if v.alarm[disp][p]['time'] > 0:
+                #         v.par[disp]['status'] = 'alert'
+                #         break
+                # for p in ['power', 'pressure', 'H2']:
+                #     if v.alarm[disp][p]['time'] > 5:
+                #         v.par[disp]['status'] = 'warning'
+                #         break
             else:
-                v.par['EL101']['status'] = 'standby'
+                v.par[disp]['status'] = 'off'
 
-            for p in ['power', 'pressure', 'H2']:
-                if v.alarm['EL101'][p]['time'] > 0:
-                    v.par['EL101']['status'] = 'alert'
-                    break
-            for p in ['power', 'pressure', 'H2']:
-                if v.alarm['EL101'][p]['time'] > 5:
-                    v.par['EL101']['status'] = 'warning'
-                    break
-        else:
-            v.par['EL101']['status'] = 'off'
+
+
+
 
     def mb_to_par(self):
         v.mb_conn = True    # se una lettura dal registro fallisce, diventa False

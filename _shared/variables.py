@@ -12,7 +12,7 @@ par['EL101'] = {
     'H2': 2.6,
     'start': False,
     'log': '',
-    'status': 'on',
+    'status': 'off',
     'pressure': 0,
     'mb': {
         'w': {
@@ -242,7 +242,8 @@ par['FC301A'] = {
     'H2': 1.6,
     'log': '',
     'activated': False,
-    'status': 'on'
+    'status': 'on',
+    'start': False
 }
 
 par['FC301B'] = {
@@ -251,7 +252,8 @@ par['FC301B'] = {
     'H2': 1.2,
     'log': '',
     'activated': False,
-    'status': 'on'
+    'status': 'on',
+    'start': False
 }
 
 par['S201'] = {
@@ -541,20 +543,26 @@ alarm['EL101'] = {
     'power': {
         'tr+': 10,
         'tr-': 10,
+        'delay': 10,
         'time': 0,
-        'on': False
+        'on': False,
+        'status': 'off'
     },
     'pressure': {
         'tr+': 20,
         'tr-': 0,
+        'delay': 10,
         'time': 0,
-        'on': True
+        'on': True,
+        'status': 'off'
     },
     'H2': {
         'tr+': 100,
         'tr-': 0,
+        'delay': 10,
         'time': 0,
-        'on': False
+        'on': False,
+        'status': 'off'
     }
 }
 
@@ -562,20 +570,26 @@ alarm['FC301A'] = {
     'power': {
         'tr+': 10,
         'tr-': 10,
+        'delay': 10,
         'time': 0,
-        'on': False
+        'on': False,
+        'status': 'off'
     },
     'pressure': {
         'tr+': 20,
         'tr-': - 100,
+        'delay': 10,
         'time': 0,
-        'on': False
+        'on': False,
+        'status': 'off'
     },
     'H2': {
         'tr+': 100,
         'tr-': - 100,
+        'delay': 10,
         'time': 0,
-        'on': False
+        'on': False,
+        'status': 'off'
     }
 }
 
@@ -583,20 +597,26 @@ alarm['FC301B'] = {
     'power': {
         'tr+': 10,
         'tr-': 10,
+        'delay': 10,
         'time': 0,
-        'on': False
+        'on': False,
+        'status': 'off'
     },
     'pressure': {
         'tr+': 20,
         'tr-': - 100,
+        'delay': 10,
         'time': 0,
-        'on': False
+        'on': False,
+        'status': 'off'
     },
     'H2': {
         'tr+': 100,
         'tr-': - 100,
+        'delay': 10,
         'time': 0,
-        'on': False
+        'on': False,
+        'status': 'off'
     }
 }
 
