@@ -47,7 +47,8 @@ class Modbus:
                 print('error reading coils')
 
         else:
-            print('connessione non riuscita')
+            # print('connessione non riuscita')
+            pass
         return self.results
 
     def write_coil(self, address, value, unit):
@@ -57,4 +58,5 @@ class Modbus:
             except:
                 print('error writing coil')
         else:
-            print('connessione non riuscita')
+            # print('connessione non riuscita')
+            pass

@@ -1,7 +1,7 @@
-sel_util = False
-sel_settings = False
-sel_mb = False
-mb_conn = False
+sel_util = False        # indica se è aperta la finestra Sim o Util
+sel_settings = False    # Indica se è aperta la finestra Setting
+sel_mb = False          # indica se è aperta la finestra ModBus Config
+mb_conn = False         # indica se la connessione ModBus funziona correttamente
 
 
 par = dict()

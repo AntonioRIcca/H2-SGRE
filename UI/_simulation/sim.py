@@ -11,6 +11,8 @@ class Sim(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.set_data()
 
+        print('sim.py')
+
         cycle = QtCore.QTimer()
         cycle.timeout.connect(self.data)
         cycle.start(500)

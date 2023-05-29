@@ -21,11 +21,11 @@ ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
 class Main:
     def __init__(self):
-        # a = v.par
-        # self.sel_util = False
-        self.fake_on = False
-        self.settings_on = False
-        self.util = None
+        # self.fake_on = False
+        # self.settings_on = False
+        # self.util = None
+
+        # Inizializzazione delle variabili delle finestre
         self.sim = None
         self.set = None
         self.mb_set = None
@@ -33,140 +33,60 @@ class Main:
 
         self.mb = Modbus()
 
+        # elenco delle caselle DSB collegate alle schede analogiche ModBus
         self.disp = ['TI221', 'TI222', 'TI223', 'TI224', 'TI225', 'TI306',
                      'PI226', 'PI227', 'PI228', 'PI229', 'PI230', 'PI307',
                      'TT216', 'TT217', 'TT218', 'TT219', 'TT220']
 
+        # elenco delle elettrovalvole
         self.valves = ['EV103', 'EV104', 'EV302', 'EV303']
 
-        self.t = 0
-        self.t_last = 0
-        self.dt = 0
-        self.start_t = time.perf_counter()
+        # Inizializzazione delle variabili del timer
+        self.t = 0          # tempo relativo dall'avvio del software
+        self.t_last = 0     # tempo assoluto alla fine del ciclo precendente
+        self.dt = 0         # durata del ciclo
+        self.start_t = time.perf_counter()      #tempo assoluto dell'avvio del softare
 
         # self.main = Ui()
         self.app = QtWidgets.QApplication(sys.argv)
-        # self.app_util = QtWidgets.QApplication([])
 
-        # f1 = Thread(target=test2)
-        # f2 = Thread(target=test)
-
-        # f1 = Thread(target=self.open_util())
-        f2 = Thread(target=self.open_interface())
-
-        # f1.start()
-        f2.start()
-
-        # self.open_util()
-        # self.open_interface()
-
+        f0 = Thread(target=self.interface_open())
+        f0.start()
         pass
 
-    def open_util(self):
-        from UI._util.util import Util
-
-        # self.app_util = QtWidgets.QApplication([])
-        self.util = Util()
-        self.util.show()
-        # self.app_util.exec()
-        # self.app_util.quit()
-        v.sel_util = True
-
-    def open_sim(self):
-        from UI._simulation.sim import Sim
-
-        # self.app_util = QtWidgets.QApplication([])
-        self.sim = Sim()
-        self.sim.show()
-        # self.app_util.exec()
-        # self.app_util.quit()
-        v.sel_util = True
-
-    def open_settings(self):
-        from UI.settings.settings import Settings
-
-        # self.app_util = QtWidgets.QApplication([])
-        self.set = Settings()
-        self.set.show()
-        # self.app_util.exec()
-        # self.app_util.quit()
-        # v.sel_settings = True
-
-    def open_mb_set(self):
-        from UI.settings.mb_set import MbSetting
-        self.mb_set = MbSetting()
-        self.mb_set.show()
-
-    def open_interface(self):
-        self.main = Ui()
-
-        self.FC301_activation()
-
-        self.main.ui.EL101_start_PB.clicked.connect(self.EL101_switch)
-        self.main.ui.FC301_start_PB.clicked.connect(self.FC301_switch)
-        self.main.ui.fake_BTN.clicked.connect(self.fake)
-        self.main.ui.settings_BTN.clicked.connect(self.settings)
-        self.main.ui.mb_set_BTN.clicked.connect(self.mb_config)
-
-        for valve in ['EV103', 'EV104', 'EV302', 'EV303']:
-            # self.main.ui.EV103_img_LBL.mousePressEvent = partial(self.test, msg=valve)
-            self.main.ui.__getattribute__(valve + '_img_LBL').mouseDoubleClickEvent = \
-                partial(self.valve_clicked, valve=valve)
-        # self.main.ui.EV103_img_LBL.mouseDoubleClickEvent()
-
-        # self.main.ui.FC301_Pset_DSB.valueChanged.connect(self.set_params)
-        for elem in ['FC301A', 'FC301B', 'FC301', 'EL101']:
-            self.main.ui.__getattribute__(elem + '_Pset_DSB').valueChanged.connect(self.set_params)
-        for elem in ['FC301_split', 'FC301A_activation', 'FC301B_activation']:
-            self.main.ui.__getattribute__(elem + '_CkB').clicked.connect(self.FC301_activation)
-
-        timer = QtCore.QTimer()
-        timer.timeout.connect(self.refresh)
-        timer.start(1000)
-
-        self.main.ui.EL101_log_TE.setText('CIAO')
-
-        self.main.show()
-        self.app.exec()
-        # self.app.quit()
-
-    # def test(self, event, msg):
-    #     print(msg)
+    # def open_util(self):
+    #     from UI._util.util import Util
     #
-    #     print('cliccato')
-
-    def EL101_switch(self):
-        v.par['EL101']['start'] = self.main.ui.EL101_start_PB.isChecked()
-        self.valve_switch()
-        # self.set_params()
-        # self.refresh()
-        # v.par['EL101']['status'] = 'on'     # Todo: Da spostare
-
-        # if self.main.ui.EL101_start_PB.isChecked():
-        #     self.main.ui.EL101_start_PB.setText('STOP')
-        #     self.main.led_light('EL101_statusLed_LBL', 'on')
-        #     print('Start EL101')
-        # else:
-        #     self.main.ui.EL101_start_PB.setText('START')
-        #     self.main.led_light('EL101_statusLed_LBL', 'off')
-        #     print('Stop EL101')
-        # for line in ['EL101_out', 'S201', 'S202', 'S203', 'S204', 'S205', 'mainline1']:
-        #     self.main.ui.__getattribute__(line + '_LN').setVisible(self.main.ui.EL101_start_PB.isChecked())
-
-    def fake(self):
-        if not self.fake_on:
-            f1 = Thread(target=self.open_sim())
+    #     print('Open Util')
+    #
+    #     # self.app_util = QtWidgets.QApplication([])
+    #     self.util = Util()
+    #     self.util.show()
+    #     # self.app_util.exec()
+    #     # self.app_util.quit()
+    #     v.sel_util = True
+    #
+    def simul(self):
+        print('Fake')
+        if not v.sel_util:
+            f1 = Thread(target=self.simul_open())
             f1.start()
             f1.join()
-            self.fake_on = True
         else:
-            self.fake_on = False
             self.sim.close()
+        print(v.sel_util)
+
+    def simul_open(self):
+        # Apertuta della finestra simulazione (Fake)
+        from UI._simulation.sim import Sim
+        self.sim = Sim()
+        self.sim.show()
+        v.sel_util = True
 
     def settings(self):
-        # if not self.settings_on:
+        # Apertura della finestra Settings
         if not v.sel_settings:
-            f2 = Thread(target=self.open_settings())
+            f2 = Thread(target=self.settings_open())
             f2.start()
             f2.join()
             # self.settings_on = True
@@ -176,9 +96,16 @@ class Main:
             # self.settings_on = False
             self.set.close()
 
+    def settings_open(self):
+        from UI.settings.settings import Settings
+        self.set = Settings()
+        self.set.show()
+        v.sel_settings = True
+
     def mb_config(self):
+        # Apertura della finestra Modbus Config
         if not v.sel_mb:
-            f_mbs = Thread(target=self.open_mb_set())
+            f_mbs = Thread(target=self.mb_config_open())
             f_mbs.start()
             f_mbs.join()
             v.sel_mb = True
@@ -186,67 +113,105 @@ class Main:
             v.sel_mb = False
             self.mb_set.close()
 
+    def mb_config_open(self):
+        from UI.settings.mb_set import MbSetting
+        self.mb_set = MbSetting()
+        self.mb_set.show()
+        v.sel_mb = True
+
+    def interface_open(self):
+        self.main = Ui()
+
+        self.FC301_activation()
+
+        # -- Definizione delle azioni --------------------------------------------------------------------
+        self.main.ui.EL101_start_PB.clicked.connect(self.EL101_switch)
+        self.main.ui.FC301_start_PB.clicked.connect(self.FC301_switch)
+        self.main.ui.fake_BTN.clicked.connect(self.simul)
+        self.main.ui.settings_BTN.clicked.connect(self.settings)
+        self.main.ui.mb_set_BTN.clicked.connect(self.mb_config)
+
+        for valve in self.valves:   # Al doppio click sulle valvole, devono cambiare stato
+            self.main.ui.__getattribute__(valve + '_img_LBL').mouseDoubleClickEvent = \
+                partial(self.valve_clicked, valve=valve)
+
+        for elem in ['FC301A', 'FC301B', 'FC301', 'EL101']:
+            self.main.ui.__getattribute__(elem + '_Pset_DSB').valueChanged.connect(self.set_params)
+        for elem in ['FC301_split', 'FC301A_activation', 'FC301B_activation']:
+            self.main.ui.__getattribute__(elem + '_CkB').clicked.connect(self.FC301_activation)
+        # ------------------------------------------------------------------------------------------------
+
+        timer = QtCore.QTimer()
+        timer.timeout.connect(self.refresh)
+        timer.start(1000)
+
+        self.main.show()
+        self.app.exec()
+
+    def EL101_switch(self):
+        # cambia lo stato della variabile "start" per EL101
+        v.par['EL101']['start'] = self.main.ui.EL101_start_PB.isChecked()
+        self.valve_switch()     # richiamo delle funzioni relative alle valvole
+
     def FC301_switch(self):
+        # cambia lo stato della variabile "start" per FC301
         for disp in ['FC301', 'FC301A', 'FC301B']:
             v.par[disp]['start'] = self.main.ui.FC301_start_PB.isChecked()
-        self.valve_switch()
-        # self.set_params()
-        # self.refresh()
-
-        # if self.main.ui.FC301_start_PB.isChecked():
-        #     self.main.ui.EL101_start_PB.setText('STOP')
-        #     self.main.u3i.FC301A_GB.setEnabled(self.main.ui.FC301A_activation_CkB.isChecked())
-        #     self.main.ui.FC301B_GB.setEnabled(self.main.ui.FC301B_activation_CkB.isChecked())
-        #     self.main.led_light('FC301A_statusLed_LBL', 'on')
-        # else:
-        #     self.main.ui.EL101_start_PB.setText('START')
+        self.valve_switch()     # richiamo delle funzioni relative alle valvole
 
     def FC301_activation(self):
         for elem in ['FC301A', 'FC301B']:
+            # verifica delle FC abilitate, scrittura nel dizionario e disabilitazione delle FC disattive
             v.par[elem]['activated'] = self.main.ui.__getattribute__(elem + '_activation_CkB').isChecked()
             self.main.ui.__getattribute__(elem + '_GB').setEnabled(v.par[elem]['activated'])
-        # v.par['FC301A']['activated'] = self.main.ui.FC301A_activation_CkB.isChecked()
-        # v.par['FC301B']['activated'] = self.main.ui.FC301B_activation_CkB.isChecked()
 
+        # La funzione FC può essere attiva solo se almeno una FC è abilitata
         self.main.ui.FC301_start_PB.setEnabled(v.par['FC301A']['activated'] or v.par['FC301B']['activated'])
+
+        # Se la funzione FC è già attiva, si verifica se almeno una FC è attiva, altrimenti la funzione deve essere
+        # disattivata
         if self.main.ui.FC301_start_PB.isChecked():
             self.main.ui.FC301_start_PB.setChecked(v.par['FC301A']['activated'] or v.par['FC301B']['activated'])
             v.par['FC301']['start'] = self.main.ui.FC301_start_PB.isChecked()
-        self.main.ui.FC301_split_CkB.setEnabled(v.par['FC301A']['activated'] and v.par['FC301B']['activated'])
 
+        # Lo Split power delle FC è possibile se entrambe sono attive
+        self.main.ui.FC301_split_CkB.setEnabled(v.par['FC301A']['activated'] and v.par['FC301B']['activated'])
         if not (v.par['FC301A']['activated'] and v.par['FC301B']['activated']):
             self.main.ui.FC301_split_CkB.setChecked(False)
 
-        self.valve_switch()
-        self.set_params()
+        self.valve_switch()     # richiamo delle funzioni relative alle valvole
+        self.set_params()       # TODO: Da verificare se deve rimanere qui, o se ceve ricadere in refresh
 
     def valve_clicked(self, e, valve):
+        # la valvola cliccata deve cambiare stato: si inverte il valore in v.par
         v.par[valve]['val'] = not v.par[valve]['val']
+
+        # lo stesso valore viene scritto in v.dat
         ch = v.par[valve]['mb']['ch']
         reg = v.par[valve]['mb']['reg']
         v.dat[ch]['reg'][reg] = v.par[valve]['val']
+
+        # viene scritto il registro corrispondente su ModBus    TODO: Da capire se si vuole spostare in refresh
         self.valve_par_to_mb(item=valve)
 
     def valve_switch(self):
+        # Se EL101 è avviato, la valvola EV104 deve essere aperta, altrimenti deve essere chiusa
         v.par['EV104']['val'] = v.par['EL101']['start']
-        self.par_to_dat('EV104')
-        self.valve_par_to_mb('EV104')
+
+        # -- TODO: Da capire se si vuole spostare in refresh -------------------------------------
+        self.par_to_dat('EV104')        # lo stato della valvola viene scritto su v.dat
+        self.valve_par_to_mb('EV104')   # viene scritto il registro corrispondente su ModBus
+        # ----------------------------------------------------------------------------------------
+
+        # Se FC301 è avviato, la valvola EV303 deve essere aperta, altrimenti deve essere chiusa
         v.par['EV303']['val'] = v.par['FC301']['start']
-        self.par_to_dat('EV303')
-        self.valve_par_to_mb('EV303')
 
+        # -- TODO: Da capire se si vuole spostare in refresh -------------------------------------
+        self.par_to_dat('EV303')        # lo stato della valvola viene scritto su v.dat
+        self.valve_par_to_mb('EV303')   # viene scritto il registro corrispondente su ModBus
+        # ----------------------------------------------------------------------------------------
 
-        # if v.par['FC301']['start']:
-        #     self.main.ui.EV303_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowSX_20x20.png"))
-        # else:
-        #     self.main.ui.EV303_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopHoriz_20x20.png"))
-        #
-        # if v.par['EL101']['start']:
-        #     self.main.ui.EV104_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowDX_20x20.png"))
-        # else:
-        #     self.main.ui.EV104_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopHoriz_20x20.png"))
-
-    def valve_draw(self):
+    def valve_draw(self):   # Rappresentazioen grafica delle valvole
         if v.par['EV104']['val']:
             self.main.ui.EV104_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowDX_20x20.png"))
         else:
@@ -268,17 +233,19 @@ class Main:
             self.main.ui.EV302_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopVert_20x20.png"))
 
     def refresh(self):
-        self.mb_to_par()
+        self.mb_to_par()        # lettura dati da ModBus
 
-        if v.sel_util:
+        if v.sel_util:          # se la finestra fake è attiva, vengono letti i valori dalla finestra
             self.sim.data()
+            self.simulation()   # elaborazione dei dati dei dati dei dispisitivi in funzione dei dati di simulazione
 
-        self.simulation()
-
-        for elem in ['FC301A', 'FC301B']:
+        # viene stimato il consumo di H2 per le due FC: l'H2 viene parzializzato sulle FC attive sulla base delle
+        # potenze assirbite
+        for elem in ['FC301A', 'FC301B']:   # TODO: forse va spostato nella sezione di elaborazione dati
             v.par[elem]['H2'] = v.par['FC301']['H2'] * int(v.par[elem]['activated']) * v.par[elem]['Pread'] / \
                                 max((v.par['FC301A']['Pread'] + v.par['FC301B']['Pread']), 0.000001)
 
+        # --- Scrittura dei dati nell'interfaccia #TODO: da spostare in una sezione dedicata -----------------------
         for elem in ['FC301A', 'FC301B', 'EL101']:
             for param in ['Pset', 'Pread', 'H2']:
                 self.main.ui.__getattribute__(elem + '_' + param + '_DSB').setValue(v.par[elem][param])
@@ -296,8 +263,9 @@ class Main:
 
         for d in self.disp:
             self.main.ui.__getattribute__(d + '_DSB').setValue(v.par[d]['val'])
+        # ----------------------------------------------------------------------------------------------------------
 
-        self.valve_draw()
+        self.valve_draw()       # Aggiornamento grafico delle valvole
         self.visual_flux()
         # self.alarm_check()    # TODO: Bisogna definire la logica degli allarmi
         self.led_set()
