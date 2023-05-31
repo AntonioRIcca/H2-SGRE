@@ -180,7 +180,7 @@ class Main:
             self.main.ui.FC301_split_CkB.setChecked(False)
 
         self.valve_switch()     # richiamo delle funzioni relative alle valvole
-        self.set_params()       # TODO: Da verificare se deve rimanere qui, o se ceve ricadere in refresh
+        self.set_params()       # TODO: Da verificare se deve rimanere qui, o se deve ricadere in refresh
 
     def valve_clicked(self, e, valve):
         # la valvola cliccata deve cambiare stato: si inverte il valore in v.par
@@ -211,7 +211,7 @@ class Main:
         self.valve_par_to_mb('EV303')   # viene scritto il registro corrispondente su ModBus
         # ----------------------------------------------------------------------------------------
 
-    def valve_draw(self):   # Rappresentazioen grafica delle valvole
+    def valve_draw(self):   # Rappresentazione grafica delle valvole
         if v.par['EV104']['val']:
             self.main.ui.EV104_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowDX_20x20.png"))
         else:
@@ -237,10 +237,10 @@ class Main:
 
         if v.sel_util:          # se la finestra fake è attiva, vengono letti i valori dalla finestra
             self.sim.data()
-            self.simulation()   # elaborazione dei dati dei dati dei dispisitivi in funzione dei dati di simulazione
+            self.simulation()   # elaborazione dei dati dei dispositivi in funzione dei dati di simulazione
 
         # viene stimato il consumo di H2 per le due FC: l'H2 viene parzializzato sulle FC attive sulla base delle
-        # potenze assirbite
+        # potenze assorbite
         for elem in ['FC301A', 'FC301B']:   # TODO: forse va spostato nella sezione di elaborazione dati
             v.par[elem]['H2'] = v.par['FC301']['H2'] * int(v.par[elem]['activated']) * v.par[elem]['Pread'] / \
                                 max((v.par['FC301A']['Pread'] + v.par['FC301B']['Pread']), 0.000001)
@@ -266,21 +266,21 @@ class Main:
         # ----------------------------------------------------------------------------------------------------------
 
         self.valve_draw()       # Aggiornamento grafico delle valvole
-        self.visual_flux()
+        self.visual_flux()      # Aggiornamento grafico dei flussi
         # self.alarm_check()    # TODO: Bisogna definire la logica degli allarmi
-        self.led_set()
+        self.led_set()          # Aggiornamento dei led
 
-        self.main.ui.fake_BTN.setChecked(v.sel_util)
-        self.main.ui.settings_BTN.setChecked(v.sel_settings)
+        self.main.ui.fake_BTN.setChecked(v.sel_util)            # Aggiornamento dello stato del pulsante FAKE
+        self.main.ui.settings_BTN.setChecked(v.sel_settings)    # Aggiornamento dello stato del pulsante SETTINGS
 
-        self.t = time.perf_counter() - self.start_t
-        self.dt = time.perf_counter() - self.t_last
+        self.t = time.perf_counter() - self.start_t     # tempo dall'inizio dell'esecuzione
+        self.dt = time.perf_counter() - self.t_last     # tempo del singolo ciclo di refresh
         self.t_last = time.perf_counter()
         #
         # # self.set_params()
         # print('refresh \t %.3f\t%.3f' % (self.t, self.dt))
 
-    def set_params(self):
+    def set_params(self):   # Lettura dei parametri dall'interfaccia e scrittura in v.par
         print('set params')
         for elem in ['FC301A', 'FC301B', 'EL101']:
             v.par[elem]['Pset'] = self.main.ui.__getattribute__(elem + '_Pset_DSB').value()
@@ -299,21 +299,27 @@ class Main:
             self.main.ui.FC301_Pset_DSB.setValue(v.par['FC301A']['Pset'] * int(v.par['FC301A']['activated']) +
                                                  v.par['FC301B']['Pset'] * int(v.par['FC301B']['activated']))
 
-    def visual_flux(self):
+    def visual_flux(self):  # rappresentazione grafica dei flussi
+        # el = elettrolizzatore in produzione
         el = v.par['EL101']['start'] and v.par['EL101']['H2'] > 0 and v.par['EL101']['status'] == 'on' \
              and v.par['EV104']['val']
+
+        # fc = fuel cell alimentata
         fc = v.par['FC301']['start'] and v.par['FC301A']['H2'] + v.par['FC301B']['H2'] > 0 and \
              (v.par['FC301A']['status'] == 'on' or v.par['FC301B']['status'] == 'on') and v.par['EV303']['val']
+
         self.main.ui.EL101_out_LN.setVisible(el)
         for elem in ['FC301_in', 'mainline3', 'mainline2']:
             self.main.ui.__getattribute__(elem + '_LN').setVisible(fc)
         for elem in ['mainline1', 'S201', 'S202', 'S203', 'S204', 'S205']:
             self.main.ui.__getattribute__(elem + '_LN').setVisible(el or fc)
 
-    def simulation(self):
+    def simulation(self):   # Calcolo dei parametri in base alla schermata Simulations
         v.par['EL101']['Pread'] = self.main.ui.EL101_Pset_DSB.value() * (v.sim['EL101']['power'] / 100)
         v.par['EL101']['H2'] = v.par['EL101']['Pread'] * 3.3 / 1.2 * 0.06 * v.sim['EL101']['flux'] / 100
-        # v.par['EL101']['pressure'] = self.main.ui.EL101_Pset_DSB.value() * (v.sim['EL101']['pressure'] / 100)
+        v.par['EL101']['pressure'] = self.main.ui.EL101_Pset_DSB.value() * (v.sim['EL101']['pressure'] / 100)
+
+        # La pressione dell'elettrolizzatore è pari al massimo della pressione delle bombole
         a = []
         for i in ['S201', 'S202', 'S203', 'S204', 'S205']:
             # a.append(self.main.ui.PI226_DSB.value())
@@ -321,24 +327,25 @@ class Main:
             v.par[i] = copy.deepcopy(v.sim[i])
         v.par['EL101']['pressure'] = max(a) * v.sim['EL101']['pressure'] / 100
 
-    def alarm_check(self):
+    def alarm_check(self):  # Verifica degli stati di allarme
         # print('Delay = ' + str(v.alarm['EL101']['power']['delay']))
         # print('Time = ' + str(v.alarm['EL101']['power']['time']))
 
-        status = 0
         states = ['off', 'alert', 'warning']
 
-        # La verifica dell'allarme è viene eseguita se il dispositivo è attivato e se viene richiesta una potenza
-        # superiore a 0
         for disp in ['EL101', 'FC301A', 'FC301B']:
             log = ''
             print(disp)
 
+            # La verifica dell'allarme viene eseguita se il dispositivo è attivato e se viene richiesta una potenza
+            # superiore a 0
             if v.par[disp]['start'] and v.par[disp]['Pset'] != 0:
                 for p in ['power', 'pressure', 'H2']:
+                    # status = 0
 
+                    # "val" = valore del parametro in p.u.; "a" = soglie di allarme superiori e inferiori in p.u.)
                     if p == 'power':
-                        print('Pset : ' + str(v.par[disp]['Pread']) + '\tPread : ' + str(v.par[disp]['Pset']))
+                        # print('Pset : ' + str(v.par[disp]['Pread']) + '\tPread : ' + str(v.par[disp]['Pset']))
                         val = v.par[disp]['Pread'] / v.par[disp]['Pset']
                         a = [1 - v.alarm[disp][p]['tr-'] / 100, 1 + v.alarm[disp][p]['tr+'] / 100]
                     else:
@@ -346,31 +353,31 @@ class Main:
                         val = v.par[disp][p]
                         a = [v.alarm[disp][p]['tr-'], v.alarm[disp][p]['tr+']]
 
-                    # il dispositivo è in allarme se l'allarme è attivo, e se la pressione è al di fuori dei range di
+                    # il dispositivo è in allarme se l'allarme è attivo, e se il parametro è al di fuori dei range di
                     # ammissibilità
                     if v.alarm[disp][p]['on'] and (val > a[1] or val < a[0]):
-
-                        # se il dispositivo è in allarme, viene conteggiato il tempo di allarme, e il dispositivo si considera
-                        # in ALERT
+                        # se il dispositivo è in allarme, viene conteggiato il tempo di allarme, e il dispositivo si
+                        # considera in ALERT (status = 1)
                         status = 1
                         v.alarm[disp][p]['time'] += self.dt
                         # print('warning EL101 power')
 
-                        # se il tempo di alert supera il tempo di soglia, lo stato diventa WARNING
+                        # se il tempo di alert supera il tempo di soglia, lo stato diventa WARNING (status = 2)
                         if v.alarm[disp][p]['time'] >= v.alarm[disp][p]['delay']:
                             status = 2
                             # print('ALARM EL101 power')
                             pass
 
-                    else:   # se l'allarme per la grandezza indicata non è attivo, lo status di allarme è OFF
-                        status = 0
-                        v.alarm[disp][p]['time'] = 0
+                    else:   # se l'allarme per la grandezza indicata non è attivo...
+                        status = 0                      # ...lo status di allarme è OFF...
+                        v.alarm[disp][p]['time'] = 0    # ... e si azzera il tempo di alert.
 
-                    if status > 0:
-                        if log != '':
+                    if status > 0:  # Se il parametro è in WAORNING o in ALERT si compone il messaggio di errore
+                        if log != '':   # Se nel log c'era già qualcosa si aggiunge un rigo
                             log = log + '\n'
                         log = log + states[status] + ' ' + p + ' for device ' + disp
 
+                    # la relativa voce in v.alarm diventa "off", "warning" o "alert"
                     v.alarm[disp][p]['status'] = states[status]
 
                     # for p in ['pressure', 'H2']:
@@ -381,13 +388,15 @@ class Main:
                     #         print('warning EL101 ' + p)
                     #     else:
                     #         v.alarm['EL101'][p]['time'] = 0
+
+            # Se il componente è disattivo o non eroga/riceve potenza, si azzerano i tempi di alert per tutte le
+            # grandezze
             else:
                 for p in ['power', 'pressure', 'H2']:
                     v.alarm[disp][p]['time'] = 0
 
-
             # self.main.ui.EL101_log_TE.setText(log)
-            self.main.ui.__getattribute__(disp + '_log_TE').setText(log)
+            self.main.ui.__getattribute__(disp + '_log_TE').setText(log)    # Scrittura del log del dispositivo
             # print('log: ' + log)
 
             print()
@@ -399,23 +408,23 @@ class Main:
             #     # else:
             #     #     self.main.ui.EL101_log_TE.clear()
 
-    def led_set(self):
+    def led_set(self):  # Aggiornamento dei led
         for disp in ['EL101', 'FC301A', 'FC301B']:
 
             states = ['off', 'alert', 'warning']
-            if v.par[disp]['start']:
-                if v.par[disp]['Pset'] > 0:
+            if v.par[disp]['start']:    # Il controllo si fa solo se il dispositivo è stato avviato
+                if v.par[disp]['Pset'] > 0:     # se la potenza è maggiore di zero, il dispositivo è in ON
                     v.par[disp]['status'] = 'on'
-                else:
+                else:                           # altrimento il dispositivo è in standby
                     v.par[disp]['status'] = 'standby'
 
-                i = 0
+                i = 0   # indica lo stato di allarme maggiore per il dispositivo
                 for p in ['power', 'pressure', 'H2']:
                     i = max(i, states.index(v.alarm[disp][p]['status']))
                     # print(disp, p, i)
 
-                if i > 0:
-                    v.par[disp]['status'] = states[i]
+                if i > 0:   # dispositivo in Warning / Allarme
+                    v.par[disp]['status'] = states[i]   # scrittura dello stato
 
                 #     if v.alarm[disp][p]['time'] > 0:
                 #         v.par[disp]['status'] = 'alert'
@@ -424,14 +433,10 @@ class Main:
                 #     if v.alarm[disp][p]['time'] > 5:
                 #         v.par[disp]['status'] = 'warning'
                 #         break
-            else:
+            else:                       # Il dispositivo è in OFF
                 v.par[disp]['status'] = 'off'
 
-
-
-
-
-    def mb_to_par(self):
+    def mb_to_par(self):    # trasferimento dei valori da modbus a v.dat e quindi a v.par
         v.mb_conn = True    # se una lettura dal registro fallisce, diventa False
 
         # Lettura dei segnali analogici
@@ -440,40 +445,48 @@ class Main:
             for i in range(0, 8):
                 v.dat[ch]['reg'][i + 14] = regs[i]
 
+        # Considero i valori relativi agli indicatori inseriti in "self.disp"
         for d in self.disp:
             ch = v.par[d]['mb']['ch']
             reg = v.par[d]['mb']['reg']
             m = v.par[d]['mb']['scale']
             q = v.par[d]['mb']['offset']
-            v.par[d]['val'] = v.dat[ch]['reg'][reg] * m - q
+            v.par[d]['val'] = v.dat[ch]['reg'][reg] * m - q     # I valori sono corretti per fatt. di scala e offset
 
         # TODO: da testare
         # Lettura dei segnali digitali
         for ch in [11, 12, 13, 14]:
-            k = list(v.dat[ch]['reg'].keys())
+            k = list(v.dat[ch]['reg'].keys())   # lista dei registri da leggere
+            # read_coils legge sempre 8 registri, li tronco a 4
             regs = self.mb.read_holding(ch=ch, reg=0, count=4) + list(self.mb.read_coils(ch=ch, reg=16, count=4))[:4]
             for i in range(0, 8):
                 v.dat[ch]['reg'][k[i]] = regs[i]
+            # TODO: non li scrivo in v.par??????
 
         # ModBus Led setting
+        # durante la lettura da ModBus, v.mb_conn, se c'è un errore, v.mb_conn diventa False
         if v.mb_conn:
             self.main.led_light('mb_statusLed_LBL', 'on')
         else:
             self.main.led_light('mb_statusLed_LBL', 'warning')
 
-    def par_to_mb(self):
+    # -- Al momento questa funzione non viene usata ------------------------------------------------------------
+    def par_to_mb(self):    # Trasferimento dei segnali digitali dall'interfaccia al registro modbus dei DO
         for ch in [11, 12, 13, 14]:
             for reg in [16, 17, 18, 19]:
                 self.mb.write_coil(address=reg, value=bool(v.dat[ch]['reg'][reg]), unit=ch)
-        pass
+    # ----------------------------------------------------------------------------------------------------------
 
-    def valve_par_to_mb(self, item):
+    def valve_par_to_mb(self, item):    # Trasferimento dello stato di una valvola al registro ModBus dei DO
         ch = v.par[item]['mb']['ch']
         reg = v.par[item]['mb']['reg']
         print('prova scrittura registro ' + str(reg) + ' della unità ' + str(ch))
         self.mb.write_coil(address=reg, value=bool(v.dat[ch]['reg'][reg]), unit=ch)
 
-    def par_to_dat(self, item):
+        # TODO: Può essere una alternativa???
+        # self.mb.write_coil(address=reg, value=bool(v.par[item]['val']), unit=ch)
+
+    def par_to_dat(self, item):     # TODO: Potrebbe non essere necessario
         ch = v.par[item]['mb']['ch']
         reg = v.par[item]['mb']['reg']
         v.dat[ch]['reg'][reg] = v.par[item]['val']
