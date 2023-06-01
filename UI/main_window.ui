@@ -2040,7 +2040,7 @@
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
-   <widget class="QGroupBox" name="groupBox">
+   <widget class="QGroupBox" name="FC301_GB">
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -3447,13 +3447,13 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QGroupBox" name="monitor_GB">
+   <widget class="QGroupBox" name="mb_GB">
     <property name="geometry">
      <rect>
       <x>40</x>
       <y>720</y>
-      <width>111</width>
-      <height>71</height>
+      <width>381</width>
+      <height>81</height>
      </rect>
     </property>
     <property name="font">
@@ -3501,6 +3501,23 @@
       <string>Setting</string>
      </property>
     </widget>
+    <widget class="QTextEdit" name="mb_log_TE">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>20</y>
+       <width>251</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+    </widget>
    </widget>
    <zorder>EL101_out_LN</zorder>
    <zorder>mainline2_LN</zorder>
@@ -3539,12 +3556,12 @@
    <zorder>TT219_WGT</zorder>
    <zorder>TI225_WGT</zorder>
    <zorder>TT220_WGT</zorder>
-   <zorder>groupBox</zorder>
+   <zorder>FC301_GB</zorder>
    <zorder>EL101_GB</zorder>
    <zorder>S20X_GB</zorder>
    <zorder>fake_BTN</zorder>
    <zorder>settings_BTN</zorder>
-   <zorder>monitor_GB</zorder>
+   <zorder>mb_GB</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

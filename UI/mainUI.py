@@ -29,7 +29,7 @@ class Ui(QtWidgets.QMainWindow):
                                            "QPushButton::checked {background-color : rgb(170,95,58);}"
                                            )
 
-    def led_light(self, led, status):
+    def led_light(self, led, status):   # Settaggio grafico dei led
         leds = {
             'off': 'Led-OFF_20x20.png',
             'on': 'Led-Green_20x20.png',
@@ -41,9 +41,10 @@ class Ui(QtWidgets.QMainWindow):
         try:
             self.ui.__getattribute__(led).setPixmap(QtGui.QPixmap("UI/_resources/" + leds[status]))
         except:
-            print(led + ': Status led non riconosciuto')
+            # print(led + ': Status led non riconosciuto')
+            pass
 
-    def valve_stop_img(self):
+    def valve_stop_img(self):       # Settaggio grafico delle valvole
         for element in ['EV104', 'EV303']:
             self.ui.__getattribute__(element + '_img_LBL').setPixmap(QtGui.QPixmap("UI/_resources/StopHoriz_20x20"))
         self.ui.EV103_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowUp_20x20.png"))

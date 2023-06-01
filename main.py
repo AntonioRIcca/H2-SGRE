@@ -67,14 +67,14 @@ class Main:
     #     v.sel_util = True
     #
     def simul(self):
-        print('Fake')
+        # print('Fake')
         if not v.sel_util:
             f1 = Thread(target=self.simul_open())
             f1.start()
             f1.join()
         else:
             self.sim.close()
-        print(v.sel_util)
+        # print(v.sel_util)
 
     def simul_open(self):
         # Apertuta della finestra simulazione (Fake)
@@ -281,7 +281,7 @@ class Main:
         # print('refresh \t %.3f\t%.3f' % (self.t, self.dt))
 
     def set_params(self):   # Lettura dei parametri dall'interfaccia e scrittura in v.par
-        print('set params')
+        # print('set params')
         for elem in ['FC301A', 'FC301B', 'EL101']:
             v.par[elem]['Pset'] = self.main.ui.__getattribute__(elem + '_Pset_DSB').value()
         v.par['FC301A']['activated'] = self.main.ui.FC301A_activation_CkB.isChecked()
@@ -335,7 +335,7 @@ class Main:
 
         for disp in ['EL101', 'FC301A', 'FC301B']:
             log = ''
-            print(disp)
+            # print(disp)
 
             # La verifica dell'allarme viene eseguita se il dispositivo è attivato e se viene richiesta una potenza
             # superiore a 0
@@ -399,7 +399,7 @@ class Main:
             self.main.ui.__getattribute__(disp + '_log_TE').setText(log)    # Scrittura del log del dispositivo
             # print('log: ' + log)
 
-            print()
+            # print()
 
             # self.main.ui.EL101_log_TE.clear()
             # for p in ['power', 'pressure', 'H2']:
@@ -463,12 +463,14 @@ class Main:
                 v.dat[ch]['reg'][k[i]] = regs[i]
             # TODO: non li scrivo in v.par??????
 
+
         # ModBus Led setting
         # durante la lettura da ModBus, v.mb_conn, se c'è un errore, v.mb_conn diventa False
         if v.mb_conn:
             self.main.led_light('mb_statusLed_LBL', 'on')
         else:
             self.main.led_light('mb_statusLed_LBL', 'warning')
+        # TODO: Bisogna implementare la scrittura del log. Magari indicare quali canali modbus non sono funzionanti
 
     # -- Al momento questa funzione non viene usata ------------------------------------------------------------
     def par_to_mb(self):    # Trasferimento dei segnali digitali dall'interfaccia al registro modbus dei DO
@@ -480,7 +482,7 @@ class Main:
     def valve_par_to_mb(self, item):    # Trasferimento dello stato di una valvola al registro ModBus dei DO
         ch = v.par[item]['mb']['ch']
         reg = v.par[item]['mb']['reg']
-        print('prova scrittura registro ' + str(reg) + ' della unità ' + str(ch))
+        # print('prova scrittura registro ' + str(reg) + ' della unità ' + str(ch))
         self.mb.write_coil(address=reg, value=bool(v.dat[ch]['reg'][reg]), unit=ch)
 
         # TODO: Può essere una alternativa???

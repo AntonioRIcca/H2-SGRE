@@ -4,12 +4,13 @@ from _shared import variables as v
 # from pymodbus.constants import Endian
 # import time
 
+
 # Connection to device
-
-
 class Modbus:
     def __init__(self):
         self.results = [0, 0, 0, 0, 0, 0, 0, 0]
+
+        # Impostazione della connessione
         self.client = ModbusSerialClient(
             port="COM3",
             startbit=1,
@@ -25,30 +26,23 @@ class Modbus:
 
     def read_holding(self, reg=14, ch=21, count=8):
         self.results = [0, 0, 0, 0, 0, 0, 0, 0]
-        if self.client.connect():   # Connection to slave device
+        if self.client.connect():   # Connessione al dispositivo
             register = self.client.read_holding_registers(address=reg, count=count, unit=ch)
             self.results = register.registers
         else:
             v.mb_conn = False
-            pass
         return self.results
 
     def read_coils(self, ch=11, reg=16, count=4):
         self.results = [False, False, False, False, False]
-        # register = self.client.read_coils(address=reg, count=count, unit=ch)
-        # # register = self.client.read_input_registers(address=reg, count=count, unit=ch)
-        # self.results = register.bits
-
         if self.client.connect():
             try:
                 register = self.client.read_coils(address=reg, count=count, unit=ch)
                 self.results = register.bits
             except:
                 print('error reading coils')
-
         else:
-            # print('connessione non riuscita')
-            pass
+            v.mb_conn = False
         return self.results
 
     def write_coil(self, address, value, unit):
