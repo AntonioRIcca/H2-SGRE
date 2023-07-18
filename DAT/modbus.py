@@ -1,7 +1,7 @@
 try:
-    from pymodbus.client.sync import ModbusSerialClient     # Per pymodbus 2.x
+    from pymodbus.client.sync import ModbusSerialClient     # Per pymodbus 2.x e Python 3.7
 except:
-    from pymodbus.client import ModbusSerialClient          # per pymodbus 3.3.x
+    from pymodbus.client import ModbusSerialClient          # per pymodbus 3.3.x e Python 3.11
 
 from _shared import variables as v
 # from pymodbus.payload import BinaryPayloadDecoder
