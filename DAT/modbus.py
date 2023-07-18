@@ -1,4 +1,8 @@
-from pymodbus.client.sync import ModbusSerialClient
+try:
+    from pymodbus.client.sync import ModbusSerialClient     # Per pymodbus 2.x
+except:
+    from pymodbus.client import ModbusSerialClient          # per pymodbus 3.3.x
+
 from _shared import variables as v
 # from pymodbus.payload import BinaryPayloadDecoder
 # from pymodbus.constants import Endian
