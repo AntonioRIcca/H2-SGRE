@@ -24,7 +24,7 @@ class Sim(QtWidgets.QMainWindow):
             except:
                 y = 1
             v.par[elem]['Pread'] = self.ui.__getattribute__(elem + '_P_DSB').value() * y
-            v.par[elem]['status'] = self.ui.__getattribute__(elem + '_status_CB').currentText()
+            # v.par[elem]['status'] = self.ui.__getattribute__(elem + '_status_CB').currentText()
         v.par['EL101']['pressure'] = self.ui.EL101_pressure_DSB.value()
         v.par['EL101']['H2'] = self.ui.EL101_H2_DSB.value()
         v.par['TI306']['T'] = self.ui.TI306_T_DSB.value()
