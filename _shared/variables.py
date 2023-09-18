@@ -7,9 +7,9 @@ mb_conn = False         # indica se la connessione ModBus funziona correttamente
 par = dict()
 
 par['EL101'] = {
-    'Pset': 0,
-    'Pread': 0,
-    'H2': 2.6,
+    'power_set': 0,
+    'power': 0,
+    'flux': 2.6,
     'start': False,
     'log': '',
     'status': 'off',
@@ -233,14 +233,14 @@ par['EL101'] = {
 par['FC301'] = {
     'start': False,
     'split': False,
-    'H2': 0
+    'flux': 0
 }
 
 par['FC301A'] = {
-    'Pset': 0,
-    'Pread': 0,
+    'power_set': 0,
+    'power': 0,
     'pressure': 0,
-    'H2': 1.6,
+    'flux': 1.6,
     'log': '',
     'activated': False,
     'status': 'on',
@@ -248,10 +248,10 @@ par['FC301A'] = {
 }
 
 par['FC301B'] = {
-    'Pset': 0,
-    'Pread': 0,
+    'power_set': 0,
+    'power': 0,
     'pressure': 0,
-    'H2': 1.2,
+    'flux': 1.2,
     'log': '',
     'activated': False,
     'status': 'on',
@@ -558,7 +558,7 @@ alarm['EL101'] = {
         'on': True,
         'status': 'off'
     },
-    'H2': {
+    'flux': {
         'tr+': 100,
         'tr-': 0,
         'delay': 10,
@@ -585,7 +585,7 @@ alarm['FC301A'] = {
         'on': False,
         'status': 'off'
     },
-    'H2': {
+    'flux': {
         'tr+': 100,
         'tr-': - 100,
         'delay': 10,
@@ -612,7 +612,7 @@ alarm['FC301B'] = {
         'on': False,
         'status': 'off'
     },
-    'H2': {
+    'flux': {
         'tr+': 100,
         'tr-': - 100,
         'delay': 10,

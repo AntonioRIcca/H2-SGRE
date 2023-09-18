@@ -1,12 +1,17 @@
 import copy
+import os
 import sys
 from PyQt5 import QtWidgets, QtCore, QtGui
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 from UI.mainUI import Ui
 from _shared import variables as v
 from threading import Thread
 from functools import partial
 import time
+import datetime
+
+import sqlite3
 
 from DAT.modbus import Modbus
 
@@ -46,6 +51,8 @@ class Main:
         self.dt = 0         # durata del ciclo
         self.start_t = time.perf_counter()      #tempo assoluto dell'avvio del softare
 
+        self.db_init()
+
         # self.main = Ui()
         self.app = QtWidgets.QApplication(sys.argv)
 
@@ -64,6 +71,113 @@ class Main:
     #     # self.app_util.exec()
     #     # self.app_util.quit()
     #     v.sel_util = True
+
+    def db_init(self):
+        try:
+            os.remove('_database/dati.db')
+        except:
+            pass
+
+        now = datetime.datetime.now()
+        dbname = now.strftime('%Y%m%d_%H%M%S') + '.db'
+        print(dbname)
+
+        self.conn = sqlite3.connect('_database/' + dbname)
+
+        self.c = self.conn.cursor()
+        #
+        # self.c.execute('CREATE TABLE IF NOT EXISTS EL101('
+        #                'time REAL, '
+        #                'power REAL,'
+        #                'pressure REAL,'
+        #                'flux REAL,'
+        #                'status TEXT)')
+
+        for elem in ['EL101', 'FC301A', 'FC301B']:
+            self.c.execute('CREATE TABLE IF NOT EXISTS ' + elem + '('
+                           'time REAL, '
+                           'power REAL,'
+                           'pressure REAL, '
+                           'flux REAL,'
+                           'status TEXT)')
+
+        self.c.execute('CREATE TABLE IF NOT EXISTS valves('
+                       'time REAL, '
+                       'EV103 TEXT,'
+                       'EV104 TEXT,'
+                       'EV302 TEXT,'
+                       'EV303 TEXT)')
+
+        self.c.execute('CREATE TABLE IF NOT EXISTS pressures('
+                       'time REAL, '
+                       'PI226 REAL,'
+                       'PI227 REAL,'
+                       'PI228 REAL,'
+                       'PI229 REAL,'
+                       'PI230 REAL,'
+                       'PI307 REAL)')
+
+        self.c.execute('CREATE TABLE IF NOT EXISTS temperatures('
+                       'time REAL, '
+                       'TI221 REAL,'
+                       'TI222 REAL,'
+                       'TI223 REAL,'
+                       'TI224 REAL,'
+                       'TI225 REAL,'
+                       'TI306 REAL,'
+                       'TT216 REAL,'
+                       'TT217 REAL,'
+                       'TT218 REAL,'
+                       'TT219 REAL,'
+                       'TT220 REAL)')
+
+        self.conn.commit()
+        self.db_append()
+
+    def db_append(self, t=0):
+        t_string = (t,)
+        p_string = (t,)
+        for d in self.disp:
+            if d[:1] == 'T':
+                t_string = t_string + (v.par[d]['val'],)
+            else:
+                p_string = p_string + (v.par[d]['val'],)
+
+        db_string = 'INSERT INTO temperatures VALUES ('
+        for i in t_string:
+            db_string = db_string + '?, '
+        db_string = db_string[:len(db_string) - 2] + ')'
+        self.c.execute(db_string, t_string)
+
+        db_string = 'INSERT INTO pressures VALUES ('
+        for i in p_string:
+            db_string = db_string + '?, '
+        db_string = db_string[:len(db_string) - 2] + ')'
+        self.c.execute(db_string, p_string)
+
+        v_string = (t, )
+        for valve in self.valves:
+            v_string = v_string + (str(v.par[valve]['val']), )
+        db_string = 'INSERT INTO valves VALUES ('
+        for i in v_string:
+            db_string = db_string + '?, '
+        db_string = db_string[:len(db_string) - 2] + ')'
+        self.c.execute(db_string, v_string)
+
+        par = ['power', 'pressure', 'flux']
+        for dev in ['EL101', 'FC301A', 'FC301B']:
+            par_string = (t, )
+            for p in par:
+                par_string = par_string + (v.par[dev][p], )
+            par_string = par_string + (str(v.par[dev]['status']),)
+            db_string = 'INSERT INTO ' + dev + '  VALUES ('
+            for i in par_string:
+                db_string = db_string + '?, '
+            db_string = db_string[:len(db_string) - 2] + ')'
+            self.c.execute(db_string, par_string)
+
+        self.conn.commit()
+
     #
     def simul(self):
         # print('Fake')
@@ -241,24 +355,26 @@ class Main:
         # viene stimato il consumo di H2 per le due FC: l'H2 viene parzializzato sulle FC attive sulla base delle
         # potenze assorbite
         for elem in ['FC301A', 'FC301B']:   # TODO: forse va spostato nella sezione di elaborazione dati
-            v.par[elem]['H2'] = v.par['FC301']['H2'] * int(v.par[elem]['activated']) * v.par[elem]['Pread'] / \
-                                max((v.par['FC301A']['Pread'] + v.par['FC301B']['Pread']), 0.000001)
+            v.par[elem]['flux'] = v.par['FC301']['flux'] * int(v.par[elem]['activated']) * v.par[elem]['power'] / \
+                                max((v.par['FC301A']['power'] + v.par['FC301B']['power']), 0.000001)
 
         # --- Scrittura dei dati nell'interfaccia #TODO: da spostare in una sezione dedicata -----------------------
         for elem in ['FC301A', 'FC301B', 'EL101']:
-            for param in ['Pset', 'Pread', 'H2']:
-                self.main.ui.__getattribute__(elem + '_' + param + '_DSB').setValue(v.par[elem][param])
+            self.main.ui.__getattribute__(elem + '_Pset_DSB').setValue(v.par[elem]['power_set'])
+            self.main.ui.__getattribute__(elem + '_Pread_DSB').setValue(v.par[elem]['power'])
+            self.main.ui.__getattribute__(elem + '_H2_DSB').setValue(v.par[elem]['flux'])
+
             self.main.led_light(elem + '_statusLed_LBL', v.par[elem]['status'])
             self.main.ui.__getattribute__(elem + '_log_TE').setText(v.par[elem]['log'])
 
-        self.main.ui.FT102_DSB.setValue(v.par['EL101']['H2'])
-        self.main.ui.FT308_DSB.setValue(v.par['FC301A']['H2'] + v.par['FC301B']['H2'])
+        self.main.ui.FT102_DSB.setValue(v.par['EL101']['flux'])
+        self.main.ui.FT308_DSB.setValue(v.par['FC301A']['flux'] + v.par['FC301B']['flux'])
         # self.main.ui.PI307_DSB.setValue(v.par['PI307']['pressure'])
         # self.main.ui.TI306_DSB.setValue(v.par['TI306']['T'])
 
         self.main.ui.EL101_pressure_DSB.setValue(v.par['EL101']['pressure'])
-        self.main.ui.FC301_Pread_DSB.setValue(v.par['FC301A']['Pread'] + v.par['FC301B']['Pread'])
-        self.main.ui.FC301_H2_DSB.setValue(v.par['FC301']['H2'])
+        self.main.ui.FC301_Pread_DSB.setValue(v.par['FC301A']['power'] + v.par['FC301B']['power'])
+        self.main.ui.FC301_H2_DSB.setValue(v.par['FC301']['flux'])
 
         for d in self.disp:
             self.main.ui.__getattribute__(d + '_DSB').setValue(v.par[d]['val'])
@@ -275,6 +391,8 @@ class Main:
         self.t = time.perf_counter() - self.start_t     # tempo dall'inizio dell'esecuzione
         self.dt = time.perf_counter() - self.t_last     # tempo del singolo ciclo di refresh
         self.t_last = time.perf_counter()
+
+        self.db_append(self.t)
         #
         # # self.set_params()
         # print('refresh \t %.3f\t%.3f' % (self.t, self.dt))
@@ -282,25 +400,25 @@ class Main:
     def set_params(self):   # Lettura dei parametri dall'interfaccia e scrittura in v.par
         # print('set params')
         for elem in ['FC301A', 'FC301B', 'EL101']:
-            v.par[elem]['Pset'] = self.main.ui.__getattribute__(elem + '_Pset_DSB').value()
+            v.par[elem]['power_set'] = self.main.ui.__getattribute__(elem + '_Pset_DSB').value()
         v.par['FC301A']['activated'] = self.main.ui.FC301A_activation_CkB.isChecked()
         v.par['FC301B']['activated'] = self.main.ui.FC301B_activation_CkB.isChecked()
         v.par['FC301']['split'] = self.main.ui.FC301_split_CkB.isChecked()
         if self.main.ui.FC301_split_CkB.isChecked():
             for elem in ['FC301A', 'FC301B']:
-                v.par[elem]['Pset'] = self.main.ui.FC301_Pset_DSB.value() / 2
-                self.main.ui.__getattribute__(elem + '_Pset_DSB').setValue(v.par[elem]['Pset'])
+                v.par[elem]['power_set'] = self.main.ui.FC301_Pset_DSB.value() / 2
+                self.main.ui.__getattribute__(elem + '_Pset_DSB').setValue(v.par[elem]['power_set'])
             # v.par['FC301A']['Pset'] = self.main.ui.FC301_Pset_DSB.value() / 2
             # v.par['FC301B']['Pset'] = self.main.ui.FC301_Pset_DSB.value() / 2
         else:
-            v.par['FC301A']['Pset'] = self.main.ui.FC301A_Pset_DSB.value()
-            v.par['FC301B']['Pset'] = self.main.ui.FC301B_Pset_DSB.value()
-            self.main.ui.FC301_Pset_DSB.setValue(v.par['FC301A']['Pset'] * int(v.par['FC301A']['activated']) +
-                                                 v.par['FC301B']['Pset'] * int(v.par['FC301B']['activated']))
+            v.par['FC301A']['power_set'] = self.main.ui.FC301A_Pset_DSB.value()
+            v.par['FC301B']['power_set'] = self.main.ui.FC301B_Pset_DSB.value()
+            self.main.ui.FC301_Pset_DSB.setValue(v.par['FC301A']['power_set'] * int(v.par['FC301A']['activated']) +
+                                                 v.par['FC301B']['power_set'] * int(v.par['FC301B']['activated']))
 
     def visual_flux(self):  # rappresentazione grafica dei flussi
         # el = elettrolizzatore in produzione
-        el = v.par['EL101']['start'] and v.par['EL101']['H2'] > 0 and v.par['EL101']['status'] == 'on' \
+        el = v.par['EL101']['start'] and v.par['EL101']['flux'] > 0 and v.par['EL101']['status'] == 'on' \
              and v.par['EV104']['val']
 
         # fc = fuel cell alimentata
@@ -314,8 +432,8 @@ class Main:
             self.main.ui.__getattribute__(elem + '_LN').setVisible(el or fc)
 
     def simulation(self):   # Calcolo dei parametri in base alla schermata Simulations
-        v.par['EL101']['Pread'] = self.main.ui.EL101_Pset_DSB.value() * (v.sim['EL101']['power'] / 100)
-        v.par['EL101']['H2'] = v.par['EL101']['Pread'] * 3.3 / 1.2 * 0.06 * v.sim['EL101']['flux'] / 100
+        v.par['EL101']['power'] = self.main.ui.EL101_Pset_DSB.value() * (v.sim['EL101']['power'] / 100)
+        v.par['EL101']['flux'] = v.par['EL101']['power'] * 3.3 / 1.2 * 0.06 * v.sim['EL101']['flux'] / 100
         v.par['EL101']['pressure'] = self.main.ui.EL101_Pset_DSB.value() * (v.sim['EL101']['pressure'] / 100)
 
         # La pressione dell'elettrolizzatore è pari al massimo della pressione delle bombole
@@ -338,14 +456,14 @@ class Main:
 
             # La verifica dell'allarme viene eseguita se il dispositivo è attivato e se viene richiesta una potenza
             # superiore a 0
-            if v.par[disp]['start'] and v.par[disp]['Pset'] != 0:
-                for p in ['power', 'pressure', 'H2']:
+            if v.par[disp]['start'] and v.par[disp]['power_set'] != 0:
+                for p in ['power', 'pressure', 'flux']:
                     # status = 0
 
                     # "val" = valore del parametro in p.u.; "a" = soglie di allarme superiori e inferiori in p.u.)
                     if p == 'power':
                         # print('Pset : ' + str(v.par[disp]['Pread']) + '\tPread : ' + str(v.par[disp]['Pset']))
-                        val = v.par[disp]['Pread'] / v.par[disp]['Pset']
+                        val = v.par[disp]['power'] / v.par[disp]['power_set']
                         a = [1 - v.alarm[disp][p]['tr-'] / 100, 1 + v.alarm[disp][p]['tr+'] / 100]
                     else:
                         print(disp)
@@ -392,7 +510,7 @@ class Main:
             # Se il componente è disattivo o non eroga/riceve potenza, si azzerano i tempi di alert per tutte le
             # grandezze
             else:
-                for p in ['power', 'pressure', 'H2']:
+                for p in ['power', 'pressure', 'flux']:
                     v.alarm[disp][p]['time'] = 0
 
             # self.main.ui.EL101_log_TE.setText(log)
@@ -413,13 +531,13 @@ class Main:
 
             states = ['off', 'alert', 'warning']
             if v.par[disp]['start']:    # Il controllo si fa solo se il dispositivo è stato avviato
-                if v.par[disp]['Pset'] > 0:     # se la potenza è maggiore di zero, il dispositivo è in ON
+                if v.par[disp]['power_set'] > 0:     # se la potenza è maggiore di zero, il dispositivo è in ON
                     v.par[disp]['status'] = 'on'
                 else:                           # altrimento il dispositivo è in standby
                     v.par[disp]['status'] = 'standby'
 
                 i = 0   # indica lo stato di allarme maggiore per il dispositivo
-                for p in ['power', 'pressure', 'H2']:
+                for p in ['power', 'pressure', 'flux']:
                     i = max(i, states.index(v.alarm[disp][p]['status']))
                     # print(disp, p, i)
 
@@ -493,6 +611,10 @@ class Main:
         reg = v.par[item]['mb']['reg']
         v.dat[ch]['reg'][reg] = v.par[item]['val']
         pass
+
+    def graph_init(self):
+        pass
+
 
 
 def test():

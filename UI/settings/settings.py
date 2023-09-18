@@ -20,7 +20,7 @@ class Settings(QtWidgets.QMainWindow):
 
     def data(self):
         for elem in ['EL101']:
-            for p in ['power', 'pressure', 'H2']:
+            for p in ['power', 'pressure', 'flux']:
                 v.alarm[elem][p]['tr+'] = self.ui.__getattribute__(elem + '_' + p + '_max_DSB').value()
                 v.alarm[elem][p]['tr-'] = self.ui.__getattribute__(elem + '_' + p + '_min_DSB').value()
                 v.alarm[elem][p]['on'] = self.ui.__getattribute__(elem + '_' + p + '_act_CkB').isChecked()
@@ -29,7 +29,7 @@ class Settings(QtWidgets.QMainWindow):
 
     def set_data(self):
         for elem in ['EL101']:
-            for p in ['power', 'pressure', 'H2']:
+            for p in ['power', 'pressure', 'flux']:
                 # self.ui.EL101_P_max_DSB.setValue(v.alarm[elem][p]['tr+'])
                 self.ui.__getattribute__(elem + '_' + p + '_max_DSB').setValue(v.alarm[elem][p]['tr+'])
                 self.ui.__getattribute__(elem + '_' + p + '_min_DSB').setValue(v.alarm[elem][p]['tr-'])

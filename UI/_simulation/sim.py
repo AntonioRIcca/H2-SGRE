@@ -23,23 +23,26 @@ class Sim(QtWidgets.QMainWindow):
                 y = int(v.par[elem]['activated'])
             except:
                 y = 1
-            v.par[elem]['Pread'] = self.ui.__getattribute__(elem + '_P_DSB').value() * y
+            v.par[elem]['pressure'] = self.ui.__getattribute__(elem + '_P_DSB').value() * y
             # v.par[elem]['status'] = self.ui.__getattribute__(elem + '_status_CB').currentText()
         v.par['EL101']['pressure'] = self.ui.EL101_pressure_DSB.value()
-        v.par['EL101']['H2'] = self.ui.EL101_H2_DSB.value()
+        v.par['EL101']['flux'] = self.ui.EL101_H2_DSB.value()
         v.par['TI306']['T'] = self.ui.TI306_T_DSB.value()
         v.par['PI307']['pressure'] = self.ui.PI307_pressure_DSB.value()
-        v.par['FC301']['H2'] = self.ui.FC301_H2_DSB.value()
+        v.par['FC301']['flux'] = self.ui.FC301_H2_DSB.value()
         # for i in range(1, 6):
         #     for param in ['pressure', 'Tflux', 'Tvessel']:
         #         v.par['S20' + str(i)][param] = self.ui.__getattribute__('S20' + str(i) + '_' + param + '_DSB').value()
         # for valve in ['104', '103', '302', '303']:
         #     v.par['EV'][valve] = self.ui.__getattribute__('EV' + valve + '_CkB').isChecked()
         #
-        p = v.par['FC301A']['Pread'] + v.par['FC301B']['Pread']
+
+        v.par['FC301A']['power'] = self.ui.FC301A_P_DSB.value()
+        v.par['FC301B']['power'] = self.ui.FC301B_P_DSB.value()
+        p = v.par['FC301A']['power'] + v.par['FC301B']['power']
         if p != 0:
             for elem in ['FC301A', 'FC301B']:
-                v.par[elem]['H2'] = v.par['FC301']['H2'] * v.par[elem]['Pread'] / p
+                v.par[elem]['flux'] = v.par['FC301']['flux'] * v.par[elem]['power'] / p
         v.sim['EL101']['power'] = self.ui.EL101_P_DSB.value()
         v.sim['EL101']['pressure'] = self.ui.EL101_pressure_DSB.value()
         v.sim['EL101']['flux'] = self.ui.EL101_H2_DSB.value()

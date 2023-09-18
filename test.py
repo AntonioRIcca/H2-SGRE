@@ -1,43 +1,30 @@
-from pymodbus.client.sync import ModbusSerialClient
-from pymodbus.payload import BinaryPayloadDecoder
-from pymodbus.constants import Endian
+# import pymysql as msq
+import sqlite3
 import time
 
-# Connection to device
+from faker import Faker
 
+conn = sqlite3.connect('dati.db')
 
-client = ModbusSerialClient(
-    port="COM3",
-    startbit=1,
-    databits=8,
-    parity="N",
-    stopbits=2,
-    errorcheck="crc",
-    baudrate=38400,
-    method="RTU",
-    timeout=3,
-    # unit=11
-)
+c = conn.cursor()
 
+c.execute('CREATE TABLE IF NOT EXISTS utente(nome, indirizzo, numero, ip)')
+conn.commit()
 
-if client.connect():    # Connection to slave device
-    while True:
-        print("Connection Successful")
-        # register = client.read_coils(15, 2)
-        for i in [21, 22, 31]:
-            register = client.read_holding_registers(address=14, count=8, unit=i)
-            results = register.registers
-            print(results)
-        # register = client.read_holding_registers(address=14, count=8, unit=21)
-        # results = register.registers
-        # print(results)
-        # decoder = BinaryPayloadDecoder.fromRegisters(results, Endian.Big, wordorder=Endian.Little)
-        # print(decoder.decode_16bit_int())
-        # print(register[0])
-        # register.registers[0]
+faker = Faker()
+nome = faker.name()
 
-        time.sleep(1)
+c.execute('INSERT INTO utente VALUES (?, ?, ?, ?)', (nome, faker.address(), faker.phone_number(), faker.ipv4_public()))
+conn.commit()
 
-    # client.close()
-else:
-    print("Failed to connect to Modbus device")
+c.execute('SELECT * FROM utente WHERE nome = ?', (nome, ))
+utente = c.fetchone()
+print(utente)
+
+# c.execute('SELECT nome FROM utente')
+# names = c.fetchall()
+names = [n[0] for n in c.execute('SELECT nome FROM utente')]
+numbers = [float(n[0]) for n in c.execute('SELECT numero FROM utente')]
+print(names)
+print(numbers)
+print(float(numbers[1]))

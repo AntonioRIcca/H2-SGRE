@@ -141,7 +141,7 @@
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="EL101_H2_LBL">
+    <widget class="QLabel" name="EL101_flux_LBL">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -313,7 +313,7 @@
       <string>Activate</string>
      </property>
     </widget>
-    <widget class="QLabel" name="EL101_H2_sep_LBL">
+    <widget class="QLabel" name="EL101_flux_sep_LBL">
      <property name="geometry">
       <rect>
        <x>150</x>
@@ -335,7 +335,7 @@
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="EL101_H2_max_DSB">
+    <widget class="QDoubleSpinBox" name="EL101_flux_max_DSB">
      <property name="geometry">
       <rect>
        <x>160</x>
@@ -369,7 +369,7 @@
       <double>5.000000000000000</double>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="EL101_H2_min_DSB">
+    <widget class="QDoubleSpinBox" name="EL101_flux_min_DSB">
      <property name="geometry">
       <rect>
        <x>70</x>
@@ -403,7 +403,7 @@
       <double>0.000000000000000</double>
      </property>
     </widget>
-    <widget class="QCheckBox" name="EL101_H2_act_CkB">
+    <widget class="QCheckBox" name="EL101_flux_act_CkB">
      <property name="geometry">
       <rect>
        <x>260</x>
@@ -463,9 +463,9 @@
   <tabstop>EL101_pressure_min_DSB</tabstop>
   <tabstop>EL101_pressure_max_DSB</tabstop>
   <tabstop>EL101_pressure_act_CkB</tabstop>
-  <tabstop>EL101_H2_min_DSB</tabstop>
-  <tabstop>EL101_H2_max_DSB</tabstop>
-  <tabstop>EL101_H2_act_CkB</tabstop>
+  <tabstop>EL101_flux_min_DSB</tabstop>
+  <tabstop>EL101_flux_max_DSB</tabstop>
+  <tabstop>EL101_flux_act_CkB</tabstop>
   <tabstop>ok_PB</tabstop>
   <tabstop>cancel_PB</tabstop>
  </tabstops>
