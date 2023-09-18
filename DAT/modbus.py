@@ -57,4 +57,4 @@ class Modbus:
                 print('error writing coil')
         else:
             # print('connessione non riuscita')
-            pass
+            passm
