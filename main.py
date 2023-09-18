@@ -15,7 +15,6 @@ import ctypes
 
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
-
 # ---------------------------------------------
 
 
@@ -267,7 +266,7 @@ class Main:
 
         self.valve_draw()       # Aggiornamento grafico delle valvole
         self.visual_flux()      # Aggiornamento grafico dei flussi
-        # self.alarm_check()    # TODO: Bisogna definire la logica degli allarmi
+        self.alarm_check()    # TODO: Bisogna definire la logica degli allarmi
         self.led_set()          # Aggiornamento dei led
 
         self.main.ui.fake_BTN.setChecked(v.sel_util)            # Aggiornamento dello stato del pulsante FAKE
@@ -305,8 +304,8 @@ class Main:
              and v.par['EV104']['val']
 
         # fc = fuel cell alimentata
-        fc = v.par['FC301']['start'] and v.par['FC301A']['H2'] + v.par['FC301B']['H2'] > 0 and \
-             (v.par['FC301A']['status'] == 'on' or v.par['FC301B']['status'] == 'on') and v.par['EV303']['val']
+        fc = (v.par['FC301A']['status'] == 'on' or v.par['FC301B']['status'] == 'on') and v.par['EV303']['val'] and v.par['FC301']['start'] # and v.par['FC301A']['H2'] + v.par['FC301B']['H2'] > 0
+
 
         self.main.ui.EL101_out_LN.setVisible(el)
         for elem in ['FC301_in', 'mainline3', 'mainline2']:
@@ -349,6 +348,7 @@ class Main:
                         val = v.par[disp]['Pread'] / v.par[disp]['Pset']
                         a = [1 - v.alarm[disp][p]['tr-'] / 100, 1 + v.alarm[disp][p]['tr+'] / 100]
                     else:
+                        print(disp)
                         print(p + ': ' + str(v.par[disp][p]))
                         val = v.par[disp][p]
                         a = [v.alarm[disp][p]['tr-'], v.alarm[disp][p]['tr+']]
@@ -372,7 +372,7 @@ class Main:
                         status = 0                      # ...lo status di allarme è OFF...
                         v.alarm[disp][p]['time'] = 0    # ... e si azzera il tempo di alert.
 
-                    if status > 0:  # Se il parametro è in WAORNING o in ALERT si compone il messaggio di errore
+                    if status > 0:  # Se il parametro è in WARNING o in ALERT si compone il messaggio di errore
                         if log != '':   # Se nel log c'era già qualcosa si aggiunge un rigo
                             log = log + '\n'
                         log = log + states[status] + ' ' + p + ' for device ' + disp

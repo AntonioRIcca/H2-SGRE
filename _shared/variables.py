@@ -239,6 +239,7 @@ par['FC301'] = {
 par['FC301A'] = {
     'Pset': 0,
     'Pread': 0,
+    'pressure': 0,
     'H2': 1.6,
     'log': '',
     'activated': False,
@@ -249,6 +250,7 @@ par['FC301A'] = {
 par['FC301B'] = {
     'Pset': 0,
     'Pread': 0,
+    'pressure': 0,
     'H2': 1.2,
     'log': '',
     'activated': False,
@@ -467,7 +469,7 @@ par['PI307'] = {
 }
 
 par['EV103'] = {
-    'val': True,
+    'val': False,
     'mb': {
         'ch': 12,
         'reg': 18,
@@ -475,7 +477,7 @@ par['EV103'] = {
 }
 
 par['EV104'] = {
-    'val': True,
+    'val': False,
     'mb': {
         'ch': 12,
         'reg': 19,
