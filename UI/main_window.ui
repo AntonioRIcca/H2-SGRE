@@ -37,9 +37,12 @@
     <property name="currentIndex">
      <number>1</number>
     </property>
+    <property name="tabBarAutoHide">
+     <bool>false</bool>
+    </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
-      <string>Tab 1</string>
+      <string>Main</string>
      </attribute>
      <widget class="QLabel" name="pID_LBL">
       <property name="geometry">
@@ -3536,9 +3539,9 @@
       </widget>
      </widget>
     </widget>
-    <widget class="QWidget" name="graph">
+    <widget class="QWidget" name="trends">
      <attribute name="title">
-      <string>Tab 2</string>
+      <string>Trends</string>
      </attribute>
      <widget class="QTabWidget" name="graph_TW">
       <property name="geometry">
@@ -3561,11 +3564,44 @@
          <rect>
           <x>10</x>
           <y>10</y>
-          <width>631</width>
+          <width>621</width>
           <height>441</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="graph_power_VBL"/>
+       </widget>
+       <widget class="QWidget" name="verticalLayoutWidget_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>460</y>
+          <width>621</width>
+          <height>441</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="graph_xx_VBL"/>
+       </widget>
+       <widget class="QWidget" name="verticalLayoutWidget_3">
+        <property name="geometry">
+         <rect>
+          <x>640</x>
+          <y>10</y>
+          <width>621</width>
+          <height>441</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="graph_pressure_VBL"/>
+       </widget>
+       <widget class="QWidget" name="verticalLayoutWidget_4">
+        <property name="geometry">
+         <rect>
+          <x>1270</x>
+          <y>10</y>
+          <width>621</width>
+          <height>441</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="graph_flux_VBL"/>
        </widget>
       </widget>
       <widget class="QWidget" name="tab_3">

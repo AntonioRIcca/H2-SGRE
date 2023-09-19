@@ -3,6 +3,8 @@ import os
 import sys
 from PyQt5 import QtWidgets, QtCore, QtGui
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+import matplotlib.pyplot as plt
+import matplotlib
 
 from UI.mainUI import Ui
 from _shared import variables as v
@@ -95,11 +97,11 @@ class Main:
 
         for elem in ['EL101', 'FC301A', 'FC301B']:
             self.c.execute('CREATE TABLE IF NOT EXISTS ' + elem + '('
-                           'time REAL, '
-                           'power REAL,'
-                           'pressure REAL, '
-                           'flux REAL,'
-                           'status TEXT)')
+                                                                  'time REAL, '
+                                                                  'power REAL,'
+                                                                  'pressure REAL, '
+                                                                  'flux REAL,'
+                                                                  'status TEXT)')
 
         self.c.execute('CREATE TABLE IF NOT EXISTS valves('
                        'time REAL, '
@@ -235,6 +237,8 @@ class Main:
     def interface_open(self):
         self.main = Ui()
 
+        self.graph_init()
+
         self.FC301_activation()
 
         # -- Definizione delle azioni --------------------------------------------------------------------
@@ -356,7 +360,7 @@ class Main:
         # potenze assorbite
         for elem in ['FC301A', 'FC301B']:   # TODO: forse va spostato nella sezione di elaborazione dati
             v.par[elem]['flux'] = v.par['FC301']['flux'] * int(v.par[elem]['activated']) * v.par[elem]['power'] / \
-                                max((v.par['FC301A']['power'] + v.par['FC301B']['power']), 0.000001)
+                                  max((v.par['FC301A']['power'] + v.par['FC301B']['power']), 0.000001)
 
         # --- Scrittura dei dati nell'interfaccia #TODO: da spostare in una sezione dedicata -----------------------
         for elem in ['FC301A', 'FC301B', 'EL101']:
@@ -393,6 +397,7 @@ class Main:
         self.t_last = time.perf_counter()
 
         self.db_append(self.t)
+        self.graph_update()
         #
         # # self.set_params()
         # print('refresh \t %.3f\t%.3f' % (self.t, self.dt))
@@ -613,8 +618,81 @@ class Main:
         pass
 
     def graph_init(self):
-        pass
+        for par in ['power', 'pressure', 'flux']:
+            self.__setattr__('canv_' + par, FigureCanvas(plt.Figure(figsize=(3, 2))))
+            # self.__setattr__('ax_' + par, self.canv_power.figure.subplots())
 
+            self.__setattr__('ax_' + par, self.__getattribute__('canv_' + par).figure.subplots())
+            self.main.ui.__getattribute__('graph_' + par + '_VBL').addWidget(self.__getattribute__('canv_' + par))
+        #
+        #
+        # self.canvas = FigureCanvas(plt.Figure(figsize=(3, 2)))
+        # self.ax_power = self.canv_power.figure.subplots()
+        # # self.ax2 = self.canvas.figure.subplots()
+        # self.main.ui.graph_power_VBL.addWidget(self.canv_power)
+
+            i = 1
+            for el in ['EL101', 'FC301A', 'FC301B']:
+                self.__setattr__('line_' + el + '_' + par, self.__getattribute__('ax_' + par).plot([0, 100], [0, 5 * i],
+                                                                                                   label=el)[0])
+                # self.__setattr__('line_' + el, self.ax_power.plot([0, 100], [0, 5 * i], label=el)[0])
+                i +=1
+        #
+        #
+        # self.line, = self.ax.plot([0], [0], label="EL-101")
+        # self.line2, = self.ax.plot([0,1000], [0, 10], label="FC-301A")
+        #
+        # self.__setattr__('line3', self.ax.plot([0,1000], [0, 20], label="FC-301B"))
+
+            self.__setattr__('handles_' + par, self.__getattribute__('ax_' + par).get_legend_handles_labels()[0])
+            self.__setattr__('labels_' + par, self.__getattribute__('ax_' + par).get_legend_handles_labels()[1])
+
+            self.__getattribute__('ax_' + par).legend(self.__getattribute__('handles_' + par),
+                                                      self.__getattribute__('labels_' + par))
+
+        # handles, labels = self.ax_power.get_legend_handles_labels()
+        # self.ax_power.legend(handles, labels)
+
+        # self.ax.legend('1', '2')
+        self.graph_update()
+
+    def graph_update(self):
+        # t_line = [t[0] for t in self.c.execute('SELECT time FROM EL101')]
+        # p_el101 = [p[0] for p in self.c.execute('SELECT power FROM EL101')]
+
+        font = {
+            'weight': 'normal',
+            'size': 8
+        }
+        matplotlib.rc('font', **font)
+
+        for par in ['power', 'pressure', 'flux']:
+            max_t, max_p = 0, 0
+            for el in ['EL101', 'FC301A', 'FC301B']:
+                str_t = 'SELECT time FROM ' + el
+                str_p = 'SELECT '+ par + ' FROM ' + el
+                t_line = [t[0] for t in self.c.execute(str_t)]
+                p_line = [p[0] for p in self.c.execute(str_p)]
+                max_t, max_p = max(max_t, max(t_line)), max(max_p, max(p_line))
+                self.__getattribute__('line_' + el + '_' + par).set_xdata(t_line)
+                self.__getattribute__('line_' + el + '_' + par).set_ydata(p_line)
+
+            self.__getattribute__('ax_' + par).set_ylim([0, max_p * 1.1 + 0.1])
+            self.__getattribute__('ax_' + par).set_xlim([0, max_t * 1.1 + 0.1])
+            self.__getattribute__('ax_' + par).set_xlabel('Time [sec]')
+            self.ax_power.set_ylabel('Power [kW]')
+            self.ax_pressure.set_ylabel('Pressure [barg]')
+            self.ax_flux.set_ylabel('H2 Flux [Nm3/h]')
+
+            self.__getattribute__('canv_' + par).draw()
+            self.__getattribute__('canv_' + par).flush_events()
+        #
+        #
+        # self.line_EL101.set_xdata(t_line)
+        # self.line_EL101.set_ydata(p_el101)
+
+        # self.canv_power.draw()
+        # self.canv_power.flush_events()
 
 
 def test():
