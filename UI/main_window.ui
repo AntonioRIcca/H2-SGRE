@@ -35,7 +35,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="tabBarAutoHide">
      <bool>false</bool>
@@ -826,7 +826,7 @@
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="Line" name="mainline3_LN">
+     <widget class="Line" name="up_LN">
       <property name="geometry">
        <rect>
         <x>919</x>
@@ -2633,7 +2633,7 @@
        </property>
       </widget>
      </widget>
-     <widget class="Line" name="mainline1_LN">
+     <widget class="Line" name="vessel_LN">
       <property name="geometry">
        <rect>
         <x>919</x>
@@ -2712,7 +2712,7 @@
        </property>
       </widget>
      </widget>
-     <widget class="Line" name="mainline2_LN">
+     <widget class="Line" name="dx_LN">
       <property name="geometry">
        <rect>
         <x>1798</x>

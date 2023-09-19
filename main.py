@@ -51,51 +51,26 @@ class Main:
         self.t = 0          # tempo relativo dall'avvio del software
         self.t_last = 0     # tempo assoluto alla fine del ciclo precendente
         self.dt = 0         # durata del ciclo
-        self.start_t = time.perf_counter()      #tempo assoluto dell'avvio del softare
+        self.start_t = time.perf_counter()      # tempo assoluto dell'avvio del softarwe
 
-        self.db_init()
+        self.db_init()                          # Inizializzo il database di archivio
 
-        # self.main = Ui()
         self.app = QtWidgets.QApplication(sys.argv)
 
         f0 = Thread(target=self.interface_open())
         f0.start()
-        pass
 
-    # def open_util(self):
-    #     from UI._util.util import Util
-    #
-    #     print('Open Util')
-    #
-    #     # self.app_util = QtWidgets.QApplication([])
-    #     self.util = Util()
-    #     self.util.show()
-    #     # self.app_util.exec()
-    #     # self.app_util.quit()
-    #     v.sel_util = True
+    def db_init(self):      # Inizializzazione del database
 
-    def db_init(self):
-        try:
-            os.remove('_database/dati.db')
-        except:
-            pass
-
+        # il database avrà come nome la data e l'ora, in formato YYYYMMDD_hhmmss
         now = datetime.datetime.now()
         dbname = now.strftime('%Y%m%d_%H%M%S') + '.db'
-        print(dbname)
 
-        self.conn = sqlite3.connect('_database/' + dbname)
-
-        self.c = self.conn.cursor()
-        #
-        # self.c.execute('CREATE TABLE IF NOT EXISTS EL101('
-        #                'time REAL, '
-        #                'power REAL,'
-        #                'pressure REAL,'
-        #                'flux REAL,'
-        #                'status TEXT)')
+        self.conn = sqlite3.connect('_database/' + dbname)  # connessione al database
+        self.c = self.conn.cursor()                         # cursore di esecuzione
 
         for elem in ['EL101', 'FC301A', 'FC301B']:
+            # Tabella dei dispositivi di potenza
             self.c.execute('CREATE TABLE IF NOT EXISTS ' + elem + '('
                                                                   'time REAL, '
                                                                   'power REAL,'
@@ -103,6 +78,7 @@ class Main:
                                                                   'flux REAL,'
                                                                   'status TEXT)')
 
+        # tabella delle elettrovalvole
         self.c.execute('CREATE TABLE IF NOT EXISTS valves('
                        'time REAL, '
                        'EV103 TEXT,'
@@ -110,6 +86,7 @@ class Main:
                        'EV302 TEXT,'
                        'EV303 TEXT)')
 
+        # Tabella delle pressioni
         self.c.execute('CREATE TABLE IF NOT EXISTS pressures('
                        'time REAL, '
                        'PI226 REAL,'
@@ -119,6 +96,7 @@ class Main:
                        'PI230 REAL,'
                        'PI307 REAL)')
 
+        # Tabella delle temperature
         self.c.execute('CREATE TABLE IF NOT EXISTS temperatures('
                        'time REAL, '
                        'TI221 REAL,'
@@ -136,7 +114,9 @@ class Main:
         self.conn.commit()
         self.db_append()
 
-    def db_append(self, t=0):
+    def db_append(self, t=0):   # Aggiornamento del database
+
+        # creazione delle stringhe di scrittura sul database delle pressioni e delle temperature
         t_string = (t,)
         p_string = (t,)
         for d in self.disp:
@@ -145,18 +125,21 @@ class Main:
             else:
                 p_string = p_string + (v.par[d]['val'],)
 
+        # scrittura su database delle temperature
         db_string = 'INSERT INTO temperatures VALUES ('
         for i in t_string:
             db_string = db_string + '?, '
         db_string = db_string[:len(db_string) - 2] + ')'
         self.c.execute(db_string, t_string)
 
+        # scrittura su database delle pressioni
         db_string = 'INSERT INTO pressures VALUES ('
         for i in p_string:
             db_string = db_string + '?, '
         db_string = db_string[:len(db_string) - 2] + ')'
         self.c.execute(db_string, p_string)
 
+        # scrittura su database dello stato delle elettrovalvole
         v_string = (t, )
         for valve in self.valves:
             v_string = v_string + (str(v.par[valve]['val']), )
@@ -166,6 +149,7 @@ class Main:
         db_string = db_string[:len(db_string) - 2] + ')'
         self.c.execute(db_string, v_string)
 
+        # Scruttura su database delle letture di potenza, pressione e flusso di H2 dei dispositivi di potenza
         par = ['power', 'pressure', 'flux']
         for dev in ['EL101', 'FC301A', 'FC301B']:
             par_string = (t, )
@@ -181,63 +165,56 @@ class Main:
         self.conn.commit()
 
     #
-    def simul(self):
-        # print('Fake')
-        if not v.sel_util:
+    def simul(self):        # Azione al pulsante fake
+        if not v.sel_util:  # se la finestra di simulazione è chiusa, deve aprirla
             f1 = Thread(target=self.simul_open())
             f1.start()
             f1.join()
-        else:
+        else:               # se è aperta, dece chiuderla
             self.sim.close()
-        # print(v.sel_util)
 
-    def simul_open(self):
-        # Apertuta della finestra simulazione (Fake)
+    def simul_open(self):   # Apertuta della finestra simulazione (Fake)
         from UI._simulation.sim import Sim
         self.sim = Sim()
         self.sim.show()
         v.sel_util = True
 
-    def settings(self):
-        # Apertura della finestra Settings
-        if not v.sel_settings:
+    def settings(self):         # Azione pulsante Settings
+        if not v.sel_settings:  # se la finestra di settings è chiusa, deve aprirla
             f2 = Thread(target=self.settings_open())
             f2.start()
             f2.join()
-            # self.settings_on = True
             v.sel_settings = True
-        else:
+        else:                   # se è aperta, dece chiuderla
             v.sel_settings = False
-            # self.settings_on = False
             self.set.close()
 
-    def settings_open(self):
+    def settings_open(self):    # Apertura della finestra Settings
         from UI.settings.settings import Settings
         self.set = Settings()
         self.set.show()
         v.sel_settings = True
 
-    def mb_config(self):
-        # Apertura della finestra Modbus Config
-        if not v.sel_mb:
+    def mb_config(self):        # Azione del pulsante ModBus Settngs
+        if not v.sel_mb:        # se la finestra di configurazione Modbus è chiusa, deve aprirla
             f_mbs = Thread(target=self.mb_config_open())
             f_mbs.start()
             f_mbs.join()
             v.sel_mb = True
-        else:
+        else:                   # se è perta, deve chiuderla
             v.sel_mb = False
             self.mb_set.close()
 
-    def mb_config_open(self):
+    def mb_config_open(self):   # Apertura della finestra Modbus Config
         from UI.settings.mb_set import MbSetting
         self.mb_set = MbSetting()
         self.mb_set.show()
         v.sel_mb = True
 
-    def interface_open(self):
+    def interface_open(self):   # Impostazione e apertuda dell'interfaccia
         self.main = Ui()
 
-        self.graph_init()
+        self.graph_init()   # Inizializzazione dei Trend
 
         self.FC301_activation()
 
@@ -265,18 +242,16 @@ class Main:
         self.main.show()
         self.app.exec()
 
-    def EL101_switch(self):
-        # cambia lo stato della variabile "start" per EL101
+    def EL101_switch(self):     # cambia lo stato della variabile "start" per EL101
         v.par['EL101']['start'] = self.main.ui.EL101_start_PB.isChecked()
         self.valve_switch()     # richiamo delle funzioni relative alle valvole
 
-    def FC301_switch(self):
-        # cambia lo stato della variabile "start" per FC301
+    def FC301_switch(self):     # cambia lo stato della variabile "start" per le fuel cell
         for disp in ['FC301', 'FC301A', 'FC301B']:
             v.par[disp]['start'] = self.main.ui.FC301_start_PB.isChecked()
         self.valve_switch()     # richiamo delle funzioni relative alle valvole
 
-    def FC301_activation(self):
+    def FC301_activation(self):     # verifica sulle fuel cell
         for elem in ['FC301A', 'FC301B']:
             # verifica delle FC abilitate, scrittura nel dizionario e disabilitazione delle FC disattive
             v.par[elem]['activated'] = self.main.ui.__getattribute__(elem + '_activation_CkB').isChecked()
@@ -299,19 +274,19 @@ class Main:
         self.valve_switch()     # richiamo delle funzioni relative alle valvole
         self.set_params()       # TODO: Da verificare se deve rimanere qui, o se deve ricadere in refresh
 
-    def valve_clicked(self, e, valve):
-        # la valvola cliccata deve cambiare stato: si inverte il valore in v.par
+    def valve_clicked(self, e, valve):  # funzione al click sulle icone delle valvole
+        # la valvola cliccata ("valve") deve cambiare stato: si inverte il valore in v.par
         v.par[valve]['val'] = not v.par[valve]['val']
 
         # lo stesso valore viene scritto in v.dat
-        ch = v.par[valve]['mb']['ch']
-        reg = v.par[valve]['mb']['reg']
+        ch = v.par[valve]['mb']['ch']       # canale del dispositivo che aziona la valvola "valve"
+        reg = v.par[valve]['mb']['reg']     # registro modbus della valvìola "valve"
         v.dat[ch]['reg'][reg] = v.par[valve]['val']
 
         # viene scritto il registro corrispondente su ModBus    TODO: Da capire se si vuole spostare in refresh
         self.valve_par_to_mb(item=valve)
 
-    def valve_switch(self):
+    def valve_switch(self):     # Commutazione delle valvole, richiamato da azioni specifiche
         # Se EL101 è avviato, la valvola EV104 deve essere aperta, altrimenti deve essere chiusa
         v.par['EV104']['val'] = v.par['EL101']['start']
 
@@ -373,8 +348,6 @@ class Main:
 
         self.main.ui.FT102_DSB.setValue(v.par['EL101']['flux'])
         self.main.ui.FT308_DSB.setValue(v.par['FC301A']['flux'] + v.par['FC301B']['flux'])
-        # self.main.ui.PI307_DSB.setValue(v.par['PI307']['pressure'])
-        # self.main.ui.TI306_DSB.setValue(v.par['TI306']['T'])
 
         self.main.ui.EL101_pressure_DSB.setValue(v.par['EL101']['pressure'])
         self.main.ui.FC301_Pread_DSB.setValue(v.par['FC301A']['power'] + v.par['FC301B']['power'])
@@ -386,7 +359,7 @@ class Main:
 
         self.valve_draw()       # Aggiornamento grafico delle valvole
         self.visual_flux()      # Aggiornamento grafico dei flussi
-        self.alarm_check()    # TODO: Bisogna definire la logica degli allarmi
+        self.alarm_check()      # TODO: Bisogna definire la logica degli allarmi
         self.led_set()          # Aggiornamento dei led
 
         self.main.ui.fake_BTN.setChecked(v.sel_util)            # Aggiornamento dello stato del pulsante FAKE
@@ -396,47 +369,57 @@ class Main:
         self.dt = time.perf_counter() - self.t_last     # tempo del singolo ciclo di refresh
         self.t_last = time.perf_counter()
 
-        self.db_append(self.t)
-        self.graph_update()
-        #
-        # # self.set_params()
-        # print('refresh \t %.3f\t%.3f' % (self.t, self.dt))
+        self.db_append(self.t)                          # Aggiornamento del database
+        self.graph_update()                             # Aggiornamento dei grafici
 
     def set_params(self):   # Lettura dei parametri dall'interfaccia e scrittura in v.par
-        # print('set params')
         for elem in ['FC301A', 'FC301B', 'EL101']:
             v.par[elem]['power_set'] = self.main.ui.__getattribute__(elem + '_Pset_DSB').value()
         v.par['FC301A']['activated'] = self.main.ui.FC301A_activation_CkB.isChecked()
         v.par['FC301B']['activated'] = self.main.ui.FC301B_activation_CkB.isChecked()
         v.par['FC301']['split'] = self.main.ui.FC301_split_CkB.isChecked()
+
+        # se la casella SPLIT è attiva, si ripartisce la potenza sulle due fuel cell
         if self.main.ui.FC301_split_CkB.isChecked():
             for elem in ['FC301A', 'FC301B']:
                 v.par[elem]['power_set'] = self.main.ui.FC301_Pset_DSB.value() / 2
                 self.main.ui.__getattribute__(elem + '_Pset_DSB').setValue(v.par[elem]['power_set'])
-            # v.par['FC301A']['Pset'] = self.main.ui.FC301_Pset_DSB.value() / 2
-            # v.par['FC301B']['Pset'] = self.main.ui.FC301_Pset_DSB.value() / 2
-        else:
+
+        else:   # se lo split non è attivo, la potenza dipende solo dalle FC attive
             v.par['FC301A']['power_set'] = self.main.ui.FC301A_Pset_DSB.value()
             v.par['FC301B']['power_set'] = self.main.ui.FC301B_Pset_DSB.value()
             self.main.ui.FC301_Pset_DSB.setValue(v.par['FC301A']['power_set'] * int(v.par['FC301A']['activated']) +
                                                  v.par['FC301B']['power_set'] * int(v.par['FC301B']['activated']))
 
     def visual_flux(self):  # rappresentazione grafica dei flussi
-        # el = elettrolizzatore in produzione
-        el = v.par['EL101']['start'] and v.par['EL101']['flux'] > 0 and v.par['EL101']['status'] == 'on' \
-             and v.par['EV104']['val']
-
-        # fc = fuel cell alimentata
-        fc = (v.par['FC301A']['status'] == 'on' or v.par['FC301B']['status'] == 'on') and v.par['EV303']['val'] and v.par['FC301']['start'] # and v.par['FC301A']['H2'] + v.par['FC301B']['H2'] > 0
-
-
+        # Il flusso in uscita all'elettrolizzatore esiste se l'elettolizzatore è su START e il suo stato
+        # non è OFF o StandBy, e se l'elettrovalvola relativa è aperta
+        el = v.par['EL101']['start'] and v.par['EL101']['flux'] > 0 and v.par['EL101']['status'] != 'off' \
+             and v.par['EL101']['status'] != 'standby' and v.par['EV104']['val']
         self.main.ui.EL101_out_LN.setVisible(el)
-        for elem in ['FC301_in', 'mainline3', 'mainline2']:
-            self.main.ui.__getattribute__(elem + '_LN').setVisible(fc)
-        for elem in ['mainline1', 'S201', 'S202', 'S203', 'S204', 'S205']:
-            self.main.ui.__getattribute__(elem + '_LN').setVisible(el or fc)
+
+        # Il flusso in ingresso alle fuelcell esiste se almeno una FC è attiva con stato ON, se è avviata
+        # la generazione, se il MFC rileva flusso, e se l'elettrovalvola relativa è aperta
+        fc = ((v.par['FC301A']['status'] == 'on' or v.par['FC301B']['status'] == 'on')
+              and v.par['EV303']['val'] and v.par['FC301']['start'] and v.par['FC301']['flux'] > 0)
+        self.main.ui.FC301_in_LN.setVisible(fc)
+
+        # La linea destra e superire ha flusso se sono alimentate le FC o se è aperto il vent EV302
+        for elem in ['dx', 'up']:
+            self.main.ui.__getattribute__(elem + '_LN').setVisible(fc or v.par['EV302']['val'])
+
+        # Il flusso sulle linee delle bombole esiste se è in funzione l'EL, le FC o una delle valvole di vent
+        for elem in ['vessel', 'S201', 'S202', 'S203', 'S204', 'S205']:
+            self.main.ui.__getattribute__(elem + '_LN').setVisible(el or fc or v.par['EV103']['val']
+                                                                   or v.par['EV302']['val'])
+
+        # settaggio delle linee di vent
+        self.main.ui.EV103_LN.setVisible(v.par['EV103']['val'])
+        self.main.ui.EV302_LN.setVisible(v.par['EV302']['val'])
+        self.main.ui.vent_LN.setVisible(v.par['EV103']['val'] or v.par['EV302']['val'])
 
     def simulation(self):   # Calcolo dei parametri in base alla schermata Simulations
+        # estrapolazione dei valori di EL101 a partire dai valori percentuali della Simulazione
         v.par['EL101']['power'] = self.main.ui.EL101_Pset_DSB.value() * (v.sim['EL101']['power'] / 100)
         v.par['EL101']['flux'] = v.par['EL101']['power'] * 3.3 / 1.2 * 0.06 * v.sim['EL101']['flux'] / 100
         v.par['EL101']['pressure'] = self.main.ui.EL101_Pset_DSB.value() * (v.sim['EL101']['pressure'] / 100)
@@ -444,37 +427,28 @@ class Main:
         # La pressione dell'elettrolizzatore è pari al massimo della pressione delle bombole
         a = []
         for i in ['S201', 'S202', 'S203', 'S204', 'S205']:
-            # a.append(self.main.ui.PI226_DSB.value())
             a.append(v.sim[i]['pressure'])
             v.par[i] = copy.deepcopy(v.sim[i])
         v.par['EL101']['pressure'] = max(a) * v.sim['EL101']['pressure'] / 100
 
     def alarm_check(self):  # Verifica degli stati di allarme
-        # print('Delay = ' + str(v.alarm['EL101']['power']['delay']))
-        # print('Time = ' + str(v.alarm['EL101']['power']['time']))
-
         states = ['off', 'alert', 'warning']
 
         for disp in ['EL101', 'FC301A', 'FC301B']:
             log = ''
-            # print(disp)
 
             # La verifica dell'allarme viene eseguita se il dispositivo è attivato e se viene richiesta una potenza
             # superiore a 0
             if v.par[disp]['start'] and v.par[disp]['power_set'] != 0:
                 for p in ['power', 'pressure', 'flux']:
-                    # status = 0
-
-                    # "val" = valore del parametro in p.u.; "a" = soglie di allarme superiori e inferiori in p.u.)
-                    if p == 'power':
-                        # print('Pset : ' + str(v.par[disp]['Pread']) + '\tPread : ' + str(v.par[disp]['Pset']))
+                    if p == 'power':    # per la potenza, l'allarme si calcola in relazione allo scostamento relativo
                         val = v.par[disp]['power'] / v.par[disp]['power_set']
                         a = [1 - v.alarm[disp][p]['tr-'] / 100, 1 + v.alarm[disp][p]['tr+'] / 100]
                     else:
-                        print(disp)
-                        print(p + ': ' + str(v.par[disp][p]))
                         val = v.par[disp][p]
                         a = [v.alarm[disp][p]['tr-'], v.alarm[disp][p]['tr+']]
+                    # "val" è il valore della grandezza da analizzare
+                    # "a" è la lista degli estremi dell'intervallo di ammissibilità del valore
 
                     # il dispositivo è in allarme se l'allarme è attivo, e se il parametro è al di fuori dei range di
                     # ammissibilità
@@ -483,13 +457,10 @@ class Main:
                         # considera in ALERT (status = 1)
                         status = 1
                         v.alarm[disp][p]['time'] += self.dt
-                        # print('warning EL101 power')
 
                         # se il tempo di alert supera il tempo di soglia, lo stato diventa WARNING (status = 2)
                         if v.alarm[disp][p]['time'] >= v.alarm[disp][p]['delay']:
                             status = 2
-                            # print('ALARM EL101 power')
-                            pass
 
                     else:   # se l'allarme per la grandezza indicata non è attivo...
                         status = 0                      # ...lo status di allarme è OFF...
@@ -503,35 +474,15 @@ class Main:
                     # la relativa voce in v.alarm diventa "off", "warning" o "alert"
                     v.alarm[disp][p]['status'] = states[status]
 
-                    # for p in ['pressure', 'H2']:
-                    #     if v.alarm['EL101'][p]['on'] and \
-                    #             (v.par['EL101'][p] > v.alarm['EL101'][p]['tr+'] or
-                    #              v.par['EL101'][p] < v.alarm['EL101'][p]['tr-']):
-                    #         v.alarm['EL101'][p]['time'] += self.dt
-                    #         print('warning EL101 ' + p)
-                    #     else:
-                    #         v.alarm['EL101'][p]['time'] = 0
-
             # Se il componente è disattivo o non eroga/riceve potenza, si azzerano i tempi di alert per tutte le
             # grandezze
             else:
                 for p in ['power', 'pressure', 'flux']:
                     v.alarm[disp][p]['time'] = 0
 
-            # self.main.ui.EL101_log_TE.setText(log)
             self.main.ui.__getattribute__(disp + '_log_TE').setText(log)    # Scrittura del log del dispositivo
-            # print('log: ' + log)
 
-            # print()
-
-            # self.main.ui.EL101_log_TE.clear()
-            # for p in ['power', 'pressure', 'H2']:
-            #     if v.alarm['EL101'][p]['time'] > 5:
-            #         self.main.ui.EL101_log_TE.setText(self.main.ui.EL101_log_TE.toPlainText() + 'ERRORE EL101 ' + p + '\n')
-            #     # else:
-            #     #     self.main.ui.EL101_log_TE.clear()
-
-    def led_set(self):  # Aggiornamento dei led
+    def led_set(self):      # Aggiornamento dei led
         for disp in ['EL101', 'FC301A', 'FC301B']:
 
             states = ['off', 'alert', 'warning']
@@ -617,49 +568,34 @@ class Main:
         v.dat[ch]['reg'][reg] = v.par[item]['val']
         pass
 
-    def graph_init(self):
+    def graph_init(self):   # Inizializzazione dei Trend
+
+        # Creazione del FidureCanvas per i trend Potenza, Pressione e FLusso H2 dei dispositivi di potenza
         for par in ['power', 'pressure', 'flux']:
+            # Ogni Canvas si chiama "canv_PROPRIETÀ"
             self.__setattr__('canv_' + par, FigureCanvas(plt.Figure(figsize=(3, 2))))
-            # self.__setattr__('ax_' + par, self.canv_power.figure.subplots())
 
+            # In ogni Canvas, si aggiunge un diagramma chiamato "ax_PROPRIETÀ"
             self.__setattr__('ax_' + par, self.__getattribute__('canv_' + par).figure.subplots())
+
+            # Il Canvas viene aggiunto alla relativa Vertical Box Layout della ui
             self.main.ui.__getattribute__('graph_' + par + '_VBL').addWidget(self.__getattribute__('canv_' + par))
-        #
-        #
-        # self.canvas = FigureCanvas(plt.Figure(figsize=(3, 2)))
-        # self.ax_power = self.canv_power.figure.subplots()
-        # # self.ax2 = self.canvas.figure.subplots()
-        # self.main.ui.graph_power_VBL.addWidget(self.canv_power)
 
-            i = 1
+            # Per ogni dispositivo, si crea una linea del grafico chiamata "line_DISPOSITIVO_PROPRIETÀ"
             for el in ['EL101', 'FC301A', 'FC301B']:
-                self.__setattr__('line_' + el + '_' + par, self.__getattribute__('ax_' + par).plot([0, 100], [0, 5 * i],
-                                                                                                   label=el)[0])
-                # self.__setattr__('line_' + el, self.ax_power.plot([0, 100], [0, 5 * i], label=el)[0])
-                i +=1
-        #
-        #
-        # self.line, = self.ax.plot([0], [0], label="EL-101")
-        # self.line2, = self.ax.plot([0,1000], [0, 10], label="FC-301A")
-        #
-        # self.__setattr__('line3', self.ax.plot([0,1000], [0, 20], label="FC-301B"))
+                self.__setattr__('line_' + el + '_' + par,
+                                 self.__getattribute__('ax_' + par).plot([0, 100], [0, 10], label=el)[0])
 
+            # impostazione della legenda
             self.__setattr__('handles_' + par, self.__getattribute__('ax_' + par).get_legend_handles_labels()[0])
             self.__setattr__('labels_' + par, self.__getattribute__('ax_' + par).get_legend_handles_labels()[1])
-
             self.__getattribute__('ax_' + par).legend(self.__getattribute__('handles_' + par),
                                                       self.__getattribute__('labels_' + par))
 
-        # handles, labels = self.ax_power.get_legend_handles_labels()
-        # self.ax_power.legend(handles, labels)
-
-        # self.ax.legend('1', '2')
         self.graph_update()
 
-    def graph_update(self):
-        # t_line = [t[0] for t in self.c.execute('SELECT time FROM EL101')]
-        # p_el101 = [p[0] for p in self.c.execute('SELECT power FROM EL101')]
-
+    def graph_update(self): # Aggiornamento dei Trend
+        # Impostazione dello stile
         font = {
             'weight': 'normal',
             'size': 8
@@ -667,18 +603,25 @@ class Main:
         matplotlib.rc('font', **font)
 
         for par in ['power', 'pressure', 'flux']:
-            max_t, max_p = 0, 0
+            # Acquisizione dei dati dal database dei dispositivi
+            max_t, max_v = 0, 0 # valori massimi degli assi delle ascisse ed ordinate
             for el in ['EL101', 'FC301A', 'FC301B']:
-                str_t = 'SELECT time FROM ' + el
-                str_p = 'SELECT '+ par + ' FROM ' + el
-                t_line = [t[0] for t in self.c.execute(str_t)]
-                p_line = [p[0] for p in self.c.execute(str_p)]
-                max_t, max_p = max(max_t, max(t_line)), max(max_p, max(p_line))
+                str_t = 'SELECT time FROM ' + el            # stringa di acquisizione del tempo
+                str_v = 'SELECT ' + par + ' FROM ' + el     # stringa di acquisizione dei valori
+                t_line = [t[0] for t in self.c.execute(str_t)]  # lista dei valori dell'ascissa
+                p_line = [p[0] for p in self.c.execute(str_v)]  # lista dei valori dell'ordinata
+                max_t, max_v = max(max_t, max(t_line)), max(max_v, max(p_line))
+
+                # inserimento dei valori del tempo e della grandezza nella linea relativa
                 self.__getattribute__('line_' + el + '_' + par).set_xdata(t_line)
                 self.__getattribute__('line_' + el + '_' + par).set_ydata(p_line)
 
-            self.__getattribute__('ax_' + par).set_ylim([0, max_p * 1.1 + 0.1])
+            # impostazioni degli estremi degli assi
+            # il valore massimo delle liste è aumentato del 10%; viene aggiuntoi 0.1 per evutare che sia 0 (inizio)
+            self.__getattribute__('ax_' + par).set_ylim([0, max_v * 1.1 + 0.1])
             self.__getattribute__('ax_' + par).set_xlim([0, max_t * 1.1 + 0.1])
+
+            # impostazione deititoli degli assi
             self.__getattribute__('ax_' + par).set_xlabel('Time [sec]')
             self.ax_power.set_ylabel('Power [kW]')
             self.ax_pressure.set_ylabel('Pressure [barg]')
@@ -686,13 +629,6 @@ class Main:
 
             self.__getattribute__('canv_' + par).draw()
             self.__getattribute__('canv_' + par).flush_events()
-        #
-        #
-        # self.line_EL101.set_xdata(t_line)
-        # self.line_EL101.set_ydata(p_el101)
-
-        # self.canv_power.draw()
-        # self.canv_power.flush_events()
 
 
 def test():

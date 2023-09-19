@@ -18,8 +18,9 @@ class Ui(QtWidgets.QMainWindow):
             self.led_light(element + '_statusLed_LBL', 'off')
 
         for element in ['EL101_out', 'EV103', 'EV302', 'FC301_in', 'S201', 'S202', 'S203', 'S204', 'S205',
-                        'mainline1', 'mainline2', 'mainline3', 'vent']:
+                        'vessel', 'dx', 'up', 'vent']:
             self.ui.__getattribute__(element + '_LN').setVisible(False)
+
         self.valve_stop_img()
 
         self.ui.fake_BTN.setStyleSheet("QPushButton {background-color : rgb(151,186,123);}"
