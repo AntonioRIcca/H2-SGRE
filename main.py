@@ -487,26 +487,18 @@ class Main:
 
             states = ['off', 'alert', 'warning']
             if v.par[disp]['start']:    # Il controllo si fa solo se il dispositivo è stato avviato
-                if v.par[disp]['power_set'] > 0:     # se la potenza è maggiore di zero, il dispositivo è in ON
+                if v.par[disp]['power_set'] > 0:    # se la potenza è maggiore di zero, il dispositivo è in ON
                     v.par[disp]['status'] = 'on'
-                else:                           # altrimento il dispositivo è in standby
+                else:                               # altrimento il dispositivo è in standby
                     v.par[disp]['status'] = 'standby'
 
                 i = 0   # indica lo stato di allarme maggiore per il dispositivo
                 for p in ['power', 'pressure', 'flux']:
                     i = max(i, states.index(v.alarm[disp][p]['status']))
-                    # print(disp, p, i)
 
                 if i > 0:   # dispositivo in Warning / Allarme
                     v.par[disp]['status'] = states[i]   # scrittura dello stato
 
-                #     if v.alarm[disp][p]['time'] > 0:
-                #         v.par[disp]['status'] = 'alert'
-                #         break
-                # for p in ['power', 'pressure', 'H2']:
-                #     if v.alarm[disp][p]['time'] > 5:
-                #         v.par[disp]['status'] = 'warning'
-                #         break
             else:                       # Il dispositivo è in OFF
                 v.par[disp]['status'] = 'off'
 
@@ -514,7 +506,7 @@ class Main:
         v.mb_conn = True    # se una lettura dal registro fallisce, diventa False
 
         # Lettura dei segnali analogici
-        for ch in [21, 22, 31]:
+        for ch in [21, 22, 31]:     # todo: probabilmente i canali devono essere letti dalla configurazione
             regs = self.mb.read_holding(ch=ch)
             for i in range(0, 8):
                 v.dat[ch]['reg'][i + 14] = regs[i]
@@ -529,7 +521,7 @@ class Main:
 
         # TODO: da testare
         # Lettura dei segnali digitali
-        for ch in [11, 12, 13, 14]:
+        for ch in [11, 12, 13, 14]:     # todo: probabilmente i canali devono essere letti dalla configurazione
             k = list(v.dat[ch]['reg'].keys())   # lista dei registri da leggere
             # read_coils legge sempre 8 registri, li tronco a 4
             regs = self.mb.read_holding(ch=ch, reg=0, count=4) + list(self.mb.read_coils(ch=ch, reg=16, count=4))[:4]
