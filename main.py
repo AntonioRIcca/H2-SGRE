@@ -303,7 +303,7 @@ class Main:
         self.valve_par_to_mb('EV303')   # viene scritto il registro corrispondente su ModBus
         # ----------------------------------------------------------------------------------------
 
-    def valve_draw(self):   # Rappresentazione grafica delle valvole
+    def valve_draw(self):   # Rappresentazione grafica delle valvole__
         if v.par['EV104']['val']:
             self.main.ui.EV104_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/arrowDX_20x20.png"))
         else:
