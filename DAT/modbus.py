@@ -16,7 +16,7 @@ class Modbus:
 
         # Impostazione della connessione
         self.client = ModbusSerialClient(
-            port="COM3",
+            port="COM2",    #TODO: inserire la COM esatta
             startbit=1,
             databits=8,
             parity="N",
@@ -31,7 +31,7 @@ class Modbus:
     def read_holding(self, reg=14, ch=21, count=8):
         self.results = [0, 0, 0, 0, 0, 0, 0, 0]
         if self.client.connect():   # Connessione al dispositivo
-            register = self.client.read_holding_registers(address=reg, count=count, unit=ch)
+            register = self.client.read_holding_registers(address=reg, count=count, slave=ch)
             self.results = register.registers
         else:
             v.mb_conn = False
@@ -41,7 +41,7 @@ class Modbus:
         self.results = [False, False, False, False, False]
         if self.client.connect():
             try:
-                register = self.client.read_coils(address=reg, count=count, unit=ch)
+                register = self.client.read_coils(address=reg, count=count, slave=ch)
                 self.results = register.bits
             except:
                 print('error reading coils')
@@ -52,7 +52,7 @@ class Modbus:
     def write_coil(self, address, value, unit):
         if self.client.connect():
             try:
-                self.client.write_coil(address=address, value=value, unit=unit)
+                self.client.write_coil(address=address, value=value, slave=unit)
             except:
                 print('error writing coil')
         else:
