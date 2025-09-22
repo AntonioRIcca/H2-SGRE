@@ -4,7 +4,7 @@ from pymodbus.client import ModbusSerialClient  # per pymodbus 3.3.x e Python 3.
 mb_conn = True
 
 client = ModbusSerialClient(
-    port="COM2",  # TODO: inserire la COM esatta
+    port="COM6",  # TODO: inserire la COM esatta
     startbit=1,
     databits=8,
     parity="N",

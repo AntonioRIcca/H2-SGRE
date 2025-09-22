@@ -233,7 +233,8 @@ par['EL101'] = {
 par['FC301'] = {
     'start': False,
     'split': False,
-    'flux': 0
+    'flux': 0,
+    'power': 0,
 }
 
 par['FC301A'] = {

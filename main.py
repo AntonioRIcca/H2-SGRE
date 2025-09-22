@@ -228,7 +228,7 @@ class Main:
         # -- Definizione delle azioni --------------------------------------------------------------------
         self.main.ui.EL101_start_PB.clicked.connect(self.EL101_switch)
         self.main.ui.FC301_start_PB.clicked.connect(self.FC301_switch)
-        self.main.ui.fake_BTN.clicked.connect(self.simul)
+        # self.main.ui.fake_BTN.clicked.connect(self.simul) # TODO: da riattivare per la simulazione attiva
         self.main.ui.settings_BTN.clicked.connect(self.settings)
         self.main.ui.mb_set_BTN.clicked.connect(self.mb_config)
 
@@ -357,7 +357,8 @@ class Main:
         self.main.ui.FT308_DSB.setValue(v.par['FC301A']['flux'] + v.par['FC301B']['flux'])
 
         self.main.ui.EL101_pressure_DSB.setValue(v.par['EL101']['pressure'])
-        self.main.ui.FC301_Pread_DSB.setValue(v.par['FC301A']['power'] + v.par['FC301B']['power'])
+        self.main.ui.FC301_Pread_DSB.setValue(v.par['FC301']['power'])
+        # self.main.ui.FC301_Pread_DSB.setValue(v.par['FC301A']['power'] + v.par['FC301B']['power'])
         self.main.ui.FC301_H2_DSB.setValue(v.par['FC301']['flux'])
 
         for d in self.disp:
@@ -399,6 +400,33 @@ class Main:
                                                  v.par['FC301B']['power_set'] * int(v.par['FC301B']['activated']))
 
     def visual_flux(self):  # rappresentazione grafica dei flussi
+
+        # -- Gestione Fake semplificata dei flussi (solo se si esclude SIM.ui ----------------------------------------
+        if v.par['FC301']['start']:
+            for fc in ['FC301A', 'FC301B']:
+                v.par[fc]['activated'] = self.main.ui.__getattribute__(fc + '_activation_CkB').isChecked()
+                if v.par[fc]['activated']:
+                    v.par[fc]['power'] = v.par[fc]['power_set']
+                    v.par[fc]['flux'] = v.par[fc]['power_set'] / 2.5 * 2
+                else:
+                    v.par[fc]['power'] = 0
+                    v.par[fc]['flux'] = 0
+        else:
+            for fc in ['FC301A', 'FC301B']:
+                v.par[fc]['power'] = 0
+                v.par[fc]['flux'] = 0
+
+        v.par['FC301']['flux'] = v.par['FC301A']['flux'] + v.par['FC301B']['flux']
+        v.par['FC301']['power'] = v.par['FC301A']['power'] + v.par['FC301B']['power']
+
+        if v.par['EL101']['start']:
+            v.par['EL101']['power'] = v.par['EL101']['power_set']
+            v.par['EL101']['flux'] = v.par['EL101']['power_set'] * 0.12
+        else:
+            v.par['EL101']['power'] = 0
+            v.par['EL101']['flux'] = 0
+        # ------------------------------------------------------------------------------------------------------------
+
         # Il flusso in uscita all'elettrolizzatore esiste se l'elettolizzatore è su START e il suo stato
         # non è OFF o StandBy, e se l'elettrovalvola relativa è aperta
         el = v.par['EL101']['start'] and v.par['EL101']['flux'] > 0 and v.par['EL101']['status'] != 'off' \

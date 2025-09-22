@@ -1583,8 +1583,11 @@
         <property name="decimals">
          <number>3</number>
         </property>
+        <property name="maximum">
+         <double>2.500000000000000</double>
+        </property>
         <property name="value">
-         <double>12.345000000000001</double>
+         <double>0.000000000000000</double>
         </property>
        </widget>
        <widget class="QLabel" name="FC301A_P_LBL">
@@ -1647,8 +1650,11 @@
         <property name="decimals">
          <number>2</number>
         </property>
+        <property name="maximum">
+         <double>99.989999999999995</double>
+        </property>
         <property name="value">
-         <double>12.350000000000000</double>
+         <double>0.000000000000000</double>
         </property>
        </widget>
        <widget class="QLabel" name="FC301A_H2_LBL">
@@ -1757,8 +1763,11 @@
         <property name="decimals">
          <number>3</number>
         </property>
+        <property name="maximum">
+         <double>99.989999999999995</double>
+        </property>
         <property name="value">
-         <double>12.345000000000001</double>
+         <double>0.000000000000000</double>
         </property>
        </widget>
       </widget>
@@ -1812,8 +1821,11 @@
         <property name="decimals">
          <number>3</number>
         </property>
+        <property name="maximum">
+         <double>2.500000000000000</double>
+        </property>
         <property name="value">
-         <double>12.345000000000001</double>
+         <double>0.000000000000000</double>
         </property>
        </widget>
        <widget class="QLabel" name="FC301B_P_LBL">
@@ -1876,8 +1888,11 @@
         <property name="decimals">
          <number>2</number>
         </property>
+        <property name="maximum">
+         <double>99.989999999999995</double>
+        </property>
         <property name="value">
-         <double>12.350000000000000</double>
+         <double>0.000000000000000</double>
         </property>
        </widget>
        <widget class="QLabel" name="FC301B_H2_LBL">
@@ -1986,8 +2001,11 @@
         <property name="decimals">
          <number>3</number>
         </property>
+        <property name="maximum">
+         <double>99.989999999999995</double>
+        </property>
         <property name="value">
-         <double>12.345000000000001</double>
+         <double>0.000000000000000</double>
         </property>
        </widget>
       </widget>
@@ -2071,8 +2089,11 @@
        <property name="decimals">
         <number>3</number>
        </property>
+       <property name="maximum">
+        <double>5.000000000000000</double>
+       </property>
        <property name="value">
-        <double>12.345000000000001</double>
+        <double>0.000000000000000</double>
        </property>
       </widget>
       <widget class="QDoubleSpinBox" name="FC301_H2_DSB">
@@ -2113,7 +2134,7 @@
         <number>2</number>
        </property>
        <property name="value">
-        <double>12.350000000000000</double>
+        <double>0.000000000000000</double>
        </property>
       </widget>
       <widget class="QCheckBox" name="FC301B_activation_CkB">
@@ -2214,7 +2235,7 @@
         <number>3</number>
        </property>
        <property name="value">
-        <double>12.345000000000001</double>
+        <double>0.000000000000000</double>
        </property>
       </widget>
      </widget>
@@ -3160,7 +3181,7 @@
         <number>3</number>
        </property>
        <property name="value">
-        <double>12.345000000000001</double>
+        <double>0.000000000000000</double>
        </property>
       </widget>
       <widget class="QLabel" name="EL101_P_LBL">
@@ -3224,7 +3245,7 @@
         <number>2</number>
        </property>
        <property name="value">
-        <double>12.350000000000000</double>
+        <double>0.000000000000000</double>
        </property>
       </widget>
       <widget class="QLabel" name="EL101_H2_LBL">
@@ -3341,7 +3362,7 @@
         <number>3</number>
        </property>
        <property name="value">
-        <double>12.345000000000001</double>
+        <double>0.000000000000000</double>
        </property>
       </widget>
       <widget class="QDoubleSpinBox" name="EL101_pressure_DSB">
@@ -3379,7 +3400,7 @@
         <number>3</number>
        </property>
        <property name="value">
-        <double>12.345000000000001</double>
+        <double>0.000000000000000</double>
        </property>
       </widget>
       <widget class="QLabel" name="EL101_pressure_LBL">
