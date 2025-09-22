@@ -1134,6 +1134,8 @@ class Ui_main_window(object):
         self.EL101_Pset_DSB.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.EL101_Pset_DSB.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
         self.EL101_Pset_DSB.setDecimals(3)
+        self.EL101_Pset_DSB.setMaximum(1.0)
+        self.EL101_Pset_DSB.setSingleStep(0.1)
         self.EL101_Pset_DSB.setProperty("value", 0.0)
         self.EL101_Pset_DSB.setObjectName("EL101_Pset_DSB")
         self.EL101_P_LBL = QtWidgets.QLabel(self.EL101_GB)
@@ -1313,7 +1315,7 @@ class Ui_main_window(object):
         self.tabWidget.addTab(self.trends, "")
         main_window.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(main_window)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1911, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1911, 22))
         self.menubar.setObjectName("menubar")
         main_window.setMenuBar(self.menubar)
 

@@ -3180,6 +3180,12 @@
        <property name="decimals">
         <number>3</number>
        </property>
+       <property name="maximum">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
        <property name="value">
         <double>0.000000000000000</double>
        </property>
@@ -3640,7 +3646,7 @@
      <x>0</x>
      <y>0</y>
      <width>1911</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

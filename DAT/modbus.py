@@ -1,7 +1,8 @@
-try:
-    from pymodbus.client.sync import ModbusSerialClient     # Per pymodbus 2.x e Python 3.7
-except:
-    from pymodbus.client import ModbusSerialClient          # per pymodbus 3.3.x e Python 3.11
+# try:
+#     from pymodbus.client.sync import ModbusSerialClient     # Per pymodbus 2.x e Python 3.7
+# except:
+#     from pymodbus.client import ModbusSerialClient          # per pymodbus 3.3.x e Python 3.11
+from pymodbus.client import ModbusSerialClient          # per pymodbus 3.3.x e Python 3.11
 
 from _shared import variables as v
 # from pymodbus.payload import BinaryPayloadDecoder
@@ -24,9 +25,11 @@ class Modbus:
             errorcheck="crc",
             baudrate=38400,
             method="RTU",
-            timeout=3,
+            timeout=1,
             # unit=11
         )
+
+        v.mb_conn = self.client.connect()
 
     def read_holding(self, reg=14, ch=21, count=8):
         self.results = [0, 0, 0, 0, 0, 0, 0, 0]
@@ -39,14 +42,13 @@ class Modbus:
 
     def read_coils(self, ch=11, reg=16, count=4):
         self.results = [False, False, False, False, False]
+        # if self.client.connect():
         if self.client.connect():
             try:
                 register = self.client.read_coils(address=reg, count=count, slave=ch)
                 self.results = register.bits
             except:
                 print('error reading coils')
-        else:
-            v.mb_conn = False
         return self.results
 
     def write_coil(self, address, value, unit):

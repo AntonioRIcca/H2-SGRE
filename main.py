@@ -71,6 +71,8 @@ class Main:
 
         self.db_init()                          # Inizializzo il database di archivio
 
+        self.mytime = time.process_time()
+
         # self.app = QtWidgets.QApplication(sys.argv)
 
         f0 = Thread(target=self.interface_open())
@@ -253,7 +255,7 @@ class Main:
 
         timer = QtCore.QTimer()
         timer.timeout.connect(self.refresh)
-        timer.start(1000)
+        timer.start(200)
 
         self.main.show()
         self.app.exec()
@@ -341,6 +343,7 @@ class Main:
             self.main.ui.EV302_img_LBL.setPixmap(QtGui.QPixmap("UI/_resources/StopVert_20x20.png"))
 
     def refresh(self):
+        print(time.perf_counter())
         self.mb_to_par()        # lettura dati da ModBus
 
         if v.sel_util:          # se la finestra fake è attiva, vengono letti i valori dalla finestra
@@ -569,12 +572,11 @@ class Main:
             k = list(v.dat[ch]['reg'].keys())   # lista dei registri da leggere
 
             # per ogni unità (canale), ci sono 4 segnali di input (read_coils) e 4 di output (read_holding)
-            regs = self.mb.read_holding(ch=ch, reg=0, count=4) + list(self.mb.read_coils(ch=ch, reg=16, count=4))[:4]
+            regs = self.mb.read_coils(ch=ch, reg=0, count=4)[:4] + list(self.mb.read_coils(ch=ch, reg=16, count=4))[:4]
             # read_coils legge sempre 8 registri, li tronco a 4
-
             for i in range(0, 8):
                 v.dat[ch]['reg'][k[i]] = regs[i]
-            # TODO: non li scrivo in v.par??????
+            # # TODO: non li scrivo in v.par??????
 
         # ModBus Led setting
         # durante la lettura da ModBus, v.mb_conn, se c'è un errore, v.mb_conn diventa False
