@@ -1,5 +1,5 @@
 import copy
-# import os
+import os
 import sys
 from PyQt5 import QtWidgets, QtCore, QtGui
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -26,6 +26,15 @@ ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
 class Main:
     def __init__(self):
+        os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"  # Necessaria per il rescaling
+
+        self.app = QtWidgets.QApplication(sys.argv)
+
+        # -- Necessario per il rescaling --------------
+        self.app.setAttribute(QtCore.Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
+        self.mainwindow = QtWidgets.QMainWindow()
+        # ---------------------------------------------
+
         # -- Inizializzazione delle variabili delle finestre -----------
         self.sim = None
         self.set = None
@@ -62,7 +71,7 @@ class Main:
 
         self.db_init()                          # Inizializzo il database di archivio
 
-        self.app = QtWidgets.QApplication(sys.argv)
+        # self.app = QtWidgets.QApplication(sys.argv)
 
         f0 = Thread(target=self.interface_open())
         f0.start()

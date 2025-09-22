@@ -16,7 +16,7 @@ class Modbus:
 
         # Impostazione della connessione
         self.client = ModbusSerialClient(
-            port="COM2",    #TODO: inserire la COM esatta
+            port="COM3",    #TODO: inserire la COM esatta
             startbit=1,
             databits=8,
             parity="N",
